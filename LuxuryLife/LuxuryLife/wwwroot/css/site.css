@@ -1,22 +1,68 @@
-html {
-  font-size: 14px;
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* Wrapper styles */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    color: #333;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    /* Preloader, NavBar, and SideBar styles */
+    .wrapper section {
+        flex: 1;
+        padding: 20px;
+    }
+
+.main-footer {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .main-footer a {
+        color: #ffc107;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .main-footer a:hover {
+            text-decoration: underline;
+        }
+
+/* Footer positioning */
+.position-fixed {
+    position: fixed;
 }
 
-body {
-  margin-bottom: 60px;
+.bottom-0 {
+    bottom: 0;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* Float right on large screens */
+.float-right {
+    float: right;
+}
+
+@media (max-width: 576px) {
+    .float-right {
+        float: none;
+        text-align: center;
+    }
+
+    .d-sm-inline-block {
+        display: block;
+    }
 }

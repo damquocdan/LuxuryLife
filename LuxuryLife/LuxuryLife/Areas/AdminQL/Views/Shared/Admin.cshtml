@@ -1,4 +1,6 @@
-﻿﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,47 +34,54 @@
 
 </head>
 <body>
+    <a href="/adminql/dashboard" class="brand-link d-flex align-items-center">
+        <img src="~/dist/img/logo.png" alt="Logo Hunre" width="75px" class="mr-2">
+        <span class="brand-text font-weight-light">ADMIN</span>
+    </a>
+
+    <!-- User Panel -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+        <div class="image">
+            <img src="~/dist/img/logo.png" class="img-circle elevation-2" alt="Logo Hunre">
+        </div>
+        <div class="info">
+            @{
+                var adminLogin = HttpContextAccessor.HttpContext.Session.GetString("AdminLogin");
+                if (!string.IsNullOrEmpty(adminLogin))
+                {
+                    <a href="#" class="d-block">@adminLogin</a>
+                    <a asp-action="Logout" asp-controller="Login" class="text-danger">Đăng xuất</a>
+                }
+                else
+                {
+                    <a href="#" class="d-block">DamQuocDan</a>
+                }
+            }
+        </div>
+    </div>
+        <a href="/adminql/admins" class="nav-link">
+            <i class="fa-solid fa-user-tie fa-lg"></i>
+            <p class="ml-3">Tài khoản Admin</p>
+        </a>
 
     <section class="wrapper">
-
-        <!-- Preloader -->
-        @await Html.PartialAsync("_Preloader")
-
-        <!-- Navbar -->
-        @await Html.PartialAsync("_NavBar")
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        @await Html.PartialAsync("_SideBar")
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
+        
+        <div class="content-section">
             <section class="content">
-                <div class="container-fluid">
-
+                <div class="content-body">
                     @RenderBody()
-
                 </div>
             </section>
         </div>
+
         <footer class="main-footer position-fixed bottom-0 w-100">
-            <strong>Trang quản lý kí túc xá được phát triển bởi<a href="https://github.com/damquocdan">Đàm Quốc Dân, Nguyễn Khương Duy</a>.</strong>
+            <strong>Trang web được phát triển bởi <a href="https://github.com/damquocdan">Đàm Quốc Dân</a>.</strong>
             (damquocdan@gmail.com)
             <div class="float-right d-none d-sm-inline-block">
-                <b>HUNRE</b> 2024
+                <b>Devmaster</b> 2024
             </div>
         </footer>
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-
-        </aside>
-        <!-- /.control-sidebar -->
     </section>
-    <!-- ./wrapper -->
-
-
-
-
 
 
 

@@ -1,11 +1,11 @@
-﻿﻿﻿
-@model LuxuryLife.Areas.AdminQL.Models.Login
+﻿@model LuxuryLife.Areas.AdminQL.Models.Login
 @{
     Layout = null;
 }
+
 @if (!ViewData.ModelState.IsValid)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger mt-3">
         <ul>
             @foreach (var modelState in ViewData.ModelState.Values)
             {
@@ -23,7 +23,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in</title>
+    <title>Admin Login</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,46 +33,64 @@
     <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+
+    <style>
+        .login-box {
+            width: 400px;
+            margin: auto;
+            margin-top: 80px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .login-title {
+            font-weight: 700;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .custom-input {
+            border-radius: 8px;
+            margin-top: 10px;
+            height: 45px;
+            margin-left:14px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
-    <div class="d-flex justify-content-center align-items-center" style="height:659px">
-        <section>
-            <h2 class="text-center mb-5 mt-2">Đăng nhập ADMIN</h2>
-            <div class="container-fluid">
-                <div class="row d-flex justify-content-center align-items-center">
-                    <div class="col-md-9 col-lg-6 col-xl-5">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                             class="img-fluid" alt="Sample image">
-                    </div>
-                    <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                        <form asp-action="Index" method="post">
-                            <!-- Email input -->
-                            <div class="form-outline mb-4">
-                                <input asp-for="Email" type="email" id="form3Example3" class="custom-input form-control form-control-lg "
-                                       placeholder="Email" />
 
-                            </div>
+    <div class="login-box">
+        <div class="login-title">Đăng nhập Admin</div>
+        <form asp-action="Index" method="post">
+            <!-- Email input -->
+            <input asp-for="Email" type="email" class="custom-input form-control form-control-lg"
+                   placeholder="Email" />
 
-                            <!-- Password input -->
-                            <div class="form-outline mb-3">
-                                <input asp-for="Password" type="password" id="form3Example4" class="custom-input form-control form-control-lg"
-                                       placeholder="Mật khẩu" required />
+            <!-- Password input -->
+            <input asp-for="Password" type="password" class="custom-input form-control form-control-lg"
+                   placeholder="Mật khẩu" required />
 
-                            </div>
-
-                            <div class="text-center text-lg-start mt-4 pt-2">
-                                <button type="submit" class="btn btn-primary btn-lg"
-                                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
-                                    Đăng nhập
-                                </button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary ">Đăng nhập</button>
+        </form>
     </div>
+
+    <!-- Scripts -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
     <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
