@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\AdminQL\Data\" />
+    <Folder Include="Areas\CustomerUser\Data\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
