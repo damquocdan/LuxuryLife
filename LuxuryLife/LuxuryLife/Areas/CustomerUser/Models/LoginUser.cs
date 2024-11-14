@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LuxuryLife.Areas.CustomerUser.Models
+namespace LuxuryLife.Models
 {
     public class LoginUser
     {
-        [Required(ErrorMessage = "Mã sinh viên không để trống")]
+        [Required(ErrorMessage = "Email không để trống")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Mật khẩu không để trống")]
         public string Password { get; set; }

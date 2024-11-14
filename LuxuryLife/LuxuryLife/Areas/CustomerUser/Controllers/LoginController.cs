@@ -1,22 +1,26 @@
-﻿using LuxuryLife.Areas.CustomerUser.Models;
-using LuxuryLife.Models;
+﻿using LuxuryLife.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace LuxuryLife.Areas.CustomerUser.Controllers
 {
     [Area("CustomerUser")]
     public class LoginController : Controller
     {
-        public LuxuryLifeContext _context;
+        private readonly LuxuryLifeContext _context;
+
         public LoginController(LuxuryLifeContext context)
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             return View();
         }
-        [HttpPost] // POST -> khi submit form
+
+        [HttpPost]
         public IActionResult Index(LoginUser model)
         {
             if (!ModelState.IsValid)
@@ -25,26 +29,29 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
                 return View(model);
             }
 
-            var pass = model.Password;
-            var dataLogin = _context.Customers.FirstOrDefault(x => x.Email.Equals(model.Email) && x.Password.Equals(pass));
+            var dataLogin = _context.Customers
+                .Where(x => x.Email == model.Email && x.Password == model.Password)
+                .FirstOrDefault();
+
             if (dataLogin != null)
             {
-                ViewBag.IsLoggedIn = true;
                 HttpContext.Session.SetString("CustomerLogin", model.Email);
-                HttpContext.Session.SetInt32("CustomerId", dataLogin.CustomerId); // Access StudentId from dataLogin
-                return RedirectToAction("Index", "Dashboard", new { customerId = dataLogin.CustomerId });
+                HttpContext.Session.SetInt32("CustomerId", dataLogin.CustomerId);
+
+                return RedirectToAction("Index", "Dashboard", new {customerId = dataLogin.CustomerId });
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Thông tin đăng nhập không chính xác.");
                 return View(model);
             }
-
         }
-        [HttpGet]// thoát đăng nhập, huỷ session
+
+        [HttpGet]
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("CustomerLogin"); // huỷ session với key AdminLogin đã lưu trước đó
+            HttpContext.Session.Remove("CustomerLogin");
+            HttpContext.Session.Remove("CustomerId");
 
             return RedirectToAction("Index");
         }
