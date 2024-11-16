@@ -7,29 +7,332 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LuxuryLife.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap"
+          rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LuxuryLife</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="header-language dropdow">
+                    <div class="header-language-select">
+                        <img src="./images/vn-logo.webp" alt="" class="header-nation" />
+                        <span>Tiếng Việt <i class="fa-solid fa-chevron-down"></i></span>
+                    </div>
+                    <ul class="header-language-list dropdow-list">
+                        <li class="header-language-item dropdow-item">
+                            <img src="./images/vn-logo.webp"
+                                 alt=""
+                                 class="header-nation" />
+                            <a href="#" class="dropdow-link">Tiếng Việt</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="header-language-item dropdow-item">
+                            <img src="./images/usa-logo.webp"
+                                 alt=""
+                                 class="header-nation" />
+                            <a href="#" class="dropdow-link">English</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                </div>
+
+                <div class="header-auth">
+                    <a href="#" class="header-auth-text sign-up-offer">
+                        ĐĂNG KÝ VÀ NHẬN 100.000 VNĐ
+                    </a>
+
+                    <div class="dropdow">
+                        <a href="#" class="header-auth-text account">
+                            Tài khoản
+                            <i class="header-auth-text fa-solid fa-chevron-down"></i>
+                        </a>
+                        <ul class="dropdow-list">
+                            <li class="dropdow-item">
+                                <a class="nav-link text-dark" asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Đăng ký</a>
+                            </li>
+                            <li class="dropdow-item">
+                                <a class="nav-link text-dark" asp-area="CustomerUser" asp-controller="Login" asp-action="Index">Đăng nhập</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="#" class="header-auth-text store-system">
+                        Hệ Thống 19 Cửa Hàng Toàn Quốc
+                        <i class="fa-solid fa-location-dot"></i>
+                    </a>
                 </div>
             </div>
-        </nav>
+
+            <div class="header-content">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img srcset="./images/logo.png 2x" alt="" class="header-logo" /></a>
+
+                <div class="header-feature">
+                    <div class="header-search">
+                        <form action="#" class="header-search-form">
+                            <input type="text"
+                                   class="header-search-input"
+                                   placeholder="Bạn đang tìm gì ..." />
+                            <button class="header-search-submit button button-green">
+                                <i class="fa-sharp fa-solid fa-magnifying-glass header-search-icon"></i>
+                                Tìm kiếm
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="header-cart">
+                        <a href="#" class="header-cart-submit button button-white">
+                            <i class="fa-solid fa-cart-shopping header-cart-icon"></i>
+                            Giỏ hàng (0)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-menu">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="menu-item">
+                        <div class="dropdow-menu">
+                            <a href="./product.html" class="menu-link">
+                                Giày <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdow-menu-list">
+                                <div class="dropdow-menu-category">
+                                    <div class="dropdow-menu-info">
+                                        <h2 class="dropdow-menu-title">Giày Dép</h2>
+                                        <a href="./product.html" class="dropdow-menu-link">Xem tất cả</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Sản phẩm mới</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày thời trang</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày chạy bộ</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày luyện tập</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày bóng rổ</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày bóng đá</a>
+                                    </div>
+                                </div>
+                                <div class="dropdow-menu-images">
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img-02.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="dropdow-menu">
+                            <a href="#" class="menu-link">
+                                Nam <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdow-menu-list">
+                                <div class="dropdow-menu-category">
+                                    <div class="dropdow-menu-info">
+                                        <h2 class="dropdow-menu-title">Giày Dép</h2>
+                                        <a href="#" class="dropdow-menu-link">Xem tất cả</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Sản phẩm mới</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày thời trang</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày chạy bộ</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày luyện tập</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày bóng rổ</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày bóng đá</a>
+                                    </div>
+                                </div>
+                                <div class="dropdow-menu-images">
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img-02.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="dropdow-menu">
+                            <a href="#" class="menu-link">
+                                Nữ <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdow-menu-list">
+                                <div class="dropdow-menu-category">
+                                    <div class="dropdow-menu-info">
+                                        <h2 class="dropdow-menu-title">Giày Dép</h2>
+                                        <a href="#" class="dropdow-menu-link">Xem tất cả</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Sản phẩm mới</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày thời trang</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày chạy bộ</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">Giày luyện tập</a>
+                                    </div>
+                                </div>
+                                <div class="dropdow-menu-images">
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img-03.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img-04.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">Trẻ em</a>
+                    </li>
+                    <li class="menu-item">
+                        <div class="dropdow-menu">
+                            <a href="#" class="menu-link">
+                                Thương hiệu <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdow-menu-list">
+                                <div class="dropdow-menu-category">
+                                    <div class="dropdow-menu-info">
+                                        <h2 class="dropdow-menu-title">A - Z</h2>
+                                        <a href="#" class="dropdow-menu-link">Xem tất cả</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">ADIDAS</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">COLUMBIA</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">CONVERSE</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">FILA</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">JORDAN</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">HOKA</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">NIKE</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">NEW BALANCE</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">PUMA</a>
+                                    </div>
+                                    <div class="dropdow-menu-item">
+                                        <a href="#">UNDER ARMOR</a>
+                                    </div>
+                                </div>
+                                <div class="dropdow-menu-images">
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img-05.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                    <a href="#" class="dropdow-menu-image">
+                                        <img src="./images/dropdow-menu-img.avif"
+                                             alt=""
+                                             class="dropdow-menu-img" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">Tin tức</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">Liên hệ</a>
+                    </li>
+                </ul>
+
+                <a href="#" class="promo button button-red">Ưu đãi</a>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <div class="policy">
+                    <div class="policy-item">
+                        <a href="#" class="policy-image">
+                            <img src="./images/truck-icon.webp"
+                                 alt=""
+                                 class="policy-img" />
+                        </a>
+                        <a href="#" class="policy-link">MIỄN PHÍ GIAO HÀNG ĐƠN TỪ 699K</a>
+                    </div>
+                    <div class="policy-item">
+                        <a href="#" class="policy-image">
+                            <img src="./images/trade-icon.webp"
+                                 alt=""
+                                 class="policy-img" />
+                        </a>
+                        <a href="#" class="policy-link">15 NGÀY ĐỔI TRẢ DỄ DÀNG</a>
+                    </div>
+                    <div class="policy-item">
+                        <a href="#" class="policy-image">
+                            <img src="./images/installment-icon.webp"
+                                 alt=""
+                                 class="policy-img" />
+                        </a>
+                        <a href="#" class="policy-link">MUA HÀNG HIỆU TRẢ GÓP 0%</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

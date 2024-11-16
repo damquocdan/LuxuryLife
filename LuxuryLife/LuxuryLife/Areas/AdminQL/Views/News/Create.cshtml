@@ -1,59 +1,77 @@
 ﻿@model LuxuryLife.Models.News
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo Mới";
 }
 
-<h1>Create</h1>
+<h1>Tạo Mới Tin Tức</h1>
 
-<h4>News</h4>
+<h4>Thông Tin Tin Tức</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Tiêu Đề -->
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label">Tiêu Đề</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+
+            <!-- Nội Dung -->
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
+                <label asp-for="Content" class="control-label">Nội Dung</label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+
+            <!-- Ngày Xuất Bản -->
             <div class="form-group">
-                <label asp-for="PublicationDate" class="control-label"></label>
+                <label asp-for="PublicationDate" class="control-label">Ngày Xuất Bản</label>
                 <input asp-for="PublicationDate" class="form-control" />
                 <span asp-validation-for="PublicationDate" class="text-danger"></span>
             </div>
+
+            <!-- Tác Giả -->
             <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class ="form-control" asp-items="ViewBag.AuthorId"></select>
+                <label asp-for="AuthorId" class="control-label">Tác Giả</label>
+                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
             </div>
+
+            <!-- Homestay -->
             <div class="form-group">
-                <label asp-for="HomestayId" class="control-label"></label>
-                <select asp-for="HomestayId" class ="form-control" asp-items="ViewBag.HomestayId"></select>
+                <label asp-for="HomestayId" class="control-label">Homestay</label>
+                <select asp-for="HomestayId" class="form-control" asp-items="ViewBag.HomestayId"></select>
             </div>
+
+            <!-- Tour -->
             <div class="form-group">
-                <label asp-for="TourId" class="control-label"></label>
-                <select asp-for="TourId" class ="form-control" asp-items="ViewBag.TourId"></select>
+                <label asp-for="TourId" class="control-label">Tour</label>
+                <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
             </div>
+
+            <!-- Nhà Cung Cấp -->
             <div class="form-group">
-                <label asp-for="ProviderId" class="control-label"></label>
-                <select asp-for="ProviderId" class ="form-control" asp-items="ViewBag.ProviderId"></select>
+                <label asp-for="ProviderId" class="control-label">Nhà Cung Cấp</label>
+                <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId"></select>
             </div>
+
+            <!-- Submit Button -->
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tạo Mới" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay Lại Danh Sách</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

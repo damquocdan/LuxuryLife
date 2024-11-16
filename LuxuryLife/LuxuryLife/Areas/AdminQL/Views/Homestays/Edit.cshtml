@@ -1,69 +1,89 @@
 ﻿@model LuxuryLife.Models.Homestay
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh Sửa Homestay";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh Sửa Homestay</h1>
 
-<h4>Homestay</h4>
+<h4>Thông tin Homestay</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="HomestayId" />
+
+            <!-- Tên Homestay -->
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Tên Homestay</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
+            <!-- Mô Tả -->
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Mô Tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
+            <!-- Vị Trí -->
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
+                <label asp-for="Location" class="control-label">Vị trí</label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
+
+            <!-- Giá Mỗi Đêm -->
             <div class="form-group">
-                <label asp-for="PricePerNight" class="control-label"></label>
+                <label asp-for="PricePerNight" class="control-label">Giá mỗi đêm</label>
                 <input asp-for="PricePerNight" class="form-control" />
                 <span asp-validation-for="PricePerNight" class="text-danger"></span>
             </div>
+
+            <!-- Tình Trạng -->
             <div class="form-group">
-                <label asp-for="Availability" class="control-label"></label>
+                <label asp-for="Availability" class="control-label">Tình trạng</label>
                 <input asp-for="Availability" class="form-control" />
                 <span asp-validation-for="Availability" class="text-danger"></span>
             </div>
+
+            <!-- Đánh Giá -->
             <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
+                <label asp-for="Rating" class="control-label">Đánh giá</label>
                 <input asp-for="Rating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
+
+            <!-- Nhà Cung Cấp -->
             <div class="form-group">
-                <label asp-for="ProviderId" class="control-label"></label>
+                <label asp-for="ProviderId" class="control-label">Nhà Cung Cấp</label>
                 <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId"></select>
                 <span asp-validation-for="ProviderId" class="text-danger"></span>
             </div>
+
+            <!-- Ngày Tạo -->
             <div class="form-group">
-                <label asp-for="CreateDate" class="control-label"></label>
+                <label asp-for="CreateDate" class="control-label">Ngày tạo</label>
                 <input asp-for="CreateDate" class="form-control" />
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
+
+            <!-- Nút Save -->
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu lại" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-secondary" asp-action="Index">Quay lại danh sách</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
