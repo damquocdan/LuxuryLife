@@ -3,63 +3,59 @@
     ViewData["Title"] = "Đăng nhập";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        <ul>
-            @foreach (var modelState in ViewData.ModelState.Values)
-            {
-                foreach (var error in modelState.Errors)
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            }
-        </ul>
-    </div>
-}
-<div class="d-flex justify-content-center align-items-center" style="min-height:535px">
-    <section>
-        <h2 class="text-center mb-5">Đăng nhập</h2>
-        <div class="container-fluid">
-            <div class="row d-flex justify-content-center align-items-center">
-                <div class="col-md-9 col-lg-6 col-xl-5">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                         class="img-fluid" alt="Sample image">
-                </div>
-                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form asp-action="Index" method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 10px;">
+    <section class="" style="width: 100%; max-width: 450px;">
+        <h2 class="text-center" style="color: white; margin-top:30px;">Đăng nhập</h2>
 
-                        <!-- Email input -->
-                        <div class="form-outline mb-4">
-                            <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="Email" required />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-
-                        <!-- Password input -->
-                        <div class="form-outline mb-3">
-                            <input asp-for="Password" type="password" class="form-control form-control-lg" placeholder="Mật khẩu" required />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a asp-controller="ForgotPassword" asp-action="ForgotPassword" class="text-body text-decoration-none">Quên mật khẩu</a>
-                        </div>
-
-                        <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">
-                                Đăng nhập
-                            </button>
-                            <p class="small fw-bold mt-2 pt-1 mb-0">
-                                Bạn chưa có tài khoản? <a asp-controller="Customers" asp-action="Create" class="link-danger">Đăng ký</a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
+        <!-- Hiển thị lỗi -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach (var modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    }
+                </ul>
             </div>
-        </div>
+        }
+
+        <!-- Form -->
+        <form asp-action="Index" method="post">
+            <!-- Email -->
+            <div class="form-group mb-4">
+                <label for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" id="Email" class="form-control" placeholder="Nhập email của bạn" required />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <!-- Mật khẩu -->
+            <div class="form-group mb-4">
+                <label for="Password" class="form-label">Mật khẩu</label>
+                <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Nhập mật khẩu" required />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <!-- Quên mật khẩu -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a asp-controller="ForgotPassword" asp-action="ForgotPassword" class="text-primary text-decoration-none small">Quên mật khẩu?</a>
+            </div>
+
+            <!-- Nút đăng nhập -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg w-60" style="background:none; border: 1px solid Black; transition: background-color 0.3s;">
+                    Đăng nhập
+                </button>
+            </div>
+
+            <!-- Đăng ký -->
+            <p class="text-center text-muted mt-3 small">
+                Bạn chưa có tài khoản?
+                <a asp-controller="Customers" asp-action="Create" class="text-primary text-decoration-none">Đăng ký</a>
+            </p>
+        </form>
     </section>
 </div>
-<script src="~/plugins/jquery/jquery.min.js"></script>
-<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="~/dist/js/adminlte.min.js"></script>
