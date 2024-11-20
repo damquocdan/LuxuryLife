@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -71,7 +85,7 @@
                     </div>
 
                     <div class="header-cart" style="background:none;">
-                        <a href="#" class="header-cart-submit" style="color:black;">
+                        <a asp-area="CustomerUser" asp-controller="Favorites" asp-action="Index" class="header-cart-submit" style="color:black;">
                             <i class="fa-solid fa-cart-shopping header-cart-icon"></i>
                             Danh sách yêu thích
                         </a>

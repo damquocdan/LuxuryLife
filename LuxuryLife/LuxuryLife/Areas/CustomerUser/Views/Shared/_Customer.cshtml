@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -71,7 +84,7 @@
                     </div>
 
                     <div class="header-cart" style="background:none;">
-                        <a href="#" class="header-cart-submit" style="color:black;">
+                        <a asp-area="CustomerUser" asp-controller="Favorites" asp-action="Index" asp-route-customerId="@Context.Session.GetInt32("CustomerId") class="header-cart-submit" style="color:black;">
                             <i class="fa-solid fa-cart-shopping header-cart-icon"></i>
                             Danh sách yêu thích
                         </a>
@@ -82,7 +95,7 @@
             <div class="header-menu">
                 <ul class="menu">
                     <li class="menu-item">
-                        <a style="color:black;" class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <a style="color:black;" class="menu-link" asp-area="CustomerUser" asp-controller="Dashboard" asp-action="Index" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">Trang chủ</a>
                     </li>
                     <li class="menu-item">
                         <div class="dropdow-menu">

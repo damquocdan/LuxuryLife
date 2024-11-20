@@ -1,0 +1,66 @@
+﻿@model IEnumerable<LuxuryLife.Models.Favorite>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/CustomerUser/Views/Shared/_Customer.cshtml";
+}
+<main class="main">
+    <section class="page">
+        <div class="container">
+            <div class="page-list">
+                <a href="/" class="page-name active">Trang chủ</a>
+                <i class="fa fa-angle-right page-icon"></i>
+                <a href="#" class="page-name current">Danh sách yêu thích</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cart">
+        <div class="container">
+            <h3 class="cart-title heading">Danh sách yêu thích của bạn</h3>
+            <div class="cart-container">
+                <form action="" class="cart-table-form">
+                    <table class="cart-table">
+                        <thead class="cart-thead">
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Thời gian thêm</th>
+                                <th>Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cart-tbody">
+                            @if (!Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        Danh sách yêu thích của bạn hiện đang trống!
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="cart-info">
+                                            <img src="@item.Tour.Images" alt="@item.Tour.Name" />
+                                            <span>@item.Tour.Name</span>
+                                        </td>
+                                        <td class="cart-price">@item.Tour.PricePerPerson</td>
+                                        <td class="cart-date">@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                        <td class="cart-remove">
+                                            <a asp-action="Remove" asp-route-id="@item.FavoriteId">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>

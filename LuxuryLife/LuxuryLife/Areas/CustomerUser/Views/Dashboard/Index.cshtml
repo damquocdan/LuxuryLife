@@ -2,3 +2,27 @@
     ViewData["Title"] = "DashBoard";
     Layout = "~/Areas/CustomerUser/Views/Shared/_Customer.cshtml";
 }
+<div class="container my-5">
+    <h1 class="text-center mb-4">Danh sách Tour</h1>
+    <div class="row">
+        @foreach (var tour in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@tour.Name</h5>
+                        <p class="card-text">
+                            Điểm đến: @tour.Destination <br />
+                            Giá: @string.Format("{0:N0}", tour.PricePerPerson) VND <br />
+                            Ngày bắt đầu: @tour.StartDate?.ToString("dd/MM/yyyy") <br />
+                            Ngày kết thúc: @tour.EndDate?.ToString("dd/MM/yyyy")
+                        </p>
+                        <a asp-area="CustomerUser" asp-controller="Favorites" asp-action="Add" asp-route-id="@tour.TourId" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">
+                            <i class="fi fi-bs-shopping-bag">Thêm vào danh sách yêu thích</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
