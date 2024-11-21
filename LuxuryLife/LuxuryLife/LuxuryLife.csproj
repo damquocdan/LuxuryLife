@@ -24,7 +24,7 @@
     <Folder Include="Areas\AdminQL\Data\" />
     <Folder Include="Areas\CustomerUser\Data\" />
     <Folder Include="Areas\ProviderUser\Data\" />
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\images\" />
   </ItemGroup>
 
 </Project>

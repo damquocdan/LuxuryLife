@@ -20,8 +20,13 @@ namespace LuxuryLife.Controllers
         public IActionResult Index()
         {
             var tours = _context.Tours.Include(t => t.Provider).ToList();
+            var images = _context.Images.ToList();
+
+            ViewBag.Images = images;
             return View(tours);
         }
+
+
 
         public IActionResult Privacy()
         {

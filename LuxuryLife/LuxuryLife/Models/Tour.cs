@@ -8,6 +8,8 @@ public partial class Tour
     public int TourId { get; set; }
 
     public string Name { get; set; } = null!;
+    public string? Image {  get; set; } 
+    public int? ListimageId { get; set; }
 
     public string? Description { get; set; }
 
@@ -38,6 +40,7 @@ public partial class Tour
     public virtual ICollection<News> News { get; set; } = new List<News>();
 
     public virtual Provider? Provider { get; set; }
+    public virtual Listimage? Listimage { get; set; }
 
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 

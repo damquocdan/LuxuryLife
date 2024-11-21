@@ -11,7 +11,7 @@ public partial class Image
 
     public int? TourId { get; set; }
 
-    public string ImageUrl { get; set; } = null!;
+    public string? ImageUrl { get; set; }
 
     public string? ImageDescription { get; set; }
 
