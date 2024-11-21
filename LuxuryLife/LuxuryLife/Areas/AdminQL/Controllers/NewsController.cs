@@ -9,12 +9,12 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    [Area("AdminQL")]
-    public class NewsController : Controller
-    {
-        private readonly LuxuryLifeContext _context;
 
-        public NewsController(LuxuryLifeContext context)
+    public class NewsController : BaseController
+    {
+        private readonly TourbookingContext _context;
+
+        public NewsController(TourbookingContext context)
         {
             _context = context;
         }
@@ -22,8 +22,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/News
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.News.Include(n => n.Author).Include(n => n.Homestay).Include(n => n.Provider).Include(n => n.Tour);
-            return View(await luxuryLifeContext.ToListAsync());
+            return View(await _context.News.ToListAsync());
         }
 
         // GET: AdminQL/News/Details/5
@@ -35,11 +34,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             }
 
             var news = await _context.News
-                .Include(n => n.Author)
-                .Include(n => n.Homestay)
-                .Include(n => n.Provider)
-                .Include(n => n.Tour)
-                .FirstOrDefaultAsync(m => m.NewsId == id);
+                .FirstOrDefaultAsync(m => m.NewId == id);
             if (news == null)
             {
                 return NotFound();
@@ -51,10 +46,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/News/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Admins, "AdminId", "AdminId");
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId");
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId");
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
             return View();
         }
 
@@ -63,7 +54,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NewsId,Title,Content,PublicationDate,AuthorId,HomestayId,TourId,ProviderId,CreateDate")] News news)
+        public async Task<IActionResult> Create([Bind("NewId,Title,Content,ImageUrl,Createdate")] News news)
         {
             if (ModelState.IsValid)
             {
@@ -71,10 +62,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Admins, "AdminId", "AdminId", news.AuthorId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", news.HomestayId);
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", news.ProviderId);
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", news.TourId);
             return View(news);
         }
 
@@ -91,10 +78,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Admins, "AdminId", "AdminId", news.AuthorId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", news.HomestayId);
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", news.ProviderId);
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", news.TourId);
             return View(news);
         }
 
@@ -103,9 +86,9 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NewsId,Title,Content,PublicationDate,AuthorId,HomestayId,TourId,ProviderId,CreateDate")] News news)
+        public async Task<IActionResult> Edit(int id, [Bind("NewId,Title,Content,ImageUrl,Createdate")] News news)
         {
-            if (id != news.NewsId)
+            if (id != news.NewId)
             {
                 return NotFound();
             }
@@ -119,7 +102,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NewsExists(news.NewsId))
+                    if (!NewsExists(news.NewId))
                     {
                         return NotFound();
                     }
@@ -130,10 +113,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Admins, "AdminId", "AdminId", news.AuthorId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", news.HomestayId);
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", news.ProviderId);
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", news.TourId);
             return View(news);
         }
 
@@ -146,11 +125,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             }
 
             var news = await _context.News
-                .Include(n => n.Author)
-                .Include(n => n.Homestay)
-                .Include(n => n.Provider)
-                .Include(n => n.Tour)
-                .FirstOrDefaultAsync(m => m.NewsId == id);
+                .FirstOrDefaultAsync(m => m.NewId == id);
             if (news == null)
             {
                 return NotFound();
@@ -176,7 +151,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
 
         private bool NewsExists(int id)
         {
-            return _context.News.Any(e => e.NewsId == id);
+            return _context.News.Any(e => e.NewId == id);
         }
     }
 }

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<LuxuryLife.Models.Listimagestour>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Createdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tour)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tour.TourId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ListimagestourId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ListimagestourId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ListimagestourId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,79 +1,49 @@
-﻿@model IEnumerable<LuxuryLife.Models.News>
+﻿@model LuxuryLife.Models.News
 
 @{
-    ViewData["Title"] = "Danh Sách Tin Tức";
+    ViewData["Title"] = "Edit";
 }
 
-<h1 class="mt-3">Danh Sách Tin Tức</h1>
+<h1>Edit</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-success mb-3">Tạo Mới</a>
-</p>
+<h4>News</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NewId" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Createdate" class="control-label"></label>
+                <input asp-for="Createdate" class="form-control" />
+                <span asp-validation-for="Createdate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 
-<table class="table table-bordered table-striped table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublicationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Homestay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Provider)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tour)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PublicationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author.AdminId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Homestay.HomestayId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Provider.ProviderId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tour.TourId)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.NewsId" class="btn btn-warning btn-sm">Sửa</a> |
-                    <a asp-action="Details" asp-route-id="@item.NewsId" class="btn btn-info btn-sm">Chi Tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.NewsId" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -12,9 +12,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
     [Area("ProviderUser")]
     public class ProvidersController : Controller
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public ProvidersController(LuxuryLifeContext context)
+        public ProvidersController(TourbookingContext context)
         {
             _context = context;
         }

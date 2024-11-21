@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
 <h1>Delete</h1>
@@ -31,16 +30,10 @@
             @Html.DisplayFor(model => model.Password)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ActionHistory)
+            @Html.DisplayNameFor(model => model.Avatar)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ActionHistory)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateDate)
+            @Html.DisplayFor(model => model.Avatar)
         </dd>
     </dl>
     

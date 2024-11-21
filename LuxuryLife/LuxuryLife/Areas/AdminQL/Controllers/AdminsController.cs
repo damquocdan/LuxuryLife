@@ -9,12 +9,11 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    [Area("AdminQL")]
-    public class AdminsController : Controller
+    public class AdminsController : BaseController
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public AdminsController(LuxuryLifeContext context)
+        public AdminsController(TourbookingContext context)
         {
             _context = context;
         }
@@ -54,7 +53,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdminId,Name,Email,Password,ActionHistory,CreateDate")] Admin admin)
+        public async Task<IActionResult> Create([Bind("AdminId,Name,Email,Password,Avatar")] Admin admin)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +85,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AdminId,Name,Email,Password,ActionHistory,CreateDate")] Admin admin)
+        public async Task<IActionResult> Edit(int id, [Bind("AdminId,Name,Email,Password,Avatar")] Admin admin)
         {
             if (id != admin.AdminId)
             {

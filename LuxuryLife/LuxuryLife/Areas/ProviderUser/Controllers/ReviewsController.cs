@@ -12,9 +12,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
     [Area("ProviderUser")]
     public class ReviewsController : Controller
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public ReviewsController(LuxuryLifeContext context)
+        public ReviewsController(TourbookingContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Reviews
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Reviews.Include(r => r.Customer).Include(r => r.Homestay).Include(r => r.Tour);
+            var luxuryLifeContext = _context.Reviews.Include(r => r.Customer).Include(r => r.Tour);
             return View(await luxuryLifeContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 
             var review = await _context.Reviews
                 .Include(r => r.Customer)
-                .Include(r => r.Homestay)
                 .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.ReviewId == id);
             if (review == null)
@@ -70,7 +69,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", review.CustomerId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", review.HomestayId);
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", review.TourId);
             return View(review);
         }
@@ -89,7 +87,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return NotFound();
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", review.CustomerId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", review.HomestayId);
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", review.TourId);
             return View(review);
         }
@@ -127,7 +124,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", review.CustomerId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", review.HomestayId);
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", review.TourId);
             return View(review);
         }
@@ -142,7 +138,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 
             var review = await _context.Reviews
                 .Include(r => r.Customer)
-                .Include(r => r.Homestay)
                 .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.ReviewId == id);
             if (review == null)

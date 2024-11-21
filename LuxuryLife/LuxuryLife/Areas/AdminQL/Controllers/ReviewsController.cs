@@ -9,12 +9,12 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    [Area("AdminQL")]
-    public class ReviewsController : Controller
+ 
+    public class ReviewsController : BaseController
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public ReviewsController(LuxuryLifeContext context)
+        public ReviewsController(TourbookingContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Reviews
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Reviews.Include(r => r.Customer).Include(r => r.Homestay).Include(r => r.Tour);
-            return View(await luxuryLifeContext.ToListAsync());
+            var tourbookingContext = _context.Reviews.Include(r => r.Customer).Include(r => r.Tour);
+            return View(await tourbookingContext.ToListAsync());
         }
 
         // GET: AdminQL/Reviews/Details/5
@@ -36,7 +36,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
 
             var review = await _context.Reviews
                 .Include(r => r.Customer)
-                .Include(r => r.Homestay)
                 .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.ReviewId == id);
             if (review == null)
@@ -51,7 +50,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId");
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
             return View();
         }
@@ -61,7 +59,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReviewId,CustomerId,HomestayId,TourId,Rating,Comment,CreateDate")] Review review)
+        public async Task<IActionResult> Create([Bind("ReviewId,CustomerId,TourId,Rating,Comment,Createdate")] Review review)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +68,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", review.CustomerId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", review.HomestayId);
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", review.TourId);
             return View(review);
         }
@@ -89,7 +86,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 return NotFound();
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", review.CustomerId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", review.HomestayId);
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", review.TourId);
             return View(review);
         }
@@ -99,7 +95,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReviewId,CustomerId,HomestayId,TourId,Rating,Comment,CreateDate")] Review review)
+        public async Task<IActionResult> Edit(int id, [Bind("ReviewId,CustomerId,TourId,Rating,Comment,Createdate")] Review review)
         {
             if (id != review.ReviewId)
             {
@@ -127,7 +123,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", review.CustomerId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId", review.HomestayId);
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", review.TourId);
             return View(review);
         }
@@ -142,7 +137,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
 
             var review = await _context.Reviews
                 .Include(r => r.Customer)
-                .Include(r => r.Homestay)
                 .Include(r => r.Tour)
                 .FirstOrDefaultAsync(m => m.ReviewId == id);
             if (review == null)

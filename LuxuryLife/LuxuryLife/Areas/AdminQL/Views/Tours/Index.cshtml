@@ -1,97 +1,101 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Tour>
 
 @{
-    ViewData["Title"] = "Danh Sách Tour";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Danh Sách Tour</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success">Tạo Tour Mới</a>
+    <a asp-action="Create">Create New</a>
 </p>
-
-<table class="table table-bordered">
+<table class="table">
     <thead>
         <tr>
             <th>
-                Tên Tour
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                Mô Tả
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
-                Điểm Đến
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                Ngày Bắt Đầu
+                @Html.DisplayNameFor(model => model.ServiceId)
             </th>
             <th>
-                Ngày Kết Thúc
+                @Html.DisplayNameFor(model => model.HomestayId)
             </th>
             <th>
-                Giá Mỗi Người
+                @Html.DisplayNameFor(model => model.PricePerson)
             </th>
             <th>
-                Số Người Tối Đa
+                @Html.DisplayNameFor(model => model.StartDate)
             </th>
             <th>
-                Số Ghế Còn Lại
+                @Html.DisplayNameFor(model => model.EndDate)
             </th>
             <th>
-                Đánh Giá
+                @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                Ngày Tạo
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                Nhà Cung Cấp
+                @Html.DisplayNameFor(model => model.Createdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Provider)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Destination)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PricePerPerson)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaxParticipants)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AvailableSeats)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Provider.ProviderId)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.TourId" class="btn btn-warning btn-sm">Sửa</a> |
-                    <a asp-action="Details" asp-route-id="@item.TourId" class="btn btn-info btn-sm">Chi Tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TourId" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomestayId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Provider.ProviderId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TourId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TourId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TourId">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

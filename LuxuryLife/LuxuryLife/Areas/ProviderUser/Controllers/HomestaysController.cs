@@ -12,9 +12,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
     [Area("ProviderUser")]
     public class HomestaysController : Controller
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public HomestaysController(LuxuryLifeContext context)
+        public HomestaysController(TourbookingContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Homestays
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Homestays.Include(h => h.Provider);
+            var luxuryLifeContext = _context.Homestays;
             return View(await luxuryLifeContext.ToListAsync());
         }
 
@@ -35,7 +35,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             }
 
             var homestay = await _context.Homestays
-                .Include(h => h.Provider)
                 .FirstOrDefaultAsync(m => m.HomestayId == id);
             if (homestay == null)
             {
@@ -65,7 +64,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", homestay.ProviderId);
             return View(homestay);
         }
 
@@ -82,7 +80,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", homestay.ProviderId);
             return View(homestay);
         }
 
@@ -118,7 +115,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", homestay.ProviderId);
             return View(homestay);
         }
 
@@ -131,7 +127,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             }
 
             var homestay = await _context.Homestays
-                .Include(h => h.Provider)
                 .FirstOrDefaultAsync(m => m.HomestayId == id);
             if (homestay == null)
             {

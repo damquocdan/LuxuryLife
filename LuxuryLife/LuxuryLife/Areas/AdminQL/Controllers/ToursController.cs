@@ -9,12 +9,12 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    [Area("AdminQL")]
-    public class ToursController : Controller
+ 
+    public class ToursController : BaseController
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public ToursController(LuxuryLifeContext context)
+        public ToursController(TourbookingContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Tours
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Tours.Include(t => t.Provider);
-            return View(await luxuryLifeContext.ToListAsync());
+            var tourbookingContext = _context.Tours.Include(t => t.Provider);
+            return View(await tourbookingContext.ToListAsync());
         }
 
         // GET: AdminQL/Tours/Details/5
@@ -57,7 +57,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TourId,Name,Description,Destination,StartDate,EndDate,PricePerPerson,MaxParticipants,AvailableSeats,Rating,ProviderId,CreateDate")] Tour tour)
+        public async Task<IActionResult> Create([Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TourId,Name,Description,Destination,StartDate,EndDate,PricePerPerson,MaxParticipants,AvailableSeats,Rating,ProviderId,CreateDate")] Tour tour)
+        public async Task<IActionResult> Edit(int id, [Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour)
         {
             if (id != tour.TourId)
             {

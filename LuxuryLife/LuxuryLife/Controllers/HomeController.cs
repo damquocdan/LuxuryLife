@@ -1,4 +1,4 @@
-using LuxuryLife.Data;
+﻿
 using LuxuryLife.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +9,9 @@ namespace LuxuryLife.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly LuxuryLifeContext _context; // Th�m DbContext
+        private readonly TourbookingContext _context; // Thêm DbContext
 
-        public HomeController(ILogger<HomeController> logger, LuxuryLifeContext context)
+        public HomeController(ILogger<HomeController> logger, TourbookingContext context)
         {
             _logger = logger;
             _context = context;
@@ -20,9 +20,7 @@ namespace LuxuryLife.Controllers
         public IActionResult Index()
         {
             var tours = _context.Tours.Include(t => t.Provider).ToList();
-            var images = _context.Images.ToList();
 
-            ViewBag.Images = images;
             return View(tours);
         }
 

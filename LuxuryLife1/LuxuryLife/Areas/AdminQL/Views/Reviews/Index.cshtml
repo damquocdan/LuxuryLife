@@ -1,0 +1,67 @@
+﻿@model IEnumerable<LuxuryLife.Models.Review>
+
+@{
+    ViewData["Title"] = "Danh Sách Đánh Giá";
+}
+
+<h1>Danh Sách Đánh Giá</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Tạo Mới Đánh Giá</a>
+</p>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Homestay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tour)
+            </th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Homestay.HomestayId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tour.TourId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ReviewId" class="btn btn-warning btn-sm">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.ReviewId" class="btn btn-info btn-sm">Chi Tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ReviewId" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

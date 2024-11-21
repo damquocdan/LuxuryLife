@@ -9,12 +9,11 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    [Area("AdminQL")]
-    public class ProvidersController : Controller
+    public class ProvidersController : BaseController
     {
-        private readonly LuxuryLifeContext _context;
+        private readonly TourbookingContext _context;
 
-        public ProvidersController(LuxuryLifeContext context)
+        public ProvidersController(TourbookingContext context)
         {
             _context = context;
         }
@@ -54,7 +53,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProviderId,Name,Email,Password,Phone,Address,Revenue,Rating,CreateDate")] Provider provider)
+        public async Task<IActionResult> Create([Bind("ProviderId,Name,Email,Password,Avatar,Phone,Address,Rating,Createdate")] Provider provider)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +85,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProviderId,Name,Email,Password,Phone,Address,Revenue,Rating,CreateDate")] Provider provider)
+        public async Task<IActionResult> Edit(int id, [Bind("ProviderId,Name,Email,Password,Avatar,Phone,Address,Rating,Createdate")] Provider provider)
         {
             if (id != provider.ProviderId)
             {

@@ -8,9 +8,9 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
     public class DashboardController : BaseController
     {
         private readonly ILogger<DashboardController> _logger;
-        private readonly LuxuryLifeContext _context; // Thêm DbContext
+        private readonly TourbookingContext _context; // Thêm DbContext
 
-        public DashboardController(ILogger<DashboardController> logger, LuxuryLifeContext context)
+        public DashboardController(ILogger<DashboardController> logger, TourbookingContext context)
         {
             _logger = logger;
             _context = context;
