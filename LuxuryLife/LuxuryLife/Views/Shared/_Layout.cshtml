@@ -99,103 +99,17 @@
                         <a style="color:black;" class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                     </li>
                     <li class="menu-item">
-                        <div class="dropdow-menu">
-                            <a href="#" style="color:black;" class="menu-link">
-                                Homestay <i class="fa-solid fa-chevron-down"></i>
-                            </a>
-                            <div class="dropdow-menu-list">
-                                <div class="dropdow-menu-category">
-                                    <div class="dropdow-menu-info">
-                                        <h2 class="dropdow-menu-title">Giày Dép</h2>
-                                        <a href="#" class="dropdow-menu-link">Xem tất cả</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">Sản phẩm mới</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">Giày thời trang</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">Giày chạy bộ</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">Giày luyện tập</a>
-                                    </div>
-                                </div>
-                                <div class="dropdow-menu-images">
-                                    <a href="#" class="dropdow-menu-image">
-                                        <img src="./images/dropdow-menu-img-03.avif"
-                                             alt=""
-                                             class="dropdow-menu-img" />
-                                    </a>
-                                    <a href="#" class="dropdow-menu-image">
-                                        <img src="./images/dropdow-menu-img-04.avif"
-                                             alt=""
-                                             class="dropdow-menu-img" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <a asp-controller="Homestays" asp-action="Index" style="color:black;" class="menu-link">
+                            Homestays
+                        </a>
                     </li>
                     <li class="menu-item">
-                        <div class="dropdow-menu">
-                            <a href="#" style="color:black;" class="menu-link">
-                                Tour du lịch<i class="fa-solid fa-chevron-down"></i>
-                            </a>
-                            <div class="dropdow-menu-list">
-                                <div class="dropdow-menu-category">
-                                    <div class="dropdow-menu-info">
-                                        <h2 class="dropdow-menu-title">A - Z</h2>
-                                        <a href="#" class="dropdow-menu-link">Xem tất cả</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">ADIDAS</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">COLUMBIA</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">CONVERSE</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">FILA</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">JORDAN</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">HOKA</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">NIKE</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">NEW BALANCE</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">PUMA</a>
-                                    </div>
-                                    <div class="dropdow-menu-item">
-                                        <a href="#">UNDER ARMOR</a>
-                                    </div>
-                                </div>
-                                <div class="dropdow-menu-images">
-                                    <a href="#" class="dropdow-menu-image">
-                                        <img src="./images/dropdow-menu-img-05.avif"
-                                             alt=""
-                                             class="dropdow-menu-img" />
-                                    </a>
-                                    <a href="#" class="dropdow-menu-image">
-                                        <img src="./images/dropdow-menu-img.avif"
-                                             alt=""
-                                             class="dropdow-menu-img" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <a asp-controller="Tours" asp-action="Index" style="color:black;" class="menu-link">
+                            Tour du lịch
+                        </a>
                     </li>
                     <li class="menu-item">
-                        <a class="menu-link" style="color:black;" asp-area="ProviderUser" asp-controller="Providers" asp-action="Create">Tin Tức</a>
+                        <a class="menu-link" style="color:black;" asp-controller="News" asp-action="Index">Tin Tức</a>
                     </li>
                     <li class="menu-item">
                         <a href="#" style="color:black;" class="menu-link">Liên hệ</a>

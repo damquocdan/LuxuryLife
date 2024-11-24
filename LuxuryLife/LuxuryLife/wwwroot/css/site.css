@@ -517,7 +517,7 @@ h6 {
     position: relative;
     z-index: 1;
     padding-top: 12px;
-    height: 1000px;
+    height: max-content;
     background: none; /* Xóa background từ chính phần tử */
     overflow: hidden; /* Đảm bảo nội dung không tràn */
 }

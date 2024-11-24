@@ -1,35 +1,21 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Tour>
 
 
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item">
-            @foreach (var tour in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">@tour.Name</h5>
-                            <p class="card-text">
-                                Giá: @string.Format("{0:N0}", tour.Price) VND <br />
-                                Ngày bắt đầu: @tour.StartDate<br />
-                                Ngày kết thúc: @tour.EndDate
-                            </p>
-                            <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Add" asp-route-id="@tour.TourId" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">
-                                <i class="fi fi-bs-shopping-bag">Thêm vào danh sách yêu thích</i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            }
+@foreach (var tour in Model)
+{
+    <div class="col-md-12 mb-4" style="height: 40rem; background-image: url('@tour.Image'); background-size: cover; background-position: center;">
+        <div class="card shadow-sm" style="background:none;">
+            <div class="card-body">
+                <h5 class="card-title">@tour.Name</h5>
+                <p class="card-text">
+                    Giá: @string.Format("{0:N0}", tour.Price) VND <br />
+                    Ngày bắt đầu: @tour.StartDate?.ToString("dd/MM/yyyy")<br />
+                    Ngày kết thúc: @tour.EndDate?.ToString("dd/MM/yyyy")
+                </p>
+                <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Add" asp-route-id="@tour.TourId" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">
+                    <i class="fi fi-bs-shopping-bag">Thêm vào danh sách yêu thích</i>
+                </a>
+            </div>
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
+}
