@@ -19,6 +19,9 @@
                 <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Add" asp-route-id="@tour.TourId" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">
                     <i class="fi fi-bs-shopping-bag">Thêm vào danh sách yêu thích</i>
                 </a>
+                <a asp-area="CustomerUser" asp-controller="Bookings" asp-action="create" asp-route-id="@tour.TourId" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">
+                    Đặt tour
+                </a>
             </div>
         </div>
     </div>

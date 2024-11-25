@@ -23,10 +23,11 @@
                     <table class="cart-table">
                         <thead class="cart-thead">
                             <tr>
-                                <th>Sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Thời gian thêm</th>
-                                <th>Xóa</th>
+                                <th>Tên tour</th>
+                                <th>Hình ảnh</th>
+                                <th>Mô tả</th>
+                                <th>Hành động</th>
+                         
                             </tr>
                         </thead>
                         <tbody class="cart-tbody">
@@ -43,12 +44,17 @@
                                 foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td class="cart-info">
-                                            <img src="@item.Tour.Image" alt="@item.Tour.Name" />
+                                        <td class="cart">
                                             <span>@item.Tour.Name</span>
                                         </td>
-                                        <td class="cart-price">@item.Tour.Price</td>
+                                        <td class="cart">
+                                            <img src="@item.Tour.Image" alt="@item.Tour.Name" width="250px" height="250px" />
+                                        </td>
+                                        <td class="cart-price">@item.Tour.Description</td>
                                         <td class="cart-remove">
+                                            <a asp-action="Detail" asp-route-id="@item.FavoriteId">
+                                                Xem chi tiết
+                                            </a>
                                             <a asp-action="Remove" asp-route-id="@item.FavoriteId">
                                                 <i class="fa fa-times"></i>
                                             </a>
@@ -58,8 +64,46 @@
                             }
                         </tbody>
                     </table>
+                    <div class="cart-checkout-button">
+                        <button class="cart-checkout-submit">
+                            Tiếp tục mua hàng
+                        </button>
+                        <button class="cart-checkout-submit">
+                            Cập nhật giỏ hàng
+                        </button>
+                    </div>
                 </form>
+                <div class="cart-checkout" style="margin-top: 20px; display: none;">
+                    <h4>Chi tiết</h4>
+                    <div id="details-container">
+                        <!-- Nội dung sẽ được tải bằng AJAX -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on('click', '.details-link', function (e) {
+        e.preventDefault();
+
+        var id = $(this).data('id');
+        var url = `/ControllerName/Details/${id}`; // Thay thế `ControllerName` bằng tên controller của bạn
+
+        $.get(url, function (data) {
+            // Cập nhật nội dung trong #details-container
+            $('#details-container').html(`
+                    <p><strong>Tên tour:</strong> ${data.name}</p>
+                    <p><strong>Mô tả:</strong> ${data.description}</p>
+                    <img src="${data.image}" alt="${data.name}" width="100%" />
+                    <p><strong>Giá:</strong> ${data.price.toLocaleString()}₫</p>
+                `);
+
+            // Hiển thị khu vực chi tiết
+            $('.cart-checkout').show();
+        }).fail(function () {
+            alert("Không thể tải thông tin chi tiết. Vui lòng thử lại.");
+        });
+    });
+</script>

@@ -1,0 +1,20 @@
+﻿@model LuxuryLife.Models.Favourite
+
+<div class="cart-checkout-header">
+    <div class="cart-checkout-container">
+        <h4 class="heading-small">Chi tiết</h4>
+    </div>
+</div>
+<div class="cart-checkout-container">
+    <div class="cart-checkout-bottom">
+        <div class="cart-checkout-total">
+            <h3>@Model.Tour.Name</h3>
+            <p>@Model.Tour.Description</p>
+            <img src="@Model.Tour.Image" alt="@Model.Tour.Name" width="100%" />
+            <h3>@string.Format("{0:C}", Model.Tour.Price)</h3>
+        </div>
+        <button class="cart-checkout-submit full">
+            Đặt
+        </button>
+    </div>
+</div>

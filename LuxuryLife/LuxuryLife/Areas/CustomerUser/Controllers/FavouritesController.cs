@@ -81,23 +81,33 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
         }
         // GET: CustomerUser/Favorites/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+{
+    if (id == null)
+    {
+        return BadRequest(new { message = "Invalid ID." });
+    }
 
-            var favorite = await _context.Favourites
-                .Include(f => f.Customer)
-                .Include(f => f.Tour)
-                .FirstOrDefaultAsync(m => m.FavoriteId == id);
-            if (favorite == null)
-            {
-                return NotFound();
-            }
+    var favorite = await _context.Favourites
+        .Include(f => f.Customer)
+        .Include(f => f.Tour)
+        .FirstOrDefaultAsync(m => m.FavoriteId == id);
 
-            return View(favorite);
-        }
+    if (favorite == null)
+    {
+        return NotFound(new { message = "Favorite item not found." });
+    }
+
+    // Return the favorite details as JSON
+    return Json(new
+    {
+        name = favorite.Tour.Name,
+        description = favorite.Tour.Description,
+        image = favorite.Tour.Image,
+        price = favorite.Tour.Price
+    });
+}
+
+
 
         // GET: CustomerUser/Favorites/Create
         public IActionResult Create()
