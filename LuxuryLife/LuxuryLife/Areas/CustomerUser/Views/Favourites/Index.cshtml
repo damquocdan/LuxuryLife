@@ -27,7 +27,7 @@
                                 <th>Hình ảnh</th>
                                 <th>Mô tả</th>
                                 <th>Hành động</th>
-                         
+
                             </tr>
                         </thead>
                         <tbody class="cart-tbody">
@@ -44,66 +44,92 @@
                                 foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td class="cart">
+                                        <td class="cart-name" width="50px">
                                             <span>@item.Tour.Name</span>
                                         </td>
-                                        <td class="cart">
-                                            <img src="@item.Tour.Image" alt="@item.Tour.Name" width="250px" height="250px" />
+                                        <td class="cart-img" width="50px">
+                                            <img src="@item.Tour.Image" alt="@item.Tour.Name" width="100%" />
                                         </td>
-                                        <td class="cart-price">@item.Tour.Description</td>
-                                        <td class="cart-remove">
-                                            <a asp-action="Detail" asp-route-id="@item.FavoriteId">
+                                        <td class="cart-description" width="200px">@item.Tour.Description</td>
+                                        <td class="cart-details" width="40px">
+                                            <a asp-action="Details" asp-route-id="@item.FavoriteId">
                                                 Xem chi tiết
                                             </a>
-                                            <a asp-action="Remove" asp-route-id="@item.FavoriteId">
+                                        </td>
+
+                                        <td class="cart-remove" width="30px">
+                                            <a href="#" class="remove-item" data-id="@item.FavoriteId">
                                                 <i class="fa fa-times"></i>
                                             </a>
                                         </td>
+
                                     </tr>
                                 }
                             }
                         </tbody>
                     </table>
-                    <div class="cart-checkout-button">
-                        <button class="cart-checkout-submit">
-                            Tiếp tục mua hàng
-                        </button>
-                        <button class="cart-checkout-submit">
-                            Cập nhật giỏ hàng
-                        </button>
-                    </div>
                 </form>
-                <div class="cart-checkout" style="margin-top: 20px; display: none;">
-                    <h4>Chi tiết</h4>
+                <div class="cart-checkout" style="display: none;">
                     <div id="details-container">
-                        <!-- Nội dung sẽ được tải bằng AJAX -->
+                        <!-- Nội dung sẽ được tải bằng details.cshtml -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).on('click', '.details-link', function (e) {
-        e.preventDefault();
+    $(document).ready(function () {
+        // Xem chi tiết
+        $(document).on("click", ".cart-details a", function (e) {
+            e.preventDefault(); // Ngăn không cho liên kết tải lại trang
+            const url = $(this).attr("href"); // Lấy URL từ nút "Xem chi tiết"
 
-        var id = $(this).data('id');
-        var url = `/ControllerName/Details/${id}`; // Thay thế `ControllerName` bằng tên controller của bạn
+            if (!url) {
+                alert("Đường dẫn không hợp lệ!");
+                return;
+            }
 
-        $.get(url, function (data) {
-            // Cập nhật nội dung trong #details-container
-            $('#details-container').html(`
-                    <p><strong>Tên tour:</strong> ${data.name}</p>
-                    <p><strong>Mô tả:</strong> ${data.description}</p>
-                    <img src="${data.image}" alt="${data.name}" width="100%" />
-                    <p><strong>Giá:</strong> ${data.price.toLocaleString()}₫</p>
-                `);
+            // Gửi AJAX request
+            $.ajax({
+                url: url,
+                method: "GET",
+                success: function (response) {
+                    $("#details-container").html(response); // Chèn nội dung vào details-container
+                    $(".cart-checkout").show(); // Hiển thị phần chi tiết
+                },
+                error: function () {
+                    alert("Không thể tải chi tiết. Vui lòng thử lại!");
+                }
+            });
+        });
 
-            // Hiển thị khu vực chi tiết
-            $('.cart-checkout').show();
-        }).fail(function () {
-            alert("Không thể tải thông tin chi tiết. Vui lòng thử lại.");
+        // Xóa mục yêu thích
+        $(document).on("click", ".remove-item", function (e) {
+            e.preventDefault(); // Prevent default link action
+            const itemId = $(this).data("id"); // Get the item ID
+
+            if (confirm("Bạn có chắc chắn muốn xoá mục này khỏi danh sách yêu thích không?")) {
+                $.ajax({
+                    url: "/CustomerUser/Favourites/Remove",
+                    type: "POST",
+                    data: { id: itemId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            alert("Không thể xoá mục. Vui lòng thử lại!");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi khi xoá mục. Vui lòng thử lại!");
+                    }
+                });
+            }
         });
     });
 </script>
+

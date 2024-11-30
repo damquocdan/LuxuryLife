@@ -81,31 +81,23 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
         }
         // GET: CustomerUser/Favorites/Details/5
         public async Task<IActionResult> Details(int? id)
-{
-    if (id == null)
-    {
-        return BadRequest(new { message = "Invalid ID." });
-    }
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    var favorite = await _context.Favourites
-        .Include(f => f.Customer)
-        .Include(f => f.Tour)
-        .FirstOrDefaultAsync(m => m.FavoriteId == id);
+            var favourite = await _context.Favourites
+                .Include(f => f.Customer)
+                .Include(f => f.Tour)
+                .FirstOrDefaultAsync(m => m.FavoriteId == id);
+            if (favourite == null)
+            {
+                return NotFound();
+            }
 
-    if (favorite == null)
-    {
-        return NotFound(new { message = "Favorite item not found." });
-    }
-
-    // Return the favorite details as JSON
-    return Json(new
-    {
-        name = favorite.Tour.Name,
-        description = favorite.Tour.Description,
-        image = favorite.Tour.Image,
-        price = favorite.Tour.Price
-    });
-}
+            return PartialView("Details",favourite);
+        }
 
 
 
@@ -230,5 +222,24 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
         {
             return _context.Favourites.Any(e => e.FavoriteId == id);
         }
+        [HttpPost]
+        public IActionResult Remove(int id)
+        {
+            // Find the favourite item by its ID
+            var favourite = _context.Favourites.FirstOrDefault(f => f.FavoriteId == id);
+
+            if (favourite == null)
+            {
+                return NotFound();
+            }
+
+            // Remove the item from the database
+            _context.Favourites.Remove(favourite);
+            _context.SaveChanges();
+
+            // Return a partial view or a success response
+            return Json(new { success = true, message = "Item removed successfully!" });
+        }
+
     }
 }
