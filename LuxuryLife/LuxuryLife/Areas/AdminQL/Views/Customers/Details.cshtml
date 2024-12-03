@@ -1,84 +1,85 @@
 ﻿@model LuxuryLife.Models.Customer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết</h1>
 
 <div>
-    <h4>Customer</h4>
+    <h4>Khách hàng</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            Tên
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+        <dt class="col-sm-2">
+            Email
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
+        <dt class="col-sm-2">
+            Mật khẩu
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Password)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
+        <dt class="col-sm-2">
+            Số điện thoại
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Phone)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avatar)
+        <dt class="col-sm-2">
+            Ảnh đại diện
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Avatar)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+        <dt class="col-sm-2">
+            Địa chỉ
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Address)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dob)
+        <dt class="col-sm-2">
+            Ngày sinh
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Dob)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Demographics)
+        <dt class="col-sm-2">
+            Thông tin dân số
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Demographics)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Preferences)
+        <dt class="col-sm-2">
+            Sở thích
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Preferences)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SearchHistory)
+        <dt class="col-sm-2">
+            Lịch sử tìm kiếm
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SearchHistory)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Createdate)
+        <dt class="col-sm-2">
+            Ngày tạo
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Createdate)
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.CustomerId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.CustomerId">Chỉnh sửa</a> |
+    <a asp-action="Index">Quay lại danh sách</a>
 </div>

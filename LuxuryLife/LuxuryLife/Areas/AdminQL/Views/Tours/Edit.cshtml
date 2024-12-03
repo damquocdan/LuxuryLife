@@ -1,89 +1,105 @@
 ﻿@model LuxuryLife.Models.Tour
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa Tour";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh sửa Tour</h1>
 
-<h4>Tour</h4>
+<h4>Thông tin Tour</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="TourId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="form-label">Tên Tour</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="Image" class="form-label">Hình ảnh</label>
                 <input asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="form-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ServiceId" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="ServiceId" class="form-label">Mã dịch vụ</label>
                 <input asp-for="ServiceId" class="form-control" />
                 <span asp-validation-for="ServiceId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="HomestayId" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="HomestayId" class="form-label">Mã Homestay</label>
                 <input asp-for="HomestayId" class="form-control" />
                 <span asp-validation-for="HomestayId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PricePerson" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="PricePerson" class="form-label">Giá mỗi người</label>
                 <input asp-for="PricePerson" class="form-control" />
                 <span asp-validation-for="PricePerson" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="StartDate" class="form-label">Ngày bắt đầu</label>
+                <input asp-for="StartDate" type="date" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="EndDate" class="form-label">Ngày kết thúc</label>
+                <input asp-for="EndDate" type="date" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="form-label">Giá Tour</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="form-label">Trạng thái</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Active">Hoạt động</option>
+                    <option value="Inactive">Không hoạt động</option>
+                    <option value="Pending">Chờ xử lý</option>
+                </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Createdate" class="control-label"></label>
-                <input asp-for="Createdate" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Createdate" class="form-label">Ngày tạo</label>
+                <input asp-for="Createdate" type="date" class="form-control" />
                 <span asp-validation-for="Createdate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ProviderId" class="control-label"></label>
+
+            <div class="form-group mb-3">
+                <label asp-for="ProviderId" class="form-label">Nhà cung cấp</label>
                 <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId"></select>
                 <span asp-validation-for="ProviderId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

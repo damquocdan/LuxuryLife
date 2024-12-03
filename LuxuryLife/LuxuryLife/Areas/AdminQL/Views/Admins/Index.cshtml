@@ -1,53 +1,55 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Admin>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách Admin";
 }
 
-<h1>Index</h1>
+<h1>Danh sách Admin</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Tên quản lý
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Password)
+                Mật khẩu
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Avatar)
+                Hình ảnh
             </th>
-            <th></th>
+            <th class="text-center">Hành động</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Avatar)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AdminId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AdminId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AdminId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Avatar)
+                </td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.AdminId" class="btn btn-warning btn-sm">Sửa</a> 
+                    <a asp-action="Details" asp-route-id="@item.AdminId" class="btn btn-info btn-sm">Chi tiết</a> 
+                    <a asp-action="Delete" asp-route-id="@item.AdminId" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

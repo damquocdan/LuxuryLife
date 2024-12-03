@@ -1,53 +1,55 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Service>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách dịch vụ";
 }
 
-<h1>Index</h1>
+<h1>Danh sách dịch vụ</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ServiceName)
+                Tên dịch vụ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Mô tả
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Giá
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tour)
+                Tour
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ServiceName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tour.TourId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ServiceId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tour.TourId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-warning btn-sm">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.ServiceId" class="btn btn-info btn-sm">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ServiceId" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

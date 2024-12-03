@@ -1,54 +1,65 @@
 ﻿@model LuxuryLife.Models.Homestay
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Thêm Mới Homestay";
     Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="text-primary">Thêm Mới Homestay</h1>
 
-<h4>Homestay</h4>
+<h4 class="text-secondary">Thông Tin Homestay</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+    <div class="col-md-6">
+        <form asp-action="Create" class="shadow-sm p-4 rounded bg-light">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Tên Homestay -->
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label text-secondary fw-bold">Tên Homestay</label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên homestay" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+
+            <!-- Mô Tả -->
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label text-secondary fw-bold">Mô Tả</label>
+                <textarea asp-for="Description" class="form-control" placeholder="Nhập mô tả homestay"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
+
+            <!-- Địa Chỉ -->
+            <div class="form-group mb-3">
+                <label asp-for="Address" class="control-label text-secondary fw-bold">Địa Chỉ</label>
+                <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+
+            <!-- Hình Ảnh -->
+            <div class="form-group mb-3">
+                <label asp-for="Image" class="control-label text-secondary fw-bold">Hình Ảnh</label>
+                <input asp-for="Image" class="form-control" placeholder="URL hình ảnh" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PricePerNight" class="control-label"></label>
-                <input asp-for="PricePerNight" class="form-control" />
+
+            <!-- Giá Mỗi Đêm -->
+            <div class="form-group mb-4">
+                <label asp-for="PricePerNight" class="control-label text-secondary fw-bold">Giá Mỗi Đêm (VND)</label>
+                <input asp-for="PricePerNight" type="number" class="form-control" placeholder="Nhập giá mỗi đêm" />
                 <span asp-validation-for="PricePerNight" class="text-danger"></span>
             </div>
+
+            <!-- Nút Tạo -->
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Thêm Mới" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Quay Lại</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -1,43 +1,49 @@
 ﻿@model LuxuryLife.Models.News
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo Tin Tức";
 }
 
-<h1>Create</h1>
+<h1>Tạo Tin Tức</h1>
 
-<h4>News</h4>
+<h4>Thông Tin Tin Tức</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label">Tiêu đề</label> <!-- Tiêu đề -->
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
+                <label asp-for="Content" class="control-label">Nội dung</label> <!-- Nội dung -->
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
+                <label asp-for="ImageUrl" class="control-label">Đường dẫn hình ảnh</label> <!-- Đường dẫn hình ảnh -->
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tạo mới" class="btn btn-success" /> <!-- Tạo mới -->
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a> <!-- Quay lại danh sách -->
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
