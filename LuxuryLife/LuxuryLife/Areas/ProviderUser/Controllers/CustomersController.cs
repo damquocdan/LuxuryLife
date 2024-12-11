@@ -9,22 +9,32 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
-    public class ProvidersController : BaseController
+    [Area("ProviderUser")]
+    public class CustomersController : Controller
     {
         private readonly TourbookingContext _context;
 
-        public ProvidersController(TourbookingContext context)
+        public CustomersController(TourbookingContext context)
         {
             _context = context;
         }
 
-        // GET: ProviderUser/Providers
-        public async Task<IActionResult> Index()
+        // GET: ProviderUser/Customers
+        public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.Providers.ToListAsync());
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+
+
+            var customers = await _context.Bookings
+                .Where(b => b.Tour != null && b.Tour.ProviderId == providerId)
+                .Select(b => b.Customer)
+                .Distinct()
+                .ToListAsync();
+
+            return View(customers);
         }
 
-        // GET: ProviderUser/Providers/Details/5
+        // GET: ProviderUser/Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +42,39 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers
-                .FirstOrDefaultAsync(m => m.ProviderId == id);
-            if (provider == null)
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(provider);
+            return View(customer);
         }
 
-        // GET: ProviderUser/Providers/Create
+        // GET: ProviderUser/Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ProviderUser/Providers/Create
+        // POST: ProviderUser/Customers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProviderId,Name,Email,Password,Avatar,Phone,Address,Rating,Createdate")] Provider provider)
+        public async Task<IActionResult> Create([Bind("CustomerId,Name,Email,Password,Phone,Avatar,Address,Dob,Demographics,Preferences,SearchHistory,Createdate")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(provider);
+                _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(provider);
+            return View(customer);
         }
 
-        // GET: ProviderUser/Providers/Edit/5
+        // GET: ProviderUser/Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +82,22 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers.FindAsync(id);
-            if (provider == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            return View(provider);
+            return View(customer);
         }
 
-        // POST: ProviderUser/Providers/Edit/5
+        // POST: ProviderUser/Customers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProviderId,Name,Email,Password,Avatar,Phone,Address,Rating,Createdate")] Provider provider)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Name,Email,Password,Phone,Avatar,Address,Dob,Demographics,Preferences,SearchHistory,Createdate")] Customer customer)
         {
-            if (id != provider.ProviderId)
+            if (id != customer.CustomerId)
             {
                 return NotFound();
             }
@@ -96,12 +106,12 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 try
                 {
-                    _context.Update(provider);
+                    _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProviderExists(provider.ProviderId))
+                    if (!CustomerExists(customer.CustomerId))
                     {
                         return NotFound();
                     }
@@ -110,13 +120,12 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                         throw;
                     }
                 }
-                // Chuyển hướng về trang Details với id tương ứng
-                return RedirectToAction("Details", new { id = provider.ProviderId });
+                return RedirectToAction(nameof(Index));
             }
-            return View(provider);
+            return View(customer);
         }
 
-        // GET: ProviderUser/Providers/Delete/5
+        // GET: ProviderUser/Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +133,34 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers
-                .FirstOrDefaultAsync(m => m.ProviderId == id);
-            if (provider == null)
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(provider);
+            return View(customer);
         }
 
-        // POST: ProviderUser/Providers/Delete/5
+        // POST: ProviderUser/Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var provider = await _context.Providers.FindAsync(id);
-            if (provider != null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer != null)
             {
-                _context.Providers.Remove(provider);
+                _context.Customers.Remove(customer);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProviderExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.Providers.Any(e => e.ProviderId == id);
+            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }

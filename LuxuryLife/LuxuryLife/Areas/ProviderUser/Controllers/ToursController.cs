@@ -21,8 +21,19 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Tours
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Tours.Include(t => t.Provider);
-            return View(await luxuryLifeContext.ToListAsync());
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+
+            if (providerId == 0)
+            {
+                return Unauthorized(); // Hoặc chuyển hướng đến trang đăng nhập
+            }
+
+            // Lấy danh sách các tour của nhà cung cấp
+            var tours = await _context.Tours
+                .Where(t => t.ProviderId == providerId)
+                .ToListAsync();
+
+            return View(tours);
         }
 
         // GET: ProviderUser/Tours/Details/5
@@ -56,29 +67,50 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TourId,Name,Description,Destination,StartDate,EndDate,PricePerPerson,MaxParticipants,AvailableSeats,Rating,ProviderId,CreateDate")] Tour tour)
+        public async Task<IActionResult> Create([Bind("TourId,Name,Description,Destination,StartDate,EndDate,PricePerPerson,MaxParticipants,AvailableSeats,Rating,CreateDate")] Tour tour)
         {
+            // Gán ProviderId từ session
+            ViewData["ProviderId"] = HttpContext.Session.GetInt32("ProviderId");
+            var providerId = HttpContext.Session.GetInt32("ProviderId");
+            if (providerId == null)
+            {
+                return RedirectToAction("Login", "Account"); // Chuyển hướng nếu session không hợp lệ
+            }
+            tour.ProviderId = providerId.Value;
+
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
-                if (files.Count() > 0 && files[0].Length > 0)
+                if (files.Count > 0 && files[0].Length > 0)
                 {
                     var file = files[0];
-                    var FileName = file.FileName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\tour", FileName);
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName); // Tạo tên tệp duy nhất
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\tour", fileName);
+
+                    // Tạo thư mục nếu chưa tồn tại
+                    Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
-                        file.CopyTo(stream);
-                        tour.Image = "/images/tour/" + FileName;
+                        await file.CopyToAsync(stream);
+                        tour.Image = "/images/tour/" + fileName;
                     }
                 }
+                else
+                {
+                    tour.Image = "/images/tour/default.png"; // Đặt ảnh mặc định nếu không có ảnh được tải lên
+                }
+
                 _context.Add(tour);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // Trả lại dữ liệu nếu không hợp lệ
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
             return View(tour);
         }
+
 
         // GET: ProviderUser/Tours/Edit/5
         public async Task<IActionResult> Edit(int? id)
