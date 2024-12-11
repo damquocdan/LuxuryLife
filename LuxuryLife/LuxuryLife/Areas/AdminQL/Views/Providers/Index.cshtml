@@ -17,12 +17,6 @@
                 Tên
             </th>
             <th>
-                Email
-            </th>
-            <th>
-                Mật khẩu
-            </th>
-            <th>
                 Ảnh đại diện
             </th>
             <th>
@@ -33,9 +27,6 @@
             </th>
             <th>
                 Đánh giá
-            </th>
-            <th>
-                Ngày tạo
             </th>
             <th></th>
         </tr>
@@ -48,12 +39,6 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Avatar)
                 </td>
                 <td>
@@ -64,9 +49,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Createdate)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ProviderId" class="btn btn-warning btn-sm">Chỉnh sửa</a> 

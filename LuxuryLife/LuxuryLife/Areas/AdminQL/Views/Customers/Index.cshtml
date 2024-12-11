@@ -15,14 +15,9 @@
         <tr>
             <th>Tên</th>
             <th>Email</th>
-            <th>Mật khẩu</th>
             <th>Số điện thoại</th>
             <th>Ảnh đại diện</th>
             <th>Địa chỉ</th>
-            <th>Ngày sinh</th>
-            <th>Thông tin dân số</th>
-            <th>Sở thích</th>
-            <th>Lịch sử tìm kiếm</th>
             <th>Ngày tạo</th>
             <th></th>
         </tr>
@@ -33,18 +28,13 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.Password)</td>
                 <td>@Html.DisplayFor(modelItem => item.Phone)</td>
                 <td>@Html.DisplayFor(modelItem => item.Avatar)</td>
                 <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                <td>@Html.DisplayFor(modelItem => item.Dob)</td>
-                <td>@Html.DisplayFor(modelItem => item.Demographics)</td>
-                <td>@Html.DisplayFor(modelItem => item.Preferences)</td>
-                <td>@Html.DisplayFor(modelItem => item.SearchHistory)</td>
                 <td>@Html.DisplayFor(modelItem => item.Createdate)</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-warning btn-sm">Chỉnh sửa</a> |
-                    <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-info btn-sm">Chi tiết</a> |
+                    <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-warning btn-sm">Chỉnh sửa</a> 
+                    <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-info btn-sm">Chi tiết</a> 
                     <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
             </tr>

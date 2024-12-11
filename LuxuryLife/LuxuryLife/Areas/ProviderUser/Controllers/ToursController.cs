@@ -9,8 +9,7 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
-    [Area("ProviderUser")]
-    public class ToursController : Controller
+    public class ToursController : BaseController
     {
         private readonly TourbookingContext _context;
 

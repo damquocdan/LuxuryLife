@@ -9,8 +9,7 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
-    [Area("ProviderUser")]
-    public class HomestaysController : Controller
+    public class HomestaysController : BaseController
     {
         private readonly TourbookingContext _context;
 
@@ -22,8 +21,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Homestays
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Homestays;
-            return View(await luxuryLifeContext.ToListAsync());
+            return View(await _context.Homestays.ToListAsync());
         }
 
         // GET: ProviderUser/Homestays/Details/5
@@ -47,7 +45,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Homestays/Create
         public IActionResult Create()
         {
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId");
             return View();
         }
 
@@ -56,7 +53,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Location,PricePerNight,Availability,Rating,ProviderId,CreateDate")] Homestay homestay)
+        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight")] Homestay homestay)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +85,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Location,PricePerNight,Availability,Rating,ProviderId,CreateDate")] Homestay homestay)
+        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Address,Image,PricePerNight")] Homestay homestay)
         {
             if (id != homestay.HomestayId)
             {

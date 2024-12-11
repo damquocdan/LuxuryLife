@@ -4,39 +4,48 @@
     ViewData["Title"] = "Chi tiết dịch vụ";
 }
 
-<h1>Chi tiết dịch vụ</h1>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
 
-<div>
-    <h4>Dịch vụ</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Tên dịch vụ
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ServiceName)
-        </dd>
-        <dt class="col-sm-2">
-            Mô tả
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            Giá
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            Tour
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Tour.TourId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ServiceId">Chỉnh sửa</a> |
-    <a asp-action="Index">Quay lại danh sách</a>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Thông tin chi tiết dịch vụ</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-card-text"></i> Tên dịch vụ
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ServiceName)
+                </dd>
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-info-circle"></i> Mô tả
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-currency-dollar"></i> Giá
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-map"></i> Tour
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Tour.TourId)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-warning me-2" asp-action="Edit" asp-route-id="@Model?.ServiceId">
+                <i class="bi bi-pencil-square"></i> Chỉnh sửa
+            </a>
+            <a class="btn btn-secondary" asp-action="Index">
+                <i class="bi bi-arrow-left-circle"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
 </div>

@@ -36,13 +36,6 @@
                 <td>
                     <img src="@item.Image" alt="@item.Name" class="img-thumbnail" style="width: 100px; height: auto;" />
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                <td>@Html.DisplayFor(modelItem => item.ServiceId)</td>
-                <td>@Html.DisplayFor(modelItem => item.HomestayId)</td>
-                <td>@Html.DisplayFor(modelItem => item.PricePerson)</td>
-                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.Price)</td>
                 <td>
                     @if (item.Status == "Active")
                     {
@@ -62,7 +55,6 @@
                     }
 
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Createdate)</td>
                 <td>@Html.DisplayFor(modelItem => item.Provider.Name)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TourId" class="btn btn-warning btn-sm">Sửa</a>
