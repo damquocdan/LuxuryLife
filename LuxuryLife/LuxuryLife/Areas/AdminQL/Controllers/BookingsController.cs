@@ -21,8 +21,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Bookings
         public async Task<IActionResult> Index()
         {
-            var tourbookingContext = _context.Bookings.Include(b => b.Customer).Include(b => b.Tour);
-            return View(await tourbookingContext.ToListAsync());
+            var tourBookingContext = _context.Bookings.Include(b => b.Customer).Include(b => b.Tour);
+            return View(await tourBookingContext.ToListAsync());
         }
 
         // GET: AdminQL/Bookings/Details/5
@@ -48,8 +48,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Bookings/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email");
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,TotalPrice,Status")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -66,8 +66,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", booking.CustomerId);
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", booking.TourId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", booking.CustomerId);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", booking.TourId);
             return View(booking);
         }
 
@@ -84,8 +84,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", booking.CustomerId);
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", booking.TourId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", booking.CustomerId);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", booking.TourId);
             return View(booking);
         }
 
@@ -94,7 +94,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,TotalPrice,Status")] Booking booking)
         {
             if (id != booking.BookingId)
             {
@@ -121,33 +121,14 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", booking.CustomerId);
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", booking.TourId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", booking.CustomerId);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", booking.TourId);
             return View(booking);
         }
 
         // GET: AdminQL/Bookings/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var booking = await _context.Bookings
-                .Include(b => b.Customer)
-                .Include(b => b.Tour)
-                .FirstOrDefaultAsync(m => m.BookingId == id);
-            if (booking == null)
-            {
-                return NotFound();
-            }
-
-            return View(booking);
-        }
-
         // POST: AdminQL/Bookings/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -155,15 +136,35 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             if (booking != null)
             {
                 _context.Bookings.Remove(booking);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.BookingId == id);
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditStatus(int id)
+        {
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            // Thay đổi trạng thái booking
+            booking.Status = booking.Status == "Chưa thanh toán" ? "Đã thanh toán" : "Chưa thanh toán";
+
+            // Lưu thay đổi
+            _context.Update(booking);
+            await _context.SaveChangesAsync();
+
+            // Điều hướng lại về trang danh sách booking
+            return RedirectToAction(nameof(Index));
         }
     }
 }

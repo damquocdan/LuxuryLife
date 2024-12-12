@@ -82,7 +82,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Name", tour.ProviderId);
             return View(tour);
         }
 

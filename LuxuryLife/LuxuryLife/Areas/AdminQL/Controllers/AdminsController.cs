@@ -57,6 +57,18 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         {
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count() > 0 && files[0].Length > 0)
+                {
+                    var file = files[0];
+                    var FileName = file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\admins", FileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        admin.Avatar = "/images/admins/" + FileName;
+                    }
+                }
                 _context.Add(admin);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

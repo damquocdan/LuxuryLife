@@ -42,7 +42,7 @@
                     @Html.DisplayFor(modelItem => item.Password)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Avatar)
+                    <img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" />
                 </td>
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.AdminId" class="btn btn-warning btn-sm">Sửa</a> 

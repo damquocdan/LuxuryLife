@@ -1,27 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace LuxuryLife.Models​;
-
-public partial class Booking
+namespace LuxuryLife.Models
 {
-    public int BookingId { get; set; }
+    public partial class Booking
+    {
+        [Display(Name = "Mã Đặt Chỗ")]
+        public int BookingId { get; set; }
 
-    public int? CustomerId { get; set; }
+        [Display(Name = "Mã Khách Hàng")]
+        public int? CustomerId { get; set; }
 
-    public int? TourId { get; set; }
+        [Display(Name = "Mã Tour")]
+        public int? TourId { get; set; }
 
-    public DateTime? BookingDate { get; set; }
+        [Display(Name = "Ngày Đặt Chỗ")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? BookingDate { get; set; }
 
-    public DateTime? CheckInDate { get; set; }
+        [Display(Name = "Ngày Nhận Phòng")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? CheckInDate { get; set; }
 
-    public DateTime? CheckOutDate { get; set; }
+        [Display(Name = "Ngày Trả Phòng")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? CheckOutDate { get; set; }
 
-    public string? Status { get; set; }
+        [Display(Name = "Tổng Giá Tiền")]
+        [DisplayFormat(DataFormatString = "{0:#,##0} VNĐ")]
+        public decimal? TotalPrice { get; set; }
 
-    public decimal? TotalPrice { get; set; }
+        [Display(Name = "Trạng Thái")]
+        public string? Status { get; set; } = "Chưa thanh toán";
 
-    public virtual Customer? Customer { get; set; }
+        [Display(Name = "Khách Hàng")]
+        public virtual Customer? Customer { get; set; }
 
-    public virtual Tour? Tour { get; set; }
+        [Display(Name = "Tour")]
+        public virtual Tour? Tour { get; set; }
+    }
 }
