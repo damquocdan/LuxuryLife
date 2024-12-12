@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +9,12 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
-    public class HomestaysController : BaseController
+    [Area("ProviderUser")]
+    public class HomestaysController : Controller
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public HomestaysController(TourbookingContext context)
+        public HomestaysController(TourBookingContext context)
         {
             _context = context;
         }
@@ -21,7 +22,19 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Homestays
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Homestays.ToListAsync());
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+
+            if (providerId == 0)
+            {
+                return Unauthorized(); // Hoặc chuyển hướng đến trang đăng nhập
+            }
+
+            // Lấy danh sách các tour của nhà cung cấp
+            var homestays = await _context.Homestays
+                .Where(t => t.ProviderId == providerId)
+                .ToListAsync();
+
+            return View(homestays);
         }
 
         // GET: ProviderUser/Homestays/Details/5
@@ -45,6 +58,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Homestays/Create
         public IActionResult Create()
         {
+            ViewData["ProviderId"] = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             return View();
         }
 
@@ -53,8 +67,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight")] Homestay homestay)
+        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId")] Homestay homestay)
         {
+            homestay.ProviderId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             if (ModelState.IsValid)
             {
                 _context.Add(homestay);
@@ -85,7 +100,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Address,Image,PricePerNight")] Homestay homestay)
+        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId")] Homestay homestay)
         {
             if (id != homestay.HomestayId)
             {

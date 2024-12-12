@@ -1,44 +1,66 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Homestay>
 
 @{
-    ViewData["Title"] = "Danh Sách Homestay";
+    ViewData["Title"] = "Index";
     Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
-<h1 class="text-primary">Danh Sách Homestay</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success mb-3">Thêm Homestay Mới</a> <!-- Thêm Homestay Mới -->
+    <a asp-action="Create">Create New</a>
 </p>
-
-<table class="table table-bordered table-striped">
-    <thead class="thead-dark">
+<table class="table">
+    <thead>
         <tr>
-            <th>@Html.DisplayName("Tên Homestay")</th> <!-- Tên Homestay -->
-            <th>@Html.DisplayName("Mô Tả")</th> <!-- Mô Tả -->
-            <th>@Html.DisplayName("Địa Chỉ")</th> <!-- Địa Chỉ -->
-            <th>@Html.DisplayName("Hình Ảnh")</th> <!-- Hình Ảnh -->
-            <th>@Html.DisplayName("Giá Mỗi Đêm (VND)")</th> <!-- Giá Mỗi Đêm -->
-            <th class="text-center">Thao Tác</th> <!-- Thao Tác -->
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePerNight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProviderId)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                <td>
-                    <img src="@item.Image" alt="@item.Name" class="img-thumbnail" style="max-width: 100px;" />
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.PricePerNight)</td>
-                <td class="text-center">
-                    <a asp-action="Edit" asp-route-id="@item.HomestayId" class="btn btn-warning btn-sm">Sửa</a> <!-- Sửa -->
-                    <a asp-action="Details" asp-route-id="@item.HomestayId" class="btn btn-info btn-sm">Chi Tiết</a> <!-- Chi Tiết -->
-                    <a asp-action="Delete" asp-route-id="@item.HomestayId" class="btn btn-danger btn-sm">Xóa</a> <!-- Xóa -->
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerNight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProviderId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.HomestayId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.HomestayId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.HomestayId">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

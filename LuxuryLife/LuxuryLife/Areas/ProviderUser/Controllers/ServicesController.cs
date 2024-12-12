@@ -11,9 +11,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
     public class ServicesController : BaseController
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public ServicesController(TourbookingContext context)
+        public ServicesController(TourBookingContext context)
         {
             _context = context;
         }
@@ -21,8 +21,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Services
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Services.Include(s => s.Tour);
-            return View(await luxuryLifeContext.ToListAsync());
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var tourBookingContext = await _context.Services.Include(x=>x.Tour).Where(s => s.Tour.ProviderId == providerId).ToListAsync();
+            return View(tourBookingContext);
         }
 
         // GET: ProviderUser/Services/Details/5
@@ -47,8 +48,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Services/Create
         public IActionResult Create()
         {
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId");
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
+            ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServiceId,ServiceName,Description,Price,HomestayId,TourId,CreateDate")] Service service)
+        public async Task<IActionResult> Create([Bind("ServiceId,ServiceName,Description,Price,TourId")] Service service)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +84,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", service.TourId);
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
+            ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
             return View(service);
         }
 
@@ -91,7 +95,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServiceId,ServiceName,Description,Price,HomestayId,TourId,CreateDate")] Service service)
+        public async Task<IActionResult> Edit(int id, [Bind("ServiceId,ServiceName,Description,Price,TourId")] Service service)
         {
             if (id != service.ServiceId)
             {

@@ -12,9 +12,9 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
 
     public class NewsController : BaseController
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext  _context;
 
-        public NewsController(TourbookingContext context)
+        public NewsController(TourBookingContext context)
         {
             _context = context;
         }

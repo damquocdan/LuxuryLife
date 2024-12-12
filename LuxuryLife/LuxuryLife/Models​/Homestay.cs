@@ -16,4 +16,6 @@ public partial class Homestay
     public string? Image { get; set; }
 
     public decimal? PricePerNight { get; set; }
+
+    public int? ProviderId { get; set; }
 }

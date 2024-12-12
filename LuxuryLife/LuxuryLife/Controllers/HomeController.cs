@@ -9,9 +9,9 @@ namespace LuxuryLife.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly TourbookingContext _context; // Thêm DbContext
+        private readonly TourBookingContext _context; // Thêm DbContext
 
-        public HomeController(ILogger<HomeController> logger, TourbookingContext context)
+        public HomeController(ILogger<HomeController> logger, TourBookingContext context)
         {
             _logger = logger;
             _context = context;

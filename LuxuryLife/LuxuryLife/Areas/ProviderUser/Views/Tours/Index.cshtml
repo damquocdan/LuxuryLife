@@ -46,9 +46,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Createdate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Provider)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -87,9 +84,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Createdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provider.ProviderId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TourId">Edit</a> 

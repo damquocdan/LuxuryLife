@@ -11,9 +11,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
     public class BookingsController : BaseController
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public BookingsController(TourbookingContext context)
+        public BookingsController(TourBookingContext context)
         {
             _context = context;
         }
@@ -21,8 +21,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Bookings
         public async Task<IActionResult> Index()
         {
-            var luxuryLifeContext = _context.Bookings.Include(b => b.Customer).Include(b => b.Tour);
-            return View(await luxuryLifeContext.ToListAsync());
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var tourBookingContext = _context.Bookings.Include(b => b.Customer).Include(b => b.Tour).Where(x=>x.Tour.ProviderId==providerId);
+            return View(await tourBookingContext.ToListAsync());
         }
 
         // GET: ProviderUser/Bookings/Details/5
@@ -49,7 +50,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "HomestayId");
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
             return View();
         }
@@ -59,7 +59,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,CustomerId,HomestayId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice,CreateDate")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerId,HomestayId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice,CreateDate")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
         {
             if (id != booking.BookingId)
             {

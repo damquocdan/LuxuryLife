@@ -9,8 +9,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
     [Area("AdminQL")]
     public class LoginController : Controller
     {
-        public TourbookingContext _context;
-        public LoginController(TourbookingContext context)
+        public TourBookingContext _context;
+        public LoginController(TourBookingContext context)
         {
             _context = context;
         }

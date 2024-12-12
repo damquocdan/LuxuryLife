@@ -12,9 +12,9 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
     [Area("AdminQL")]
     public class ServicesController : Controller
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public ServicesController(TourbookingContext context)
+        public ServicesController(TourBookingContext context)
         {
             _context = context;
         }

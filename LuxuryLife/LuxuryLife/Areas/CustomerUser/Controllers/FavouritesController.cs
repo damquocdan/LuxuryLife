@@ -11,9 +11,9 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
 {
     public class FavouritesController : BaseController
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public FavouritesController(TourbookingContext context)
+        public FavouritesController(TourBookingContext context)
         {
             _context = context;
         }

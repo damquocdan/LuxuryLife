@@ -10,10 +10,10 @@ using LuxuryLife.Models;
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
     public class ListimagestoursController : BaseController
-    {
-        private readonly TourbookingContext _context;
+    { 
+        private readonly TourBookingContext _context;
 
-        public ListimagestoursController(TourbookingContext context)
+        public ListimagestoursController(TourBookingContext context)
         {
             _context = context;
         }
@@ -21,7 +21,8 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Listimagestours
         public async Task<IActionResult> Index()
         {
-            var tourbookingContext = _context.Listimagestours.Include(l => l.Tour);
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var tourbookingContext = _context.Listimagestours.Include(x=>x.Tour).Where(l => l.Tour.ProviderId==providerId);
             return View(await tourbookingContext.ToListAsync());
         }
 
@@ -47,7 +48,11 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Listimagestours/Create
         public IActionResult Create()
         {
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
+
+            // Create SelectList with filtered tours
+            ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
             return View();
         }
 
@@ -93,7 +98,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", listimagestour.TourId);
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
+            ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
             return View(listimagestour);
         }
 

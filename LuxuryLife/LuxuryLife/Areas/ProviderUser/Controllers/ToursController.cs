@@ -11,9 +11,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
     public class ToursController : BaseController
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public ToursController(TourbookingContext context)
+        public ToursController(TourBookingContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             }
 
             // Lấy danh sách các tour của nhà cung cấp
-            var tours = await _context.Tours
+            var tours = await _context.Tours.Include(x=>x.Provider)
                 .Where(t => t.ProviderId == providerId)
                 .ToListAsync();
 

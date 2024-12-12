@@ -9,11 +9,12 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    public class HomestaysController : BaseController
+    [Area("AdminQL")]
+    public class HomestaysController : Controller
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public HomestaysController(TourbookingContext context)
+        public HomestaysController(TourBookingContext context)
         {
             _context = context;
         }
@@ -53,7 +54,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight")] Homestay homestay)
+        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId")] Homestay homestay)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +86,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Address,Image,PricePerNight")] Homestay homestay)
+        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId")] Homestay homestay)
         {
             if (id != homestay.HomestayId)
             {

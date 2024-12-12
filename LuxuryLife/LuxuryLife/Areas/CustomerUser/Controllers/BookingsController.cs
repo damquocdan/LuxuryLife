@@ -12,9 +12,9 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
     [Area("CustomerUser")]
     public class BookingsController : Controller
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public BookingsController(TourbookingContext context)
+        public BookingsController(TourBookingContext context)
         {
             _context = context;
         }

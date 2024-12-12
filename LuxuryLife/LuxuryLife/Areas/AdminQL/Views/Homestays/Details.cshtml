@@ -1,59 +1,55 @@
 ﻿@model LuxuryLife.Models.Homestay
 
 @{
-    ViewData["Title"] = "Chi Tiết Homestay";
+    ViewData["Title"] = "Details";
     Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
-<h1 class="text-primary">Chi Tiết Homestay</h1>
+<h1>Details</h1>
 
-<div class="card shadow-sm p-4 mt-3">
-    <h4 class="text-secondary">Thông Tin Homestay</h4>
+<div>
+    <h4>Homestay</h4>
     <hr />
     <dl class="row">
-        <!-- Tên Homestay -->
-        <dt class="col-sm-3 fw-bold text-secondary">
-            Tên Homestay
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class="col-sm-9">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-
-        <!-- Mô Tả -->
-        <dt class="col-sm-3 fw-bold text-secondary">
-            Mô Tả
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class="col-sm-9">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-
-        <!-- Địa Chỉ -->
-        <dt class="col-sm-3 fw-bold text-secondary">
-            Địa Chỉ
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
         </dt>
-        <dd class="col-sm-9">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Address)
         </dd>
-
-        <!-- Hình Ảnh -->
-        <dt class="col-sm-3 fw-bold text-secondary">
-            Hình Ảnh
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
         </dt>
-        <dd class="col-sm-9">
-            <img src="@Model.Image" alt="Hình ảnh homestay" class="img-fluid rounded shadow-sm" style="max-width: 200px;" />
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image)
         </dd>
-
-        <!-- Giá Mỗi Đêm -->
-        <dt class="col-sm-3 fw-bold text-secondary">
-            Giá Mỗi Đêm (VND)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PricePerNight)
         </dt>
-        <dd class="col-sm-9">
-            @Model.PricePerNight .VND
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PricePerNight)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProviderId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProviderId)
         </dd>
     </dl>
 </div>
-
-<div class="mt-4">
-    <a asp-action="Edit" asp-route-id="@Model?.HomestayId" class="btn btn-warning">Chỉnh Sửa</a>
-    <a asp-action="Index" class="btn btn-secondary">Quay Lại Danh Sách</a>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.HomestayId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

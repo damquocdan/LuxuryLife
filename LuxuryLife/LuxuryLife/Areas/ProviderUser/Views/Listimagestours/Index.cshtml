@@ -40,11 +40,11 @@
                 @Html.DisplayFor(modelItem => item.Createdate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Tour.TourId)
+                @Html.DisplayFor(modelItem => item.Tour.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ListimagestourId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ListimagestourId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.ListimagestourId">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.ListimagestourId">Details</a> 
                 <a asp-action="Delete" asp-route-id="@item.ListimagestourId">Delete</a>
             </td>
         </tr>

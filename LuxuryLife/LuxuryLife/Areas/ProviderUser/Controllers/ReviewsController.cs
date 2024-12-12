@@ -11,9 +11,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
     public class ReviewsController : BaseController
     {
-        private readonly TourbookingContext _context;
+        private readonly TourBookingContext _context;
 
-        public ReviewsController(TourbookingContext context)
+        public ReviewsController(TourBookingContext context)
         {
             _context = context;
         }
