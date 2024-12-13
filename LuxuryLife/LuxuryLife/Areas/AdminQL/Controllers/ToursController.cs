@@ -41,13 +41,20 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", tour);
+            }
             return View(tour);
         }
 
         // GET: AdminQL/Tours/Create
         public IActionResult Create()
         {
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create");
+            }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId");
             return View();
         }
@@ -61,6 +68,18 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         {
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
+                if (files.Any() && files[0].Length > 0)
+                {
+                    var file = files[0];
+                    var fileName = file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\tours", fileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        tour.Image = "/images/tours/" + fileName;
+                    }
+                }
                 _context.Add(tour);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -81,6 +100,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             if (tour == null)
             {
                 return NotFound();
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", tour);
             }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Name", tour.ProviderId);
             return View(tour);
@@ -137,7 +160,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", tour);
+            }
             return View(tour);
         }
 

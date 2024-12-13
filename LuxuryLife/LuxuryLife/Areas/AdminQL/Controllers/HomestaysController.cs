@@ -9,8 +9,7 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
-    [Area("AdminQL")]
-    public class HomestaysController : Controller
+    public class HomestaysController : BaseController
     {
         private readonly TourBookingContext _context;
 
@@ -39,7 +38,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", homestay);
+            }
             return View(homestay);
         }
 
@@ -130,7 +132,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", homestay);
+            }
             return View(homestay);
         }
 
