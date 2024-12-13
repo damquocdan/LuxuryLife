@@ -7,37 +7,62 @@
 <h1>Danh sách Khách hàng</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success">Tạo Mới</a>
+    <button class="btn btn-primary ajax-action" data-url="@Url.Action("Create")">Tạo mới</button>
 </p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Tên</th>
-            <th>Email</th>
-            <th>Số điện thoại</th>
-            <th>Ảnh đại diện</th>
-            <th>Địa chỉ</th>
-            <th>Ngày tạo</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
-                <td>@Html.DisplayFor(modelItem => item.Avatar)</td>
-                <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                <td>@Html.DisplayFor(modelItem => item.Createdate)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-warning btn-sm">Chỉnh sửa</a> 
-                    <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-info btn-sm">Chi tiết</a> 
-                    <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Ảnh đại diện</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày tạo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Avatar)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Createdate)</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.CustomerId })">Sửa</button>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.CustomerId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.CustomerId })">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="actionCustomers"></div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionCustomers").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

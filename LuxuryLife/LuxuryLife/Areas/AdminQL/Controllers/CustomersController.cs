@@ -38,6 +38,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", customer);
+            }
 
             return View(customer);
         }
@@ -45,6 +49,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Customers/Create
         public IActionResult Create()
         {
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create");
+            }
             return View();
         }
 
@@ -57,9 +65,29 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         {
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
+                if (files.Any() && files[0].Length > 0)
+                {
+                    var file = files[0];
+                    var fileName = file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\customers", fileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        customer.Avatar = "/images/customers/" + fileName;
+                    }
+                }
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, redirectUrl = Url.Action("Index") });
+                }
                 return RedirectToAction(nameof(Index));
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create", customer);
             }
             return View(customer);
         }
@@ -77,6 +105,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", customer);
+            }
             return View(customer);
         }
 
@@ -89,6 +121,18 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         {
             if (id != customer.CustomerId)
             {
+                var files = HttpContext.Request.Form.Files;
+                if (files.Any() && files[0].Length > 0)
+                {
+                    var file = files[0];
+                    var fileName = file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\customers", fileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        customer.Avatar = "/images/customers/" + fileName;
+                    }
+                }
                 return NotFound();
             }
 
@@ -130,6 +174,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 return NotFound();
             }
 
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", customer);
+            }
             return View(customer);
         }
 

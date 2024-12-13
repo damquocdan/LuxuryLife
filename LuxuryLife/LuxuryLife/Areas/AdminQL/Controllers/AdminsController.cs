@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
 
@@ -39,18 +38,29 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 return NotFound();
             }
 
+            // Return partial view for AJAX
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", admin);
+            }
+
             return View(admin);
         }
 
         // GET: AdminQL/Admins/Create
+        // GET: AdminQL/Admins/Create
         public IActionResult Create()
         {
+            // Return partial view for AJAX
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create");
+            }
+
             return View();
         }
 
         // POST: AdminQL/Admins/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AdminId,Name,Email,Password,Avatar")] Admin admin)
@@ -58,23 +68,38 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
-                if (files.Count() > 0 && files[0].Length > 0)
+                if (files.Any() && files[0].Length > 0)
                 {
                     var file = files[0];
-                    var FileName = file.FileName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\admins", FileName);
+                    var fileName = file.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\admins", fileName);
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         file.CopyTo(stream);
-                        admin.Avatar = "/images/admins/" + FileName;
+                        admin.Avatar = "/images/admins/" + fileName;
                     }
                 }
                 _context.Add(admin);
                 await _context.SaveChangesAsync();
+
+                // Return success response for AJAX
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, redirectUrl = Url.Action("Index") });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+            // Return partial view for AJAX in case of validation errors
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create", admin);
+            }
+
             return View(admin);
         }
+
 
         // GET: AdminQL/Admins/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -89,12 +114,17 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
+
+            // Return partial view for AJAX
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", admin);
+            }
+
             return View(admin);
         }
 
         // POST: AdminQL/Admins/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AdminId,Name,Email,Password,Avatar")] Admin admin)
@@ -108,6 +138,18 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        var fileName = file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\admins", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            admin.Avatar = "/images/admins/" + fileName;
+                        }
+                    }
                     _context.Update(admin);
                     await _context.SaveChangesAsync();
                 }
@@ -142,6 +184,12 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 return NotFound();
             }
 
+            // Return partial view for AJAX
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", admin);
+            }
+
             return View(admin);
         }
 
@@ -154,9 +202,9 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             if (admin != null)
             {
                 _context.Admins.Remove(admin);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

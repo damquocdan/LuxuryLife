@@ -1,0 +1,57 @@
+﻿@model LuxuryLife.Models.Admin
+
+    <h1>Chi tiết thông tin </h1>
+
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">
+                Tên quản lý
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-3">
+                Email
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-3">
+                Mật khẩu
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+            <dt class="col-sm-3">
+                Ảnh đại diện
+            </dt>
+            <dd class="col-sm-9">
+                <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
+            </dd>
+        </dl>
+    </div>
+
+    <div>
+    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.AdminId })">Sửa</button>
+        <a asp-action="Index" class="btn btn-secondary btn-sm">Đóng</a>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".click").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>
