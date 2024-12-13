@@ -1,0 +1,92 @@
+﻿@model LuxuryLife.Models.Provider
+
+@{
+    ViewData["Title"] = "Chi tiết nhà cung cấp";
+}
+
+<h1>Chi tiết</h1>
+
+<div>
+    <h4>Nhà cung cấp</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tên
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt class="col-sm-2">
+            Mật khẩu
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt class="col-sm-2">
+            Hình đại diện
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Avatar)
+        </dd>
+
+        <dt class="col-sm-2">
+            Số điện thoại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt class="col-sm-2">
+            Địa chỉ
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt class="col-sm-2">
+            Đánh giá
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+
+        <dt class="col-sm-2">
+            Ngày tạo
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Createdate)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.ProviderId })">Sửa</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionProviders").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

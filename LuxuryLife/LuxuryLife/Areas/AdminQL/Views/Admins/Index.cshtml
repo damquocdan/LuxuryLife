@@ -40,7 +40,9 @@
                             <img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" />
                         </td>
                         <td class="text-center">
-                             
+                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.AdminId })">Sửa</button>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.AdminId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.AdminId })">Xóa</button>
                         </td>
                     </tr>
                 }

@@ -5,57 +5,79 @@
 }
 
 <h1>Danh Sách Đánh Giá</h1>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Đánh Giá
+                    </th>
+                    <th>
+                        Bình Luận
+                    </th>
+                    <th>
+                        Ngày Đánh Giá
+                    </th>
+                    <th>
+                        Khách Hàng
+                    </th>
+                    <th>
+                        Chuyến Du Lịch
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rating)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Createdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Customer.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tour.Name)
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.ReviewId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.ReviewId })">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Tạo Đánh Giá Mới</a> <!-- Tạo Đánh Giá Mới -->
-</p>
+    </div>
+    <div class="col-md-4">
+        <div class="actionReviews">
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>
-                Đánh Giá
-            </th>
-            <th>
-                Bình Luận
-            </th>
-            <th>
-                Ngày Đánh Giá
-            </th>
-            <th>
-                Khách Hàng
-            </th>
-            <th>
-                Chuyến Du Lịch
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Comment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Createdate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer.CustomerId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tour.TourId)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ReviewId" class="btn btn-warning btn-sm">Sửa</a> <!-- Sửa -->
-                    <a asp-action="Details" asp-route-id="@item.ReviewId" class="btn btn-info btn-sm">Chi Tiết</a> <!-- Chi Tiết -->
-                    <a asp-action="Delete" asp-route-id="@item.ReviewId" class="btn btn-danger btn-sm">Xóa</a> <!-- Xóa -->
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionReviews").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

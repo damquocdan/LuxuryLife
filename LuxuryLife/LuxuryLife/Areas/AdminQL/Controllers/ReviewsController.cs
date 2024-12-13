@@ -42,13 +42,17 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", review);
+            }
             return View(review);
         }
 
         // GET: AdminQL/Reviews/Create
         public IActionResult Create()
         {
+
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
             ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId");
             return View();
@@ -143,7 +147,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", review);
+            }
             return View(review);
         }
 

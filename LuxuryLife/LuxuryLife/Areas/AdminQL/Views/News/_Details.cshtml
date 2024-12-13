@@ -1,0 +1,43 @@
+﻿@model LuxuryLife.Models.News
+
+@{
+    ViewData["Title"] = "Chi Tiết Tin Tức";
+}
+<div>
+    <h4>Thông Tin Tin Tức</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tiêu đề <!-- Tiêu đề -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt class="col-sm-2">
+            Nội dung <!-- Nội dung -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt class="col-sm-2">
+            Đường dẫn hình ảnh <!-- Đường dẫn hình ảnh -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImageUrl)
+        </dd>
+
+        <dt class="col-sm-2">
+            Ngày tạo <!-- Ngày tạo -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Createdate)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.NewId" class="btn btn-warning">Chỉnh sửa</a> <!-- Chỉnh sửa -->
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a> <!-- Quay lại danh sách -->
+</div>
