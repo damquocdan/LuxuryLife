@@ -10,59 +10,59 @@
     <h4>Nhà cung cấp</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Tên
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Name)
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Email
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Email)
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Mật khẩu
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Password)
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Hình đại diện
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Avatar)
+        <dd class="col-sm-8">
+            <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Số điện thoại
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Phone)
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Địa chỉ
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Address)
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Đánh giá
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Rating)
         </dd>
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Ngày tạo
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Createdate)
         </dd>
     </dl>

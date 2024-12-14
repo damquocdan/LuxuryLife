@@ -121,18 +121,6 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         {
             if (id != customer.CustomerId)
             {
-                var files = HttpContext.Request.Form.Files;
-                if (files.Any() && files[0].Length > 0)
-                {
-                    var file = files[0];
-                    var fileName = file.FileName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\customers", fileName);
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                        customer.Avatar = "/images/customers/" + fileName;
-                    }
-                }
                 return NotFound();
             }
 
@@ -140,6 +128,18 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        var fileName = file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\customers", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            customer.Avatar = "/images/customers/" + fileName;
+                        }
+                    }
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }

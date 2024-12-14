@@ -4,7 +4,7 @@
     ViewData["Title"] = "Delete";
 }
 <a asp-action="Index" class="text-right">x</a>
-<h2>Bạn có muốn xoá khách hàng này</h2>
+<h2>Bạn có muốn xoá khách hàng @Html.DisplayFor(model => model.Email) này</h2>
 
 <div>
     <dl class="row">
@@ -30,7 +30,7 @@
             @Html.DisplayNameFor(model => model.Avatar)
         </dt>
         <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Avatar)
+            <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail" style="max-width: 150px;">
         </dd>
     </dl>
 
