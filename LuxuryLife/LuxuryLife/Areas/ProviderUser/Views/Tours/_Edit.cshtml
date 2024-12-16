@@ -1,0 +1,85 @@
+﻿@model LuxuryLife.Models.Tour
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Sửa thông tin Tour</h1>
+<hr />
+<div class="row">
+    <div class="">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TourId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" type="file" class="form-control" required />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" required />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceId" class="control-label">Dịch vụ</label>
+                <input asp-for="ServiceId" class="form-control" />
+                <span asp-validation-for="ServiceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HomestayId" class="control-label"></label>
+                <input asp-for="HomestayId" class="form-control" />
+                <span asp-validation-for="HomestayId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PricePerson" class="control-label"></label>
+                <input asp-for="PricePerson" class="form-control" required />
+                <span asp-validation-for="PricePerson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control"required />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control"required />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Createdate" class="control-label"></label>
+                <input asp-for="Createdate" class="form-control" />
+                <span asp-validation-for="Createdate" class="text-danger"></span>
+            </div>
+            <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

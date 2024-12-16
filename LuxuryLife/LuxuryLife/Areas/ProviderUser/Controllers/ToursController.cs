@@ -51,13 +51,20 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", tour);
+            }
             return View(tour);
         }
 
         // GET: ProviderUser/Tours/Create
         public IActionResult Create()
         {
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create");
+            }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId");
             return View();
         }
@@ -125,6 +132,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", tour);
+            }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
             return View(tour);
         }
@@ -180,7 +191,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", tour);
+            }
             return View(tour);
         }
 

@@ -38,7 +38,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
             return View(provider);
         }
 
@@ -77,6 +76,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", provider);
+            }
             return View(provider);
         }
 
@@ -96,6 +99,18 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        var fileName = file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\providers", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            provider.Avatar = "/images/providers/" + fileName;
+                        }
+                    }
                     _context.Update(provider);
                     await _context.SaveChangesAsync();
                 }
