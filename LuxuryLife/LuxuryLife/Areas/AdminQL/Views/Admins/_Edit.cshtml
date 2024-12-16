@@ -8,24 +8,32 @@
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Tên</label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Email" class="control-label">Email</label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Password" class="control-label">Mật khẩu</label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Avatar" class="control-label">Hình đại diện</label>
+
+                <!-- Hiển thị ảnh hiện tại -->
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img src="@Model.Avatar" alt="Avatar" width="150" height="150" />
+                }
+
+                <!-- Upload hình mới -->
                 <input asp-for="Avatar" type="file" class="form-control" />
                 <span asp-validation-for="Avatar" class="text-danger"></span>
             </div>

@@ -9,7 +9,7 @@
 <h4>Tin tức</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="NewId" />
@@ -28,7 +28,11 @@
 
             <div class="form-group">
                 <label asp-for="ImageUrl" class="control-label">Ảnh</label> <!-- Ảnh -->
-                <input asp-for="ImageUrl" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Avatar" width="150" height="150" />
+                }
+                <input asp-for="ImageUrl" type="file" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
 
@@ -46,7 +50,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Quay lại danh sách</a> <!-- Quay lại danh sách -->
+    <a asp-action="Index" class="btn">Đóng</a> <!-- Quay lại danh sách -->
 </div>
 
 @section Scripts {

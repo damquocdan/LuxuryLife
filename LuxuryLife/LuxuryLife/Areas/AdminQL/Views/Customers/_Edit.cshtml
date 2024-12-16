@@ -16,7 +16,7 @@
             <div class="form-group row">
                 <label asp-for="Name" class="col-md-5 col-form-label">Tên</label>
                 <div class="col-md-7">
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" required/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <label asp-for="Email" class="col-md-5 col-form-label ">Email</label>
                 <div class="col-md-7">
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="form-group row">
                 <label asp-for="Password" class="col-md-5 col-form-label ">Mật khẩu</label>
                 <div class="col-md-7">
-                    <input asp-for="Password" class="form-control" />
+                    <input asp-for="Password" class="form-control" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
@@ -40,23 +40,29 @@
             <div class="form-group row">
                 <label asp-for="Phone" class="col-md-5 col-form-label ">Số điện thoại</label>
                 <div class="col-md-7">
-                    <input asp-for="Phone" class="form-control" />
+                    <input asp-for="Phone" class="form-control" required />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label asp-for="Avatar" class="col-md-5 col-form-label ">Ảnh đại diện</label>
-                <div class="col-md-7">
-                    <input asp-for="Avatar" type="file" class="form-control" />
-                    <span asp-validation-for="Avatar" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label">Hình đại diện</label>
+
+                <!-- Hiển thị ảnh hiện tại -->
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img src="@Model.Avatar" alt="Avatar" width="150" height="150" />
+                }
+
+                <!-- Upload hình mới -->
+                <input asp-for="Avatar" type="file" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
             </div>
 
             <div class="form-group row">
                 <label asp-for="Address" class="col-md-5 col-form-label ">Địa chỉ</label>
                 <div class="col-md-7">
-                    <input asp-for="Address" class="form-control" />
+                    <input asp-for="Address" class="form-control" required />
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
             </div>
@@ -64,7 +70,7 @@
             <div class="form-group row">
                 <label asp-for="Dob" class="col-md-5 col-form-label ">Ngày sinh</label>
                 <div class="col-md-7">
-                    <input asp-for="Dob" type="date" class="form-control" />
+                    <input asp-for="Dob" type="date" class="form-control" required />
                     <span asp-validation-for="Dob" class="text-danger"></span>
                 </div>
             </div>
@@ -72,7 +78,7 @@
             <div class="form-group row">
                 <label asp-for="Demographics" class="col-md-5 col-form-label ">Thông tin dân số</label>
                 <div class="col-md-7">
-                    <input asp-for="Demographics" class="form-control" />
+                    <input asp-for="Demographics" class="form-control"/>
                     <span asp-validation-for="Demographics" class="text-danger"></span>
                 </div>
             </div>

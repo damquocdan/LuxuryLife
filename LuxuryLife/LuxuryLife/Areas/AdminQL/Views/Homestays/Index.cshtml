@@ -12,11 +12,8 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Tên Homestay</th>
-                    <th>Mô tả</th>
-                    <th>Địa chỉ</th>
                     <th>Hình ảnh</th>
                     <th>Giá mỗi đêm</th>
-                    <th>Nhà cung cấp</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -28,19 +25,10 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            <p class="text-truncate" style="max-width: 200px;">@Html.DisplayFor(modelItem => item.Description)</p>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
                             <img src="@Html.DisplayFor(modelItem => item.Image)" alt="Homestay Image" class="img-thumbnail" style="max-width: 100px;" />
                         </td>
                         <td class="text-success font-weight-bold">
-                            @Html.DisplayFor(modelItem => item.PricePerNight) VND
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProviderId)
+                            @Html.DisplayFor(modelItem => item.PricePerNight)
                         </td>
                         <td>
                             <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.HomestayId })">Chi tiết</button>

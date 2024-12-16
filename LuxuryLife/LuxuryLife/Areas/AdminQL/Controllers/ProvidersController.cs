@@ -68,12 +68,31 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 if (files.Any() && files[0].Length > 0)
                 {
                     var file = files[0];
-                    var fileName = file.FileName;
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\providers", fileName);
-                    using (var stream = new FileStream(path, FileMode.Create))
+
+                    // Đảm bảo thư mục lưu trữ tồn tại
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/providers");
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    // Tạo tên file duy nhất để tránh xung đột
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Lưu file vào thư mục
+                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        file.CopyTo(stream);
-                        provider.Avatar = "/images/providers/" + fileName;
+                        await file.CopyToAsync(stream);
+                    }
+
+                    // Cập nhật đường dẫn Avatar
+                    provider.Avatar = "/images/providers/" + uniqueFileName;
+                }
+                else
+                {
+                    // Nếu không upload file mới, giữ nguyên ảnh cũ
+                    var existingAdmin = await _context.Providers.AsNoTracking().FirstOrDefaultAsync(a => a.ProviderId == provider.ProviderId);
+                    if (existingAdmin != null)
+                    {
+                        provider.Avatar = existingAdmin.Avatar;
                     }
                 }
                 _context.Add(provider);

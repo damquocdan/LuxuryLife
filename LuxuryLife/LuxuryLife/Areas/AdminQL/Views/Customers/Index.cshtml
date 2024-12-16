@@ -19,9 +19,7 @@
                     <th>Email</th>
                     <th>Số điện thoại</th>
                     <th>Ảnh đại diện</th>
-                    <th>Địa chỉ</th>
-                    <th>Ngày tạo</th>
-                    <th></th>
+                    <th>Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,8 +32,6 @@
                         <td>
                             <img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" />
                         </td>
-                        <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Createdate)</td>
                         <td>
                             <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.CustomerId })">Sửa</button>
                             <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.CustomerId })">Chi tiết</button>
