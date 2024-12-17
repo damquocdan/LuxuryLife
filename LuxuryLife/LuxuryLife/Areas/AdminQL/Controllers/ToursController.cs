@@ -9,7 +9,6 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
- 
     public class ToursController : BaseController
     {
         private readonly TourBookingContext _context;
@@ -22,8 +21,8 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Tours
         public async Task<IActionResult> Index()
         {
-            var tourbookingContext = _context.Tours.Include(t => t.Provider);
-            return View(await tourbookingContext.ToListAsync());
+            var tourBookingContext = _context.Tours.Include(t => t.Provider);
+            return View(await tourBookingContext.ToListAsync());
         }
 
         // GET: AdminQL/Tours/Details/5
@@ -45,6 +44,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return PartialView("_Details", tour);
             }
+
             return View(tour);
         }
 
@@ -54,8 +54,9 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return PartialView("_Create");
+                ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Email");
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId");
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Email");
             return View();
         }
 
@@ -84,7 +85,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Name", tour.ProviderId);
             return View(tour);
         }
 
@@ -103,6 +104,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             }
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
+                ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Name", tour.ProviderId);
                 return PartialView("_Edit", tour);
             }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Name", tour.ProviderId);
@@ -125,6 +127,37 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+
+                        // Đảm bảo thư mục lưu trữ tồn tại
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/tour");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        // Tạo tên file duy nhất để tránh xung đột
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Lưu file vào thư mục
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Cập nhật đường dẫn Avatar
+                        tour.Image = "/images/tour/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        // Nếu không upload file mới, giữ nguyên ảnh cũ
+                        var existingTour = await _context.Tours.AsNoTracking().FirstOrDefaultAsync(a => a.TourId == tour.TourId);
+                        if (existingTour != null)
+                        {
+                            tour.Image = existingTour.Image;
+                        }
+                    }
                     _context.Update(tour);
                     await _context.SaveChangesAsync();
                 }
@@ -141,7 +174,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Email", tour.ProviderId);
             return View(tour);
         }
 

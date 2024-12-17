@@ -9,8 +9,7 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
-    [Area("ProviderUser")]
-    public class CustomersController : Controller
+    public class CustomersController : BaseController
     {
         private readonly TourBookingContext _context;
 
@@ -48,7 +47,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", customer);
+            }
             return View(customer);
         }
 

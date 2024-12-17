@@ -1,0 +1,60 @@
+﻿@model LuxuryLife.Models.Listimagestour
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Thêm hình ảnh cho tour</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- TourId Dropdown -->
+            <div class="form-group row">
+                <label asp-for="TourId" class="col-md-4 col-form-label text-md-right"></label>
+                <div class="col-md-8">
+                    <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+                </div>
+            </div>
+
+            <!-- ImageUrl File Input -->
+            <div class="form-group row">
+                <label asp-for="ImageUrl" class="col-md-4 col-form-label text-md-right"></label>
+                <div class="col-md-8">
+                    <input asp-for="ImageUrl" type="file" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- ImageDescription Input -->
+            <div class="form-group row">
+                <label asp-for="ImageDescription" class="col-md-4 col-form-label text-md-right"></label>
+                <div class="col-md-8">
+                    <input asp-for="ImageDescription" class="form-control" />
+                    <span asp-validation-for="ImageDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Back to Index Button -->
+<div>
+    <a asp-action="Index" class="btn btn-success">Đóng</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

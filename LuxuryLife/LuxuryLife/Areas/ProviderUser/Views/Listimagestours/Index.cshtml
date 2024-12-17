@@ -4,50 +4,68 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Danh sách các hình ảnh của các tour</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Create")">Thêm mới</button>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Createdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tour)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Createdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tour.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ListimagestourId">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.ListimagestourId">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.ListimagestourId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ImageDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tour)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ImageDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tour.Name)
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.ListimagestourId })">Sửa</button>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.ListimagestourId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.ListimagestourId })">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-md-4">
+        <div class="actionListimagetour">
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionListimagetour").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

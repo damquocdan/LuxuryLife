@@ -42,7 +42,22 @@
                             <img src="@item.Image" alt="@item.Name"  width="100px" height="100px" />
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Status)
+                            @if (item.Status == "Active")
+                            {
+                                <span class="badge bg-success">Hoạt động</span>
+                            }
+                            else if (item.Status == "Inactive")
+                            {
+                                <span class="badge bg-danger">Không hoạt động</span>
+                            }
+                            else if (item.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Chờ xử lý</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Trạng thái không xác định</span>
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Createdate)

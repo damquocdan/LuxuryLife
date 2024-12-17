@@ -156,6 +156,37 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+
+                        // Đảm bảo thư mục lưu trữ tồn tại
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/tours");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        // Tạo tên file duy nhất để tránh xung đột
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Lưu file vào thư mục
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Cập nhật đường dẫn Avatar
+                        tour.Image = "/images/tours/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        // Nếu không upload file mới, giữ nguyên ảnh cũ
+                        var existingTour = await _context.Tours.AsNoTracking().FirstOrDefaultAsync(a => a.TourId == tour.TourId);
+                        if (existingTour != null)
+                        {
+                            tour.Image = existingTour.Image;
+                        }
+                    }
                     _context.Update(tour);
                     await _context.SaveChangesAsync();
                 }

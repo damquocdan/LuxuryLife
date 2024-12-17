@@ -41,7 +41,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", listimagestour);
+            }
             return View(listimagestour);
         }
 
@@ -50,7 +53,11 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         {
             int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+                return PartialView("_Create");
+            }
             // Create SelectList with filtered tours
             ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
             return View();
@@ -81,7 +88,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", listimagestour.TourId);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", listimagestour.TourId);
             return View(listimagestour);
         }
 
@@ -100,7 +107,13 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             }
             int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
-            ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+            
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+                return PartialView("_Edit", listimagestour);
+            }
+            
             return View(listimagestour);
         }
 
@@ -120,6 +133,37 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+
+                        // Đảm bảo thư mục lưu trữ tồn tại
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listimagetour");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        // Tạo tên file duy nhất để tránh xung đột
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Lưu file vào thư mục
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Cập nhật đường dẫn Avatar
+                        listimagestour.ImageUrl = "/images/listimagetour/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        // Nếu không upload file mới, giữ nguyên ảnh cũ
+                        var existingImage = await _context.Listimagestours.AsNoTracking().FirstOrDefaultAsync(a => a.ListimagestourId == listimagestour.ListimagestourId);
+                        if (existingImage != null)
+                        {
+                            listimagestour.ImageUrl = existingImage.ImageUrl;
+                        }
+                    }
                     _context.Update(listimagestour);
                     await _context.SaveChangesAsync();
                 }
@@ -155,7 +199,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", listimagestour);
+            }
             return View(listimagestour);
         }
 

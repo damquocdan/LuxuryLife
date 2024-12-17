@@ -5,78 +5,92 @@
     Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách các đơn đặt tour</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CheckInDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CheckOutDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tour)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CheckInDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CheckOutDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tour)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
 
-            <tr>
-                <td>
-                        @Html.DisplayFor(modelItem => item.BookingDate)
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckInDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckOutDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.BookingId">
+                                @Html.DisplayFor(modelItem => item.Customer.Name)
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.BookingId">
+                                @Html.DisplayFor(modelItem => item.Tour.Name)
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.BookingId })">Chi tiết</button>
+                        </td>
 
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.CheckInDate)
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="detail">
 
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.CheckOutDate)
+        </div>
+    </div>
+</div>
 
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
 
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.TotalPrice)
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
 
-
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.BookingId">
-                        @Html.DisplayFor(modelItem => item.Customer.Name)
-                    </a>
-
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.BookingId">
-                        @Html.DisplayFor(modelItem => item.Tour.Name)
-                    </a>
-
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.BookingId">Chi tiết</a>
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
+            // Load the content into the .click div
+            $(".detail").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

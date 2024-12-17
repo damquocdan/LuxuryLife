@@ -9,8 +9,7 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Areas.ProviderUser.Controllers
 {
-    [Area("ProviderUser")]
-    public class HomestaysController : Controller
+    public class HomestaysController : BaseController
     {
         private readonly TourBookingContext _context;
 
@@ -51,13 +50,20 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", homestay);
+            }
             return View(homestay);
         }
 
         // GET: ProviderUser/Homestays/Create
         public IActionResult Create()
         {
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create");
+            }
             ViewData["ProviderId"] = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             return View();
         }
@@ -72,6 +78,26 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             homestay.ProviderId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0 && files[0].Length > 0)
+                {
+                    var file = files[0];
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName); // Tạo tên tệp duy nhất
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\homestays", fileName);
+
+                    // Tạo thư mục nếu chưa tồn tại
+                    Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        homestay.Image = "/images/homestays/" + fileName;
+                    }
+                }
+                else
+                {
+                    homestay.Image = "/images/homestays/default.png"; // Đặt ảnh mặc định nếu không có ảnh được tải lên
+                }
                 _context.Add(homestay);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -92,6 +118,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", homestay);
+            }
             return View(homestay);
         }
 
@@ -111,6 +141,37 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+
+                        // Đảm bảo thư mục lưu trữ tồn tại
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/homestays");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        // Tạo tên file duy nhất để tránh xung đột
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Lưu file vào thư mục
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Cập nhật đường dẫn Avatar
+                        homestay.Image = "/images/homestays/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        // Nếu không upload file mới, giữ nguyên ảnh cũ
+                        var existingHomestay = await _context.Homestays.AsNoTracking().FirstOrDefaultAsync(a => a.HomestayId == homestay.HomestayId);
+                        if (existingHomestay != null)
+                        {
+                            homestay.Image = existingHomestay.Image;
+                        }
+                    }
                     _context.Update(homestay);
                     await _context.SaveChangesAsync();
                 }
@@ -144,7 +205,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", homestay);
+            }
             return View(homestay);
         }
 

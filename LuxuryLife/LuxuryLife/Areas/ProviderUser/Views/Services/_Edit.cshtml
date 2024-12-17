@@ -1,18 +1,17 @@
 ﻿@model LuxuryLife.Models.Service
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Sửa thông tin dịch vụ</h1>
 
-<h4>Service</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-12">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ServiceId" />
             <div class="form-group">
                 <label asp-for="ServiceName" class="control-label"></label>
                 <input asp-for="ServiceName" class="form-control" />
@@ -30,17 +29,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="TourId" class="control-label"></label>
-                <select asp-for="TourId" class ="form-control" asp-items="ViewBag.TourId"></select>
+                <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+                <span asp-validation-for="TourId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Luư" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-success">Đóng</a>
 </div>
 
 @section Scripts {

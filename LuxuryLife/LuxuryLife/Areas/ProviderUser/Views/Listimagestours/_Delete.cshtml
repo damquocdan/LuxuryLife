@@ -1,0 +1,17 @@
+﻿@model LuxuryLife.Models.Listimagestour
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xoá</h1>
+
+<h3>Bạn có muốn xoá ảnh này của tour du lịch <b>@Html.DisplayFor(model => model.Tour.Name)</b></h3>
+<div>
+    <img src="@Model.ImageUrl" alt="@Model.ImageDescription"  width="100%" height="300px" />
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ListimagestourId" />
+        <input type="submit" value="Xoá" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-success">Đóng</a>
+    </form>
+</div>

@@ -41,7 +41,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Details", service);
+            }
             return View(service);
         }
 
@@ -51,6 +54,11 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
             ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+                return PartialView("_Create");
+            }
             return View();
         }
 
@@ -87,6 +95,11 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
             ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
+                return PartialView("_Edit", service);
+            }
             return View(service);
         }
 
@@ -141,7 +154,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Delete", service);
+            }
             return View(service);
         }
 
