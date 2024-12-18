@@ -32,6 +32,7 @@
     <Folder Include="wwwroot\images\admins\" />
     <Folder Include="wwwroot\images\customers\" />
     <Folder Include="wwwroot\images\homestays\" />
+    <Folder Include="wwwroot\images\news\" />
     <Folder Include="wwwroot\images\providers\" />
     <Folder Include="wwwroot\images\tour\" />
   </ItemGroup>

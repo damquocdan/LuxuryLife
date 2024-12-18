@@ -529,9 +529,6 @@ h6 {
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('/images/bg.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
         filter: blur(1px); /* Làm mờ */
         z-index: -1; /* Đẩy ảnh nền xuống dưới nội dung */
     }

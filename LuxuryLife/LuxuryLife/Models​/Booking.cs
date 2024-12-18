@@ -37,7 +37,7 @@ namespace LuxuryLife.Models
         [Display(Name = "Khách Hàng")]
         public virtual Customer? Customer { get; set; }
 
-        [Display(Name = "Tour")]
+        [Display(Name = "Tour du lịch")]
         public virtual Tour? Tour { get; set; }
     }
 }
