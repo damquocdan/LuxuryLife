@@ -4,150 +4,90 @@
     ViewData["Title"] = "Đăng Ký";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-
-    .signup-form {
-        background: #fff;
-        padding: 20px 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-    }
-
-        .signup-form h1 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: #333;
-            text-align: center;
-        }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            outline: none;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-            .form-group input:focus {
-                border-color: #fda085;
-            }
-
-    .btn {
-        display: inline-block;
-        width: 100%;
-        padding: 10px 15px;
-        border: none;
-        background: #fda085;
-        color: #fff;
-        font-size: 1rem;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-        .btn:hover {
-            background: #f6d365;
-        }
-
-    .text-center {
-        text-align: center;
-    }
-
-    .text-muted {
-        color: #888;
-        font-size: 0.9rem;
-    }
-
-        .text-muted a {
-            color: #fda085;
-            text-decoration: none;
-        }
-
-            .text-muted a:hover {
-                text-decoration: underline;
-            }
-</style>
-
+<hr />
+<br />
 <h1 class="text-primary text-center">Đăng Ký Tài Khoản</h1>
 <p class="text-secondary text-center">Vui lòng điền thông tin để tạo tài khoản mới.</p>
-<hr />
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <form asp-action="Create" class="border p-4 shadow-sm rounded bg-light">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="d-flex justify-content-center" style="justify-content:center !important; display:flex !important;">
+    <div class="row" style="margin-top:50px">
+        <div class="">
+            <form asp-action="Create" class="border p-4 shadow-sm rounded bg-light">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Tên -->
-            <div class="form-group mb-3">
-                <label asp-for="Name" class="control-label">Tên</label>
-                <input asp-for="Name" class="form-control" placeholder="Nhập tên của bạn" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+                <!-- Tên -->
+                <div class="form-group row mb-3">
+                    <label asp-for="Name" class="control-label col-md-4">Tên</label>
+                    <div class="col-md-8">
+                        <input asp-for="Name" class="form-control" placeholder="Nhập tên của bạn" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <!-- Email -->
-            <div class="form-group mb-3">
-                <label asp-for="Email" class="control-label">Email</label>
-                <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email của bạn" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                <!-- Email -->
+                <div class="form-group row mb-3">
+                    <label asp-for="Email" class="control-label col-md-4">Email</label>
+                    <div class="col-md-8">
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email của bạn" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <!-- Mật khẩu -->
-            <div class="form-group mb-3">
-                <label asp-for="Password" class="control-label">Mật khẩu</label>
-                <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu của bạn" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+                <!-- Mật khẩu -->
+                <div class="form-group row mb-3">
+                    <label asp-for="Password" class="control-label col-md-4">Mật khẩu</label>
+                    <div class="col-md-8">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu của bạn" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <!-- Xác nhận mật khẩu -->
-            <div class="form-group mb-3">
-                <label for="confirmPassword">Xác nhận mật khẩu</label>
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" oninput="checkPasswordMatch()" />
-                <small id="passwordError" class="text-danger" style="display:none;">Mật khẩu không khớp!</small>
-            </div>
+                <!-- Xác nhận mật khẩu -->
+                <div class="form-group row mb-3">
+                    <label for="confirmPassword" class="control-label col-md-4">Xác nhận mật khẩu</label>
+                    <div class="col-md-8">
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" oninput="checkPasswordMatch()" />
+                        <small id="passwordError" class="text-danger" style="display:none;">Mật khẩu không khớp!</small>
+                    </div>
+                </div>
 
-            <!-- Số điện thoại -->
-            <div class="form-group mb-3">
-                <label asp-for="Phone" class="control-label">Số điện thoại</label>
-                <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại của bạn" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
+                <!-- Số điện thoại -->
+                <div class="form-group row mb-3">
+                    <label asp-for="Phone" class="control-label col-md-4">Số điện thoại</label>
+                    <div class="col-md-8">
+                        <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại của bạn" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <!-- Ngày sinh -->
-            <div class="form-group mb-3">
-                <label asp-for="Dob" class="control-label">Ngày sinh</label>
-                <input asp-for="Dob" type="date" class="form-control" />
-                <span asp-validation-for="Dob" class="text-danger"></span>
-            </div>
+                <!-- Ngày sinh -->
+                <div class="form-group row mb-3">
+                    <label asp-for="Dob" class="control-label col-md-4">Ngày sinh</label>
+                    <div class="col-md-8">
+                        <input asp-for="Dob" type="date" class="form-control" />
+                        <span asp-validation-for="Dob" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <!-- Nút Đăng ký -->
-            <div class="form-group text-center">
-                <input type="submit" value="Đăng Ký" class="btn btn-primary w-100" />
-            </div>
+                <!-- Nút Đăng ký -->
+                <div class="form-group text-center">
+                    <input type="submit" value="Đăng Ký" class="btn btn-primary w-100" />
+                </div>
 
-            <!-- Đường dẫn quay lại đăng nhập -->
-            <div class="text-center mt-3">
-                <p>Bạn đã có tài khoản? <a asp-action="Login" class="text-primary">Đăng nhập</a></p>
-            </div>
-        </form>
+                <!-- Đường dẫn quay lại đăng nhập -->
+                <div class="text-center mt-3">
+                    <p>Bạn đã có tài khoản? <a asp-area="CustomerUser" asp-controller="Login" asp-action="Index" class="text-primary">Đăng nhập</a></p>
+                </div>
+            </form>
+
+        </div>
     </div>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 <script>
     function checkPasswordMatch() {

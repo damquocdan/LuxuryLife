@@ -3,59 +3,59 @@
     ViewData["Title"] = "Đăng nhập";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="d-flex justify-content-center align-items-center" style="min-height: 10px;">
-    <section class="" style="width: 100%; max-width: 450px;">
-        <h2 class="text-center" style="color: white; margin-top:30px;">Đăng nhập</h2>
-
-        <!-- Hiển thị lỗi -->
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach (var modelState in ViewData.ModelState.Values)
-                    {
-                        foreach (var error in modelState.Errors)
+<hr />
+<br />
+<h1 class="text-primary text-center">Đăng nhập</h1>
+<div class="d-flex justify-content-center" style="justify-content:center !important; display:flex !important;">
+    <div class="row" style="margin-top:50px">
+        <div class="">
+            <!-- Hiển thị lỗi -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach (var modelState in ViewData.ModelState.Values)
                         {
-                            <li>@error.ErrorMessage</li>
+                            foreach (var error in modelState.Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
                         }
-                    }
-                </ul>
-            </div>
-        }
+                    </ul>
+                </div>
+            }
 
-        <!-- Form -->
-        <form asp-action="Index" method="post">
-            <!-- Email -->
-            <div class="form-group mb-4">
-                <label for="Email" class="form-label">Email</label>
-                <input asp-for="Email" type="email" id="Email" class="form-control" placeholder="Nhập email của bạn" required />
-                <span asp-validation-for="Email" class="text-danger small"></span>
-            </div>
+            <!-- Form -->
+            <form asp-action="Index" method="post">
+                <!-- Email -->
+                <div class="form-group mb-4">
+                    <label for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" id="Email" class="form-control" placeholder="Nhập email của bạn" required />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
 
-            <!-- Mật khẩu -->
-            <div class="form-group mb-4">
-                <label for="Password" class="form-label">Mật khẩu</label>
-                <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Nhập mật khẩu" required />
-                <span asp-validation-for="Password" class="text-danger small"></span>
-            </div>
+                <!-- Mật khẩu -->
+                <div class="form-group mb-4">
+                    <label for="Password" class="form-label">Mật khẩu</label>
+                    <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Nhập mật khẩu" required />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
 
-            <!-- Quên mật khẩu -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <a asp-controller="ForgotPassword" asp-action="ForgotPassword" class="text-primary text-decoration-none small">Quên mật khẩu?</a>
-            </div>
 
-            <!-- Nút đăng nhập -->
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary btn-lg w-60" style="background:none; border: 1px solid Black; transition: background-color 0.3s;">
-                    Đăng nhập
-                </button>
-            </div>
+                <!-- Nút đăng nhập -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg w-60" style=" border: 1px solid Black; transition: background-color 0.3s;">
+                        Đăng nhập
+                    </button>
+                </div>
 
-            <!-- Đăng ký -->
-            <p class="text-center text-muted mt-3 small">
-                Bạn chưa có tài khoản?
-                <a asp-controller="Customers" asp-action="Create" class="text-primary text-decoration-none">Đăng ký</a>
-            </p>
-        </form>
-    </section>
+                <!-- Đăng ký -->
+                <p class="text-center text-muted mt-3 small">
+                    Bạn chưa có tài khoản?
+                    <a asp-controller="Customers" asp-action="Create" class="text-primary text-decoration-none">Đăng ký</a>
+                </p>
+            </form>
+        </div>
+    </div>
 </div>
+

@@ -19,10 +19,37 @@ namespace LuxuryLife.Controllers
 
         public IActionResult Index()
         {
-            var tours = _context.Tours.Include(t => t.Provider).ToList();
-
-            return View(tours);
+            ViewData["Tours"] = _context.Tours
+        .Include(t => t.Provider)
+        .OrderByDescending(t => t.TourId) // Sắp xếp theo ngày tạo
+        .Take(6) // Lấy 6 tour mới nhất
+        .ToList();
+            ViewData["Providers"] = _context.Providers.ToList();
+            ViewData["News"] = _context.News.OrderByDescending(n => n.Createdate).Take(3).ToList();
+            ViewData["Customers"] = _context.Customers.ToList();
+            ViewData["Reviews"] = _context.Reviews.Include(r => r.Tour).Include(r => r.Customer).ToList();
+            return View();
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateEmailProvider([Bind("ProviderId,Name,Email,Password,Avatar,Phone,Address,Rating,Createdate")] Provider provider)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(provider);
+        //        await _context.SaveChangesAsync();
+
+        //        // Lưu thông báo thành công vào TempData
+        //        TempData["SuccessMessage"] = "Email của bạn đã được gửi thành công!";
+
+        //        // Redirect lại chính trang này sau khi thành công
+        //        return RedirectToAction(nameof(Index));  // Thay đổi RedirectToAction thành chính action này
+        //    }
+
+        //    // Nếu có lỗi, trả lại lại view với dữ liệu ban đầu
+        //    return View(provider);
+        //}
 
 
 

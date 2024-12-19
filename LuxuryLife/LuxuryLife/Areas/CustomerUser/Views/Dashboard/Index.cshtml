@@ -1,25 +1,448 @@
-﻿@{
-    ViewData["Title"] = "DashBoard";
-    Layout = "~/Areas/CustomerUser/Views/Shared/_Customer.cshtml";
+﻿@model LuxuryLife.Models.Provider
+@{
+    var tours = ViewData["Tours"] as List<LuxuryLife.Models.Tour>;
+    var providers = ViewData["Providers"] as List<LuxuryLife.Models.Provider>;
+    var news = ViewData["News"] as List<LuxuryLife.Models.News>;
+    var customers = ViewData["Customers"] as List<LuxuryLife.Models.Customer>;
+    var reviews = ViewData["Reviews"] as List<LuxuryLife.Models.Review>;
 }
-@model IEnumerable<LuxuryLife.Models.Tour>
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
+}
 
-
-@foreach (var tour in Model)
+@if (!string.IsNullOrEmpty(successMessage))
 {
-    <div class="col-md-12 mb-4" style="height: 40rem; background-image: url('@tour.Image'); background-size: cover; background-position: center;">
-        <div class="card shadow-sm" style="background:none;">
-            <div class="card-body">
-                <h5 class="card-title">@tour.Name</h5>
-                <p class="card-text">
-                    Giá: @string.Format("{0:N0}", tour.Price) VND <br />
-                    Ngày bắt đầu: @tour.StartDate?.ToString("dd/MM/yyyy")<br />
-                    Ngày kết thúc: @tour.EndDate?.ToString("dd/MM/yyyy")
-                </p>
-                <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Add" asp-route-id="@tour.TourId" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">
-                    <i class="fi fi-bs-shopping-bag">Thêm vào danh sách yêu thích</i>
-                </a>
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+<style>
+    .testimonial-carousel {
+        display: flex;
+        overflow: hidden;
+        white-space: nowrap;
+        gap: 20px;
+    }
+
+    .single-testimonial-box {
+        flex: 0 0 auto;
+        width: 300px; /* Adjust as needed */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        height: 200px;
+    }
+
+    .testimonial-img img {
+        max-width: 100%;
+        border-radius: 50%;
+    }
+</style>
+<section id="home" class="welcome-hero">
+    <div class="container">
+        <div class="welcome-hero-txt">
+            <h2>Dịch vụ du lịch tốt nhất <br> cho tất cả những gì bạn cần </h2>
+            <p>
+                Tìm kiếm những Tour du lịch, Homestays và các dịch vụ mọi thứ với chỉ một CLICK
+            </p>
+        </div>
+        <div class="welcome-hero-serch-box">
+            <div class="welcome-hero-form">
+                <div class="single-welcome-hero-form">
+                    <h3>what?</h3>
+                    <form action="index">
+                        <input type="text" placeholder="Ex: palce, resturent, food, automobile" />
+                    </form>
+                    <div class="welcome-hero-form-icon">
+                        <i class="flaticon-list-with-dots"></i>
+                    </div>
+                </div>
+                <div class="single-welcome-hero-form">
+                    <h3>location</h3>
+                    <form action="index">
+                        <input type="text" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
+                    </form>
+                    <div class="welcome-hero-form-icon">
+                        <i class="flaticon-gps-fixed-indicator"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome-hero-serch">
+                <button class="welcome-hero-btn" onclick="window.location.href='#'">
+                    Tìm kiếm  <i data-feather="search"></i>
+                </button>
             </div>
         </div>
     </div>
-}
+
+</section><!--/.welcome-hero-->
+<!--welcome-hero end -->
+<!--list-topics start -->
+<section id="list-topics" class="list-topics">
+    <div class="container">
+        <div class="list-topics-content">
+            <ul>
+                <li>
+                    <div class="single-list-topics-content">
+                        <div class="single-list-topics-icon">
+                            <i class="flaticon-restaurant"></i>
+                        </div>
+                        <h2><a href="#">Nhà hàng</a></h2>
+                        <p>150 listings</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="single-list-topics-content">
+                        <div class="single-list-topics-icon">
+                            <i class="flaticon-travel"></i>
+                        </div>
+                        <h2><a href="#">Hành trang</a></h2>
+                        <p>214 listings</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="single-list-topics-content">
+                        <div class="single-list-topics-icon">
+                            <i class="flaticon-building"></i>
+                        </div>
+                        <h2><a href="#">Homestays</a></h2>
+                        <p>185 listings</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="single-list-topics-content">
+                        <div class="single-list-topics-icon">
+                            <i class="flaticon-pills"></i>
+                        </div>
+                        <h2><a href="#">chăm sóc sức khoẻ</a></h2>
+                        <p>200 listings</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="single-list-topics-content">
+                        <div class="single-list-topics-icon">
+                            <i class="flaticon-transport"></i>
+                        </div>
+                        <h2><a href="#">Đưa đón</a></h2>
+                        <p>120 listings</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div><!--/.container-->
+
+</section><!--/.list-topics-->
+<!--list-topics end-->
+<!--works start -->
+<section id="works" class="works">
+    <div class="container">
+        <div class="section-header">
+            <h2>Về chúng tôi</h2>
+            <p>Tìm hiểu thêm về chúng tôi</p>
+        </div><!--/.section-header-->
+        <div class="works-content">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="single-how-works">
+                        <div class="single-how-works-icon">
+                            <i class="flaticon-lightbulb-idea"></i>
+                        </div>
+                        <h2><a href="#">Gợi ý <span> thông</span> minh</a></h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consecte adipisicing elit, sed do eiusmod tempor incididunt ut laboremagna aliqua.
+                        </p>
+                        <button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
+                            Đọc thêm
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="single-how-works">
+                        <div class="single-how-works-icon">
+                            <i class="flaticon-networking"></i>
+                        </div>
+                        <h2><a href="#">tìm kiếm <span> những gì bạn muốn</span></a></h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consecte adipisicing elit, sed do eiusmod tempor incididunt ut laboremagna aliqua.
+                        </p>
+                        <button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
+                            Đọc thêm
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="single-how-works">
+                        <div class="single-how-works-icon">
+                            <i class="flaticon-location-on-road"></i>
+                        </div>
+                        <h2><a href="#">Khám phá <span>nơi</span> tuyệt vời</a></h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consecte adipisicing elit, sed do eiusmod tempor incididunt ut laboremagna aliqua.
+                        </p>
+                        <button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
+                            Đọc thêm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/.container-->
+
+</section><!--/.works-->
+<!--works end -->
+<!--explore start -->
+<section id="explore" class="explore">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tour du lịch</h2>
+            <p>Khám phá tour du lịch, địa điểm mới, đồ ăn ,văn hoá và nhiều hơn nữa</p>
+        </div><!--/.section-header-->
+        <div class="explore-content">
+            <div class="row">
+                @foreach (var tour in tours)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="single-explore-item">
+                            <div class="single-explore-img" style="height:200px!important;">
+                                <img src="@tour.Image" alt="@tour.Image">
+                                <div class="single-explore-img-info">
+                                    <button onclick="window.location.href='#'">featured</button>
+                                    <div class="single-explore-image-icon-box">
+                                        <ul>
+                                            <li>
+                                                <div class="single-explore-image-icon">
+                                                    <i class="fa fa-arrows-alt"></i>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="single-explore-image-icon">
+                                                    <i class="fa fa-bookmark-o"></i>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-explore-txt bg-theme-2">
+                                <h2><a href="#">@tour.Name</a></h2>
+                                <p class="explore-rating-price">
+                                    <span class="explore-rating">4.5</span>
+                                    <a href="#"> @tour.Reviews.Count</a>
+                                    <span class="explore-price-box">
+                                        Giá:
+                                        <span class="explore-price">@tour.Price</span>
+                                    </span>
+                                    <a href="#">@tour.Provider.Name</a>
+                                </p>
+                                <div class="explore-person">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <div class="explore-person-img">
+                                                <a href="#">
+                                                    <img src="@tour.Provider.Avatar" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <p>
+                                                @tour.Description
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="explore-open-close-part">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <button class="close-btn open-btn" onclick="window.location.href='#'">Xem chi tiết</button>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="explore-map-icon">
+                                                <a href="#" style="margin-right:10px;"><i class="fa-solid fa-map-location-dot"></i></a>
+
+                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div><!--/.container-->
+
+</section><!--/.explore-->
+<!--explore end -->
+<!--reviews start -->
+<section id="reviews" class="reviews">
+    <div class="section-header">
+        <h2>Đánh giá của khách hàng</h2>
+        <p>Khách hàng đánh giá gì về các tour du lịch</p>
+    </div>
+    <div class="reviews-content">
+        <div class="testimonial-carousel">
+            @foreach (var review in reviews)
+            {
+                <div class="single-testimonial-box">
+                    <div class="testimonial-description">
+                        <div class="testimonial-info">
+                            <div class="testimonial-img">
+                                <img src="@review.Customer.Avatar" alt="clients">
+                            </div><!--/.testimonial-img-->
+                            <div class="testimonial-person">
+                                <h2>@review.Customer.Name</h2>
+                                <h4>@review.Customer.Address</h4>
+                                <div class="testimonial-person-star">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div><!--/.testimonial-person-->
+                        </div><!--/.testimonial-info-->
+                        <div class="testimonial-comment">
+                            <p class="text-truncate">
+                                @review.Comment
+                            </p>
+                            <p class="">
+                                <b>Tour du lịch: @review.Tour.Name</b>
+
+                            </p>
+                        </div><!--/.testimonial-comment-->
+                    </div><!--/.testimonial-description-->
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!--/.reviews-->
+<!--reviews end -->
+<!-- statistics strat -->
+<section id="statistics" class="statistics">
+    <div class="container">
+        <div class="statistics-counter">
+            <div class="col-md-3 col-sm-6">
+                <div class="single-ststistics-box">
+                    <div class="statistics-content">
+                        <div class="counter">90 </div> <span>K+</span>
+                    </div><!--/.statistics-content-->
+                    <h3>Khách hàng</h3>
+                </div><!--/.single-ststistics-box-->
+            </div><!--/.col-->
+            <div class="col-md-3 col-sm-6">
+                <div class="single-ststistics-box">
+                    <div class="statistics-content">
+                        <div class="counter">40</div> <span>k+</span>
+                    </div><!--/.statistics-content-->
+                    <h3>Tour du lịch</h3>
+                </div><!--/.single-ststistics-box-->
+            </div><!--/.col-->
+            <div class="col-md-3 col-sm-6">
+                <div class="single-ststistics-box">
+                    <div class="statistics-content">
+                        <div class="counter">65</div> <span>k+</span>
+                    </div><!--/.statistics-content-->
+                    <h3>Homestays</h3>
+                </div><!--/.single-ststistics-box-->
+            </div><!--/.col-->
+            <div class="col-md-3 col-sm-6">
+                <div class="single-ststistics-box">
+                    <div class="statistics-content">
+                        <div class="counter">50</div> <span>k+</span>
+                    </div><!--/.statistics-content-->
+                    <h3>Đánh giá tích cực</h3>
+                </div><!--/.single-ststistics-box-->
+            </div><!--/.col-->
+        </div><!--/.statistics-counter-->
+    </div><!--/.container-->
+
+</section><!--/.counter-->
+<!-- statistics end -->
+<!--blog start -->
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tin tức và bài viết</h2>
+            <p>Luôn luôn cập nhật các tin tức và bài viết mới nhất liên quan đến du lịch</p>
+        </div><!--/.section-header-->
+        <div class="blog-content">
+            <div class="row">
+                @foreach (var n in news)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="single-blog-item">
+                            <div class="single-blog-item-img" style="height:200px!important;">
+                                <img src="@n.ImageUrl" alt="blog image">
+                            </div>
+                            <div class="single-blog-item-txt">
+                                <h2><a href="#">@n.Title</a></h2>
+                                <h4>posted <span>by</span> <a href="#">admin</a> @n.Createdate</h4>
+                                <p>
+                                    @Html.Raw(n.Content.Length > 100 ? n.Content.Substring(0, 100) + "..." : n.Content)
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div><!--/.container-->
+
+</section><!--/.blog-->
+<!--blog end -->
+<!--subscription strat -->
+<section id="contact" class="subscription">
+    <div class="container">
+        <div class="subscribe-title text-center">
+            <h2>
+                BẠN CÓ MUỐN THÊM DANH SÁCH DOANH NGHIỆP CỦA BẠN VỚI CHÚNG TÔI?
+            </h2>
+            <p>
+                TravelInVietNam đề nghị bạn niêm yết doanh nghiệp của mình với chúng tôi và chúng tôi rất có thể quảng bá Doanh nghiệp của bạn.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="subscription-input-group">
+                    <form method="post">
+
+                        <input asp-for="Email" class="subscription-input-form" placeholder="Nhập email của bạn tại đây" />
+
+                        <button class="appsLand-btn subscribe-btn" type="submit">
+                            Gửi
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section><!--/subscription-->
+<!--subscription end -->
+<script>
+    const carousel = document.querySelector('.testimonial-carousel');
+    let scrollInterval;
+
+    function startAutoScroll() {
+        scrollInterval = setInterval(() => {
+            carousel.scrollBy({ left: 320, behavior: 'smooth' });
+            if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            }
+        }, 2000); // Adjust scroll time interval as needed
+    }
+
+    function stopAutoScroll() {
+        clearInterval(scrollInterval);
+    }
+
+    carousel.addEventListener('mouseover', stopAutoScroll);
+    carousel.addEventListener('mouseout', startAutoScroll);
+
+    startAutoScroll();
+</script>
