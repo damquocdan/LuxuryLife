@@ -35,6 +35,7 @@
     <Folder Include="wwwroot\images\news\" />
     <Folder Include="wwwroot\images\providers\" />
     <Folder Include="wwwroot\images\tour\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

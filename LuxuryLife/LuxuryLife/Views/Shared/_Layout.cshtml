@@ -11,138 +11,213 @@
         @TempData["Error"]
     </div>
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LuxuryLife</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LuxuryLife.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet" />
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    <link rel="stylesheet"
-          type="text/css"
-          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!--font-family-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- title of site -->
+    <title>Directory Landing Page</title>
+
+    <!-- For favicon png -->
+    <link rel="shortcut icon" type="image/icon" href="~/assets/logo/favicon.png" />
+
+    <!--font-awesome.min.css-->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+
+    <!--linear icon css-->
+    <link rel="stylesheet" href="~/assets/css/linearicons.css">
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="~/assets/css/animate.css">
+
+    <!--flaticon.css-->
+    <link rel="stylesheet" href="~/assets/css/flaticon.css">
+
+    <!--slick.css-->
+    <link rel="stylesheet" href="~/assets/css/slick.css">
+    <link rel="stylesheet" href="~/assets/css/slick-theme.css">
+
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+
+    <!-- bootsnav -->
+    <link rel="stylesheet" href="~/assets/css/bootsnav.css">
+
+    <!--style.css-->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+
+    <!--responsive.css-->
+    <link rel="stylesheet" href="~/assets/css/responsive.css">
+
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-top">
-                <div class="header-language dropdow">
-                    <div class="header-language-select">
-                        <span style="color:black;">Tiếng Việt <i class="fa-solid fa-chevron-down"></i></span>
-                    </div>
-                    <ul class="header-language-list dropdow-list" style="background:none;">
-                        <li class="header-language-item dropdow-item">
-                            <img src="./images/vn-logo.webp"
-                                 alt=""
-                                 class="header-nation" />
-                            <a href="#" class="dropdow-link" style="color:black;">Tiếng Việt</a>
+    <header id="header-top" class="header-top">
+        <ul>
+            <li>
+                <div class="header-top-left">
+                    <ul>
+                        <li class="select-opt">
+                            <select name="language" id="language">
+                                <option value="default">EN</option>
+                                <option value="Bangla">BN</option>
+                                <option value="Arabic">AB</option>
+                            </select>
                         </li>
-                        <li class="header-language-item dropdow-item">
-                            <img src="./images/usa-logo.webp"
-                                 alt=""
-                                 class="header-nation" />
-                            <a href="#" class="dropdow-link" style="color:black;">English</a>
+                        <li class="select-opt">
+                            <select name="currency" id="currency">
+                                <option value="usd">USD</option>
+                                <option value="euro">Euro</option>
+                                <option value="bdt">BDT</option>
+                            </select>
                         </li>
-                    </ul>
-                </div>
-
-                <div class="header-auth">
-                    <a href="#" class="header-auth-text sign-up-offer" style="color:black;">
-                        ĐĂNG KÝ VÀ NHẬN 100.000 VNĐ
-                    </a>
-
-                    <a href="#" class="header-auth-text store-system" style="color:black;">
-                        Hệ Thống văn phòng Toàn Quốc
-                        <i class="fa-solid fa-location-dot"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="header-content">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img srcset="./images/logo.png 2x" alt="" class="header-logo" /></a>
-
-                <div class="header-feature">
-                    <div class="header-search">
-                        <form action="#" class="header-search-form" style="background:none;">
-                            <input type="text"
-                                   class="header-search-input"
-                                   placeholder="Bạn đang tìm gì ..." style="background:none;" />
-                            <button class="header-search-submit button button-green" style="background:none;">
-                                <i class="fa-sharp fa-solid fa-magnifying-glass header-search-icon"></i>
-                                Tìm kiếm
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="header-cart" style="background:none;">
-                        <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Index" class="header-cart-submit" style="color:black;">
-                            <i class="fa-solid fa-cart-shopping header-cart-icon"></i>
-                            Danh sách yêu thích
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="header-menu">
-                <ul class="menu">
-                    <li class="menu-item">
-                        <a style="color:black;" class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
-                    </li>
-                    <li class="menu-item">
-                        <a asp-controller="Homestays" asp-action="Index" style="color:black;" class="menu-link">
-                            Homestays
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a asp-controller="Tours" asp-action="Index" style="color:black;" class="menu-link">
-                            Tour du lịch
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" style="color:black;" asp-controller="News" asp-action="Index">Tin Tức</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" style="color:black;" class="menu-link">Liên hệ</a>
-                    </li>
-                </ul>
-                <div class="dropdow">
-                    <a href="#" class="header-auth-text account">
-                        <i class="fa-regular fa-user " style="font-size:28px; color:black;"></i>
-                    </a>
-                    <ul class="dropdow-list" style="background:none;">
-                        <li class="dropdow-item">
-                            <a class="" style="color:black;" asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Đăng ký</a>
-                        </li>
-                        <li class="dropdow-item">
-                            <a class="" style="color:black;" asp-area="CustomerUser" asp-controller="Login" asp-action="Index">Đăng nhập</a>
+                        <li class="select-opt">
+                            <a href="#"><span class="lnr lnr-magnifier"></span></a>
                         </li>
                     </ul>
                 </div>
+            </li>
+            <li class="head-responsive-right pull-right">
+                <div class="header-top-right">
+                    <ul>
+                        <li class="header-top-contact">
+                            +84 368 966 992
+                        </li>
+                        <li class="header-top-contact">
+                            <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Đăng ký</a>
+                        </li>
+                        <li class="header-top-contact">
+                            <a asp-area="CustomerUser" asp-controller="Login" asp-action="Index">Đăng nhập</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+    </header><!--/.header-top-->
+    <!--header-top end -->
+    <!-- top-area Start -->
+    <section class="top-area">
+        <div class="header-area">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+
+                <div class="container">
+
+                    <!-- Start Header Navigation -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="index">TravelIn<span>VietNam</span></a>
+
+                    </div><!--/.navbar-header-->
+                    <!-- End Header Navigation -->
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class=" scroll active"><a href="#home">Trang chủ</a></li>
+                            <li class="scroll"><a href="#works">Giới thiệu</a></li>
+                            <li class="scroll"><a href="#explore">Tour du lịch</a></li>
+                            <li class="scroll"><a href="#reviews">Đánh giá</a></li>
+                            <li class="scroll"><a href="#blog">Tin Tức</a></li>
+                            <li class="scroll"><a href="#contact">Liên lạc</a></li>
+                        </ul><!--/.nav -->
+                    </div><!-- /.navbar-collapse -->
+                </div><!--/.container-->
+            </nav><!--/nav-->
+            <!-- End Navigation -->
+        </div><!--/.header-area-->
+        <div class="clearfix"></div>
+
+    </section><!-- /.top-area-->
+    <!-- top-area End -->
+    <main role="main" class="pb-3 mt-2">
+        @RenderBody()
+    </main>
+    <!--footer start-->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="footer-menu">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" id="index">TravelIn<span>VietNam</span></a>
+                        </div><!--/.navbar-header-->
+                    </div>
+                    <div class="col-sm-9">
+                        <ul class="footer-menu-item">
+                            <li class="scroll"><a id="works">Giới thiệu</a></li>
+                            <li class="scroll"><a id="explore">Tour du lịch</a></li>
+                            <li class="scroll"><a id="reviews">Đánh giá</a></li>
+                            <li class="scroll"><a id="blog">Tin tức</a></li>
+                            <li class="scroll"><a id="contact">Liên lạc</a></li>
+                            <li class=" scroll"><a id="contact">my account</a></li>
+                        </ul><!--/.nav -->
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="container">
-            <main role="main" class="pb-3 mt-2">
-                @RenderBody()
-            </main>
-        </div>
-    </header>
+            <div class="hm-footer-copyright">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <p>
+                            &copy;copyright. designed and developed by <a href="https://github.com/damquocdan">Đàm Quốc Dân</a>
+                        </p><!--/p-->
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="footer-social">
+                            <span><i class="fa fa-phone"> (+84) 368 966 992</i></span>
+                            <a href="https://www.facebook.com/damquocdann"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
 
+            </div><!--/.hm-footer-copyright-->
+        </div><!--/.container-->
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - LuxuryLife - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+        <div id="scroll-Top">
+            <div class="return-to-top">
+                <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+            </div>
+
+        </div><!--/.scroll-Top-->
+
+    </footer><!--/.footer-->
+    <!--footer end-->
+    <script src="~/assets/js/jquery.js"></script>
+
+    <!--modernizr.min.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+    <!--bootstrap.min.js-->
+    <script src="~/assets/js/bootstrap.min.js"></script>
+
+    <!-- bootsnav js -->
+    <script src="~/assets/js/bootsnav.js"></script>
+
+    <!--feather.min.js-->
+    <script src="~/assets/js/feather.min.js"></script>
+
+    <!-- counter js -->
+    <script src="~/assets/js/jquery.counterup.min.js"></script>
+    <script src="~/assets/js/waypoints.min.js"></script>
+
+    <!--slick.min.js-->
+    <script src="~/assets/js/slick.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <!--Custom JS-->
+    <script src="~/assets/js/custom.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
