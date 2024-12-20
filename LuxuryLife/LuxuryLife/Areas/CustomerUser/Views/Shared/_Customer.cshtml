@@ -91,7 +91,7 @@
                             +84 368 966 992
                         </li>
                         <li class="header-top-contact">
-                            <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Thông tin</a>
+                            <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Details" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">Thông tin</a>
                         </li>
                         <li class="header-top-contact">
                             <a asp-area="CustomerUser" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
@@ -122,14 +122,32 @@
                     <!-- End Header Navigation -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li class=" scroll active"><a href="#home">Trang chủ</a></li>
-                            <li class="scroll"><a href="#works">Giới thiệu</a></li>
-                            <li class="scroll"><a href="#explore">Tour du lịch</a></li>
-                            <li class="scroll"><a href="#reviews">Đánh giá</a></li>
-                            <li class="scroll"><a href="#blog">Tin Tức</a></li>
-                            <li class="scroll"><a href="#contact">Liên lạc</a></li>
-                        </ul><!--/.nav -->
+                        @if (ViewContext.RouteData.Values["area"]?.ToString() == "CustomerUser"
+                        && ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard"
+                        && ViewContext.RouteData.Values["action"]?.ToString() == "Index")
+                        {
+                            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                                <li class="scroll active"><a href="#home">Trang chủ</a></li>
+                                <li class="scroll"><a href="#works">Giới thiệu</a></li>
+                                <li class="scroll"><a href="#explore">Tour du lịch</a></li>
+                                <li class="scroll"><a href="#reviews">Đánh giá</a></li>
+                                <li class="scroll"><a href="#blog">Tin Tức</a></li>
+                                <li class="scroll"><a href="#contact">Liên lạc</a></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                                <li class="scroll active"><a href="#home">Trang chủ</a></li>
+                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a></li>
+                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Tour du lịch</a></li>
+                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Đánh giá</a></li>
+                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Tin Tức</a></li>
+                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Liên lạc</a></li>
+                            </ul>
+                        }
+
+
                     </div><!-- /.navbar-collapse -->
                 </div><!--/.container-->
             </nav><!--/nav-->
@@ -159,7 +177,6 @@
                             <li class="scroll"><a href="#reviews">Đánh giá</a></li>
                             <li class="scroll"><a href="#blog">Tin tức</a></li>
                             <li class="scroll"><a href="#contact">Liên lạc</a></li>
-                            <li class=" scroll"><a href="#contact">my account</a></li>
                         </ul><!--/.nav -->
                     </div>
                 </div>
