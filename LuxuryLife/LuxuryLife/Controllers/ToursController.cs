@@ -19,18 +19,43 @@ namespace LuxuryLife.Controllers
         }
 
         // GET: Tours
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string query, string description)
         {
-            ViewData["Tours"] = _context.Tours
-        .Include(t => t.Provider)
-        .OrderByDescending(t => t.TourId) // Sắp xếp theo ngày tạo
-        .ToList();
-            ViewData["Providers"] = _context.Providers.ToList();
-            ViewData["News"] = _context.News.OrderByDescending(n => n.Createdate).Take(3).ToList();
-            ViewData["Customers"] = _context.Customers.ToList();
-            ViewData["Reviews"] = _context.Reviews.Include(r => r.Tour).Include(r => r.Customer).ToList();
-            return View();
+            // Initialize tours queryable
+            var tours = _context.Tours
+                .Include(t => t.Provider) // Include related data
+                .AsQueryable();
+
+            // Filter by query (name or description)
+            if (!string.IsNullOrEmpty(query))
+            {
+                tours = tours.Where(t => t.Name.Contains(query) || t.Description.Contains(query));
+            }
+
+            // Additional filter by description
+            if (!string.IsNullOrEmpty(description))
+            {
+                tours = tours.Where(t => t.Description.Contains(description));
+            }
+
+            // Fetch filtered tours asynchronously
+            var filteredTours = await tours
+                .OrderByDescending(t => t.TourId) // Sort by TourId in descending order
+                .ToListAsync();
+
+            // Load other necessary data
+            ViewData["Tours"] = filteredTours;
+            ViewData["Providers"] = await _context.Providers.ToListAsync();
+            ViewData["Customers"] = await _context.Customers.ToListAsync();
+            ViewData["Reviews"] = await _context.Reviews
+                .Include(r => r.Tour)
+                .Include(r => r.Customer)
+                .ToListAsync();
+
+            // Pass the filtered tours to the view
+            return View(filteredTours);
         }
+
 
         // GET: Tours/Details/5
         public async Task<IActionResult> Details(int? id)

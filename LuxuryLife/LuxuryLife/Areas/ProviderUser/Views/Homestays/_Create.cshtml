@@ -55,7 +55,12 @@
                     <span asp-validation-for="PricePerNight" class="text-danger"></span>
                 </div>
             </div>
-
+            <div class="form-group row">
+                <label asp-for="TourId" class="col-md-4 col-form-label"></label>
+                <div class="col-md-8">
+                    <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+                </div>
+            </div>
             <!-- Hidden ProviderId Field -->
             <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
 

@@ -47,33 +47,36 @@
                 Tìm kiếm những Tour du lịch, Homestays và các dịch vụ mọi thứ với chỉ một CLICK
             </p>
         </div>
-        <div class="welcome-hero-serch-box">
-            <div class="welcome-hero-form">
-                <div class="single-welcome-hero-form">
-                    <h3>what?</h3>
-                    <form action="index">
-                        <input type="text" placeholder="Ex: palce, resturent, food, automobile" />
-                    </form>
-                    <div class="welcome-hero-form-icon">
-                        <i class="flaticon-list-with-dots"></i>
+        <form asp-action="Index" asp-controller="Tours" method="get">
+            <div class="welcome-hero-serch-box">
+
+                <div class="welcome-hero-form">
+                    <div class="single-welcome-hero-form">
+                        <h3>What?</h3>
+                        <form action="index">
+                            <input type="text" name="query" placeholder="Ex: place, restaurant, food," />
+                        </form>
+                        <div class="welcome-hero-form-icon">
+                            <i class="flaticon-list-with-dots"></i>
+                        </div>
+                    </div>
+                    <div class="single-welcome-hero-form">
+                        <h3>Location</h3>
+                        <form action="index">
+                            <input type="text" name="decription" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
+                        </form>
+                        <div class="welcome-hero-form-icon">
+                            <i class="flaticon-gps-fixed-indicator"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="single-welcome-hero-form">
-                    <h3>location</h3>
-                    <form action="index">
-                        <input type="text" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
-                    </form>
-                    <div class="welcome-hero-form-icon">
-                        <i class="flaticon-gps-fixed-indicator"></i>
-                    </div>
+                <div class="welcome-hero-serch">
+                    <button type="submit" class="welcome-hero-btn">
+                        Tìm kiếm <i data-feather="search"></i>
+                    </button>
                 </div>
             </div>
-            <div class="welcome-hero-serch">
-                <button class="welcome-hero-btn" onclick="window.location.href='#'">
-                    Tìm kiếm  <i data-feather="search"></i>
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
 
 </section><!--/.welcome-hero-->
@@ -306,11 +309,11 @@
                         </div><!--/.testimonial-info-->
                         <div class="testimonial-comment">
                             <p class="text-truncate">
-                               @review.Comment
+                                @review.Comment
                             </p>
                             <p class="">
                                 <b>Tour du lịch: @review.Tour.Name</b>
-                                
+
                             </p>
                         </div><!--/.testimonial-comment-->
                     </div><!--/.testimonial-description-->
@@ -371,7 +374,7 @@
         </div><!--/.section-header-->
         <div class="blog-content">
             <div class="row">
-                @foreach(var n in news)
+                @foreach (var n in news)
                 {
                     <div class="col-md-4 col-sm-6">
                         <div class="single-blog-item">
@@ -411,7 +414,7 @@
                 <div class="subscription-input-group">
                     <form method="post">
 
-                        <input asp-for="Email" class="subscription-input-form" placeholder="Nhập email của bạn tại đây"  />
+                        <input asp-for="Email" class="subscription-input-form" placeholder="Nhập email của bạn tại đây" />
 
                         <button class="appsLand-btn subscribe-btn" type="submit">
                             Gửi

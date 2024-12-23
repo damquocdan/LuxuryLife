@@ -60,6 +60,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Homestays/Create
         public IActionResult Create()
         {
+            int providerId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
+            var providerTours = _context.Tours.Where(t => t.ProviderId == providerId).ToList();
+            ViewData["TourId"] = new SelectList(providerTours, "TourId", "Name");
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return PartialView("_Create");
@@ -73,7 +76,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId")] Homestay homestay)
+        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId ,TourId")] Homestay homestay)
         {
             homestay.ProviderId = HttpContext.Session.GetInt32("ProviderId") ?? 0;
             if (ModelState.IsValid)
@@ -102,6 +105,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "TourId", homestay.TourId);
             return View(homestay);
         }
 
