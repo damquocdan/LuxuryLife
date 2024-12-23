@@ -96,7 +96,7 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
                 return NotFound();
             }
 
-            return PartialView("Details",favourite);
+            return PartialView("_FavoriteDetail",favourite);
         }
 
 

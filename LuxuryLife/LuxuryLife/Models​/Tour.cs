@@ -64,5 +64,6 @@ namespace LuxuryLife.Models
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
         public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+        public virtual ICollection<Homestay> Homestays { get; set; } = new List<Homestay>();
     }
 }

@@ -220,10 +220,13 @@ namespace LuxuryLife.Migrations
                     b.Property<int?>("ProviderId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TourId")
+                        .HasColumnType("int");
+
                     b.HasKey("HomestayId")
                         .HasName("PK__Homestay__EDCB5CBABC26500E");
 
-                    b.HasIndex("ProviderId");
+                    b.HasIndex("TourId");
 
                     b.ToTable("Homestay", (string)null);
                 });
@@ -503,11 +506,11 @@ namespace LuxuryLife.Migrations
 
             modelBuilder.Entity("LuxuryLife.Models.Homestay", b =>
                 {
-                    b.HasOne("LuxuryLife.Models.Provider", "Provider")
-                        .WithMany()
-                        .HasForeignKey("ProviderId");
+                    b.HasOne("LuxuryLife.Models.Tour", "Tour")
+                        .WithMany("Homestays")
+                        .HasForeignKey("TourId");
 
-                    b.Navigation("Provider");
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("LuxuryLife.Models.Listimagestour", b =>
@@ -576,6 +579,8 @@ namespace LuxuryLife.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Favourites");
+
+                    b.Navigation("Homestays");
 
                     b.Navigation("Listimagestours");
 

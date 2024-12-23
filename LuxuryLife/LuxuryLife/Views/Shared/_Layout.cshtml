@@ -123,12 +123,12 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
                         <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li class=" scroll active"><a href="#home">Trang chủ</a></li>
-                            <li class="scroll"><a href="#works">Giới thiệu</a></li>
-                            <li class="scroll"><a href="#explore">Tour du lịch</a></li>
-                            <li class="scroll"><a href="#reviews">Đánh giá</a></li>
-                            <li class="scroll"><a href="#blog">Tin Tức</a></li>
-                            <li class="scroll"><a href="#contact">Liên lạc</a></li>
+                            <li class=" scroll active"><a asp-controller="Home" asp-action="Index" onclick="scrollToSection('home'); return false;">Trang chủ</a></li>
+                            <li class="scroll"><a asp-controller="Home" asp-action="Index" onclick="scrollToSection('works'); return false;">Giới thiệu</a></li>
+                            <li class="scroll"><a asp-controller="Home" asp-action="Index" onclick="scrollToSection('explore'); return false;">Tour du lịch</a></li>
+                            <li class="scroll"><a asp-controller="Home" asp-action="Index" onclick="scrollToSection('reviews'); return false;">Đánh giá</a></li>
+                            <li class="scroll"><a asp-controller="Home" asp-action="Index" onclick="scrollToSection('blog'); return false;" >Tin Tức</a></li>
+                            <li class="scroll"><a asp-controller="Home" asp-action="Index" onclick="scrollToSection('contact'); return false;">Liên lạc</a></li>
                         </ul><!--/.nav -->
                     </div><!-- /.navbar-collapse -->
                 </div><!--/.container-->
@@ -225,3 +225,11 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+</script>

@@ -28,5 +28,8 @@ namespace LuxuryLife.Models
 
         [Display(Name = "Mã Nhà Cung Cấp")]
         public int? ProviderId { get; set; }
+        [Display(Name = "Mã Tour")]
+        public int? TourId { get; set; }
+        public virtual Tour? Tour { get; set; }
     }
 }

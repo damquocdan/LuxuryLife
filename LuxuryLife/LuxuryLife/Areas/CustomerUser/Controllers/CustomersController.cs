@@ -60,7 +60,8 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
             {
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Dashboard");
+
             }
             return View(customer);
         }
@@ -97,6 +98,37 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
             {
                 try
                 {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+
+                        // Đảm bảo thư mục lưu trữ tồn tại
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/customers");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        // Tạo tên file duy nhất để tránh xung đột
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Lưu file vào thư mục
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Cập nhật đường dẫn Avatar
+                        customer.Avatar = "/images/customers/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        // Nếu không upload file mới, giữ nguyên ảnh cũ
+                        var existingAdmin = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(a => a.CustomerId == customer.CustomerId);
+                        if (existingAdmin != null)
+                        {
+                            customer.Avatar = existingAdmin.Avatar;
+                        }
+                    }
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
@@ -111,7 +143,7 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { CustomerId = customer.CustomerId });
             }
             return View(customer);
         }

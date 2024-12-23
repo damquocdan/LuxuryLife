@@ -27,7 +27,6 @@
     <Folder Include="Areas\AdminQL\Data\" />
     <Folder Include="Areas\CustomerUser\Data\" />
     <Folder Include="Areas\ProviderUser\Data\" />
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\listimagetour\" />
     <Folder Include="wwwroot\images\admins\" />
     <Folder Include="wwwroot\images\customers\" />

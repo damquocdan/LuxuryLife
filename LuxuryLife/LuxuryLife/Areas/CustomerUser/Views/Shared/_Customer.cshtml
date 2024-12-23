@@ -88,7 +88,7 @@
                 <div class="header-top-right">
                     <ul>
                         <li class="header-top-contact">
-                            +84 368 966 992
+                            <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Index" asp-route-customerId="@Context.Session.GetInt32("CustomerId")"><i class="fa-regular fa-bookmark"></i></a>
                         </li>
                         <li class="header-top-contact">
                             <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Details" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">Thông tin</a>
@@ -122,30 +122,16 @@
                     <!-- End Header Navigation -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-                        @if (ViewContext.RouteData.Values["area"]?.ToString() == "CustomerUser"
-                        && ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard"
-                        && ViewContext.RouteData.Values["action"]?.ToString() == "Index")
-                        {
-                            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                                <li class="scroll active"><a href="#home">Trang chủ</a></li>
-                                <li class="scroll"><a href="#works">Giới thiệu</a></li>
-                                <li class="scroll"><a href="#explore">Tour du lịch</a></li>
-                                <li class="scroll"><a href="#reviews">Đánh giá</a></li>
-                                <li class="scroll"><a href="#blog">Tin Tức</a></li>
-                                <li class="scroll"><a href="#contact">Liên lạc</a></li>
-                            </ul>
-                        }
-                        else
-                        {
-                            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                                <li class="scroll active"><a href="#home">Trang chủ</a></li>
-                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a></li>
-                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Tour du lịch</a></li>
-                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Đánh giá</a></li>
-                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Tin Tức</a></li>
-                                <li class="scroll"><a asp-area="" asp-controller="Home" asp-action="Index">Liên lạc</a></li>
-                            </ul>
-                        }
+
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class=" scroll active"><a asp-controller="Dashboard" asp-action="Index" onclick="scrollToSection('home'); return false;">Trang chủ</a></li>
+                            <li class="scroll"><a asp-controller="Dashboard" asp-action="Index" onclick="scrollToSection('works'); return false;">Giới thiệu</a></li>
+                            <li class="scroll"><a asp-controller="Dashboard" asp-action="Index" onclick="scrollToSection('explore'); return false;">Tour du lịch</a></li>
+                            <li class="scroll"><a asp-controller="Dashboard" asp-action="Index" onclick="scrollToSection('reviews'); return false;">Đánh giá</a></li>
+                            <li class="scroll"><a asp-controller="Dashboard" asp-action="Index" onclick="scrollToSection('blog'); return false;">Tin Tức</a></li>
+                            <li class="scroll"><a asp-controller="Dashboard" asp-action="Index" onclick="scrollToSection('contact'); return false;">Liên lạc</a></li>
+                        </ul>
+
 
 
                     </div><!-- /.navbar-collapse -->
@@ -242,3 +228,11 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+</script>
