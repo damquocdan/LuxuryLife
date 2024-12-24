@@ -71,6 +71,6 @@
         <button class="cart-checkout-submit full">
             Đặt
         </button>
-        <button>Xem trực tiếp</button>
+        <a asp-controller="Tours" asp-action="Details" asp-route-id="@Model?.TourId">Xem trực tiếp</a>
     </div>
 </div>

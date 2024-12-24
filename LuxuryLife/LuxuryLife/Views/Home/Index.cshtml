@@ -257,7 +257,7 @@
                                 <div class="explore-open-close-part">
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <button class="close-btn open-btn" onclick="window.location.href='#'">Xem chi tiết</button>
+                                            <a class="close-btn open-btn" asp-controller="Tours" asp-action="Details" asp-route-id="@tour?.TourId">Xem chi tiết</a>
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="explore-map-icon">

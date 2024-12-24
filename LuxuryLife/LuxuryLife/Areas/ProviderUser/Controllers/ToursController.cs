@@ -74,7 +74,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TourId,Name,Description,Destination,StartDate,EndDate,PricePerPerson,MaxParticipants,AvailableSeats,Rating,CreateDate")] Tour tour)
+        public async Task<IActionResult> Create([Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour)
         {
             // Gán ProviderId từ session
             ViewData["ProviderId"] = HttpContext.Session.GetInt32("ProviderId");
@@ -145,7 +145,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TourId,Name,Description,Destination,StartDate,EndDate,PricePerPerson,MaxParticipants,AvailableSeats,Rating,ProviderId,CreateDate")] Tour tour)
+        public async Task<IActionResult> Edit(int id, [Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour)
         {
             if (id != tour.TourId)
             {
