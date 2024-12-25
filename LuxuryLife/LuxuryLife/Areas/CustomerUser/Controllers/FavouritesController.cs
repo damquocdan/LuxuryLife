@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LuxuryLife.Areas.CustomerUser.Controllers
 {
@@ -240,6 +241,8 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
             // Return a partial view or a success response
             return Json(new { success = true, message = "Item removed successfully!" });
         }
+        [Authorize]
+        public IActionResult PaymentCallBack() { return View(); }
 
     }
 }

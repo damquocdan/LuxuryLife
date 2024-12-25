@@ -68,9 +68,9 @@
             <p>@Model.Tour.Description</p>
             
             <h3>@string.Format("{0:C}", Model.Tour.Price)</h3>
-        <button class="cart-checkout-submit full">
+        <a class="cart-checkout-submit full">
             Đặt
-        </button>
+        </a>
         <a asp-controller="Tours" asp-action="Details" asp-route-id="@Model?.TourId">Xem trực tiếp</a>
     </div>
 </div>
