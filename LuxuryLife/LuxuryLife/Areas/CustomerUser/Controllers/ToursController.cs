@@ -24,6 +24,7 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
         {
             // Initialize tours queryable
             var tours = _context.Tours
+                .Where(t => t.Status == "Active") // Filter by active status
                 .Include(t => t.Provider) // Include related data
                 .AsQueryable();
 
@@ -56,6 +57,7 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
             // Pass the filtered tours to the view
             return View(filteredTours);
         }
+
 
         // GET: CustomerUser/Tours/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -23,6 +23,7 @@ namespace LuxuryLife.Controllers
         {
             // Initialize tours queryable
             var tours = _context.Tours
+                .Where(t => t.Status == "Active") // Filter by active status
                 .Include(t => t.Provider) // Include related data
                 .AsQueryable();
 

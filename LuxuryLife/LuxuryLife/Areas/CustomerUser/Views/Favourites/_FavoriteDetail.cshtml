@@ -52,6 +52,16 @@
 
 .cart-checkout-submit:hover {
     background-color: var(--button-hover-color);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
 }
 
 /* Responsive */
@@ -68,7 +78,7 @@
             <p>@Model.Tour.Description</p>
             
             <h3>@string.Format("{0:C}", Model.Tour.Price)</h3>
-        <a class="cart-checkout-submit full">
+        <a asp-controller="Bookings" asp-action="Create" class="cart-checkout-submit full" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@Model.Tour.TourId">
             Đặt
         </a>
         <a asp-controller="Tours" asp-action="Details" asp-route-id="@Model?.TourId">Xem trực tiếp</a>
