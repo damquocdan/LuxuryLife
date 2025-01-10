@@ -19,13 +19,19 @@ public partial class TourBookingContext : DbContext
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
+    public virtual DbSet<Contact> Contacts { get; set; }
+
     public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<CustomerInteraction> CustomerInteractions { get; set; }
 
     public virtual DbSet<Favourite> Favourites { get; set; }
 
     public virtual DbSet<Homestay> Homestays { get; set; }
 
     public virtual DbSet<Listimagestour> Listimagestours { get; set; }
+
+    public virtual DbSet<MomoPayment> MomoPayments { get; set; }
 
     public virtual DbSet<News> News { get; set; }
 
@@ -63,6 +69,10 @@ public partial class TourBookingContext : DbContext
 
             entity.ToTable("Booking");
 
+            entity.HasIndex(e => e.CustomerId, "IX_Booking_CustomerId");
+
+            entity.HasIndex(e => e.TourId, "IX_Booking_TourId");
+
             entity.Property(e => e.BookingDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -78,6 +88,28 @@ public partial class TourBookingContext : DbContext
             entity.HasOne(d => d.Tour).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.TourId)
                 .HasConstraintName("FK__Booking__TourId__59063A47");
+        });
+
+        modelBuilder.Entity<Contact>(entity =>
+        {
+            entity.HasKey(e => e.ContactId).HasName("PK__Contact__5C66259B1A49F1D3");
+
+            entity.ToTable("Contact");
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Phone).HasMaxLength(15);
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasDefaultValue("Pending");
+            entity.Property(e => e.Subject).HasMaxLength(255);
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.Contacts)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK__Contact__Custome__2FCF1A8A");
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -101,11 +133,35 @@ public partial class TourBookingContext : DbContext
             entity.Property(e => e.Preferences).HasMaxLength(255);
         });
 
+        modelBuilder.Entity<CustomerInteraction>(entity =>
+        {
+            entity.HasKey(e => e.InteractionId).HasName("PK__Customer__922C0496A7DD884B");
+
+            entity.ToTable("CustomerInteraction");
+
+            entity.Property(e => e.InteractionDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.InteractionType).HasMaxLength(50);
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.CustomerInteractions)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK__CustomerI__Custo__2A164134");
+
+            entity.HasOne(d => d.Tour).WithMany(p => p.CustomerInteractions)
+                .HasForeignKey(d => d.TourId)
+                .HasConstraintName("FK__CustomerI__TourI__2B0A656D");
+        });
+
         modelBuilder.Entity<Favourite>(entity =>
         {
             entity.HasKey(e => e.FavoriteId).HasName("PK__Favourit__CE74FAD5B2B8E927");
 
             entity.ToTable("Favourite");
+
+            entity.HasIndex(e => e.CustomerId, "IX_Favourite_CustomerId");
+
+            entity.HasIndex(e => e.TourId, "IX_Favourite_TourId");
 
             entity.Property(e => e.Sumprice).HasColumnType("decimal(18, 2)");
 
@@ -124,10 +180,14 @@ public partial class TourBookingContext : DbContext
 
             entity.ToTable("Homestay");
 
+            entity.HasIndex(e => e.TourId, "IX_Homestay_TourId");
+
             entity.Property(e => e.Address).HasMaxLength(255);
             entity.Property(e => e.Image).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.PricePerNight).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Tour).WithMany(p => p.Homestays).HasForeignKey(d => d.TourId);
         });
 
         modelBuilder.Entity<Listimagestour>(entity =>
@@ -135,6 +195,8 @@ public partial class TourBookingContext : DbContext
             entity.HasKey(e => e.ListimagestourId).HasName("PK__Listimag__C13099DB06DC99D8");
 
             entity.ToTable("Listimagestour");
+
+            entity.HasIndex(e => e.TourId, "IX_Listimagestour_TourId");
 
             entity.Property(e => e.Createdate)
                 .HasDefaultValueSql("(getdate())")
@@ -145,6 +207,31 @@ public partial class TourBookingContext : DbContext
             entity.HasOne(d => d.Tour).WithMany(p => p.Listimagestours)
                 .HasForeignKey(d => d.TourId)
                 .HasConstraintName("FK__Listimage__TourI__46E78A0C");
+        });
+
+        modelBuilder.Entity<MomoPayment>(entity =>
+        {
+            entity.HasKey(e => e.PaymentId).HasName("PK__MomoPaym__9B556A384B72CF57");
+
+            entity.ToTable("MomoPayment");
+
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.PaymentDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.PaymentStatus)
+                .HasMaxLength(50)
+                .HasDefaultValue("Pending");
+            entity.Property(e => e.RequestId).HasMaxLength(100);
+            entity.Property(e => e.TransactionId).HasMaxLength(100);
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.MomoPayments)
+                .HasForeignKey(d => d.BookingId)
+                .HasConstraintName("FK__MomoPayme__Booki__3587F3E0");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.MomoPayments)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK__MomoPayme__Custo__3493CFA7");
         });
 
         modelBuilder.Entity<News>(entity =>
@@ -184,6 +271,10 @@ public partial class TourBookingContext : DbContext
 
             entity.ToTable("Review");
 
+            entity.HasIndex(e => e.CustomerId, "IX_Review_CustomerId");
+
+            entity.HasIndex(e => e.TourId, "IX_Review_TourId");
+
             entity.Property(e => e.Createdate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -204,6 +295,8 @@ public partial class TourBookingContext : DbContext
 
             entity.ToTable("Service");
 
+            entity.HasIndex(e => e.TourId, "IX_Service_TourId");
+
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.ServiceName).HasMaxLength(100);
 
@@ -217,6 +310,8 @@ public partial class TourBookingContext : DbContext
             entity.HasKey(e => e.TourId).HasName("PK__Tour__604CEA3002475256");
 
             entity.ToTable("Tour");
+
+            entity.HasIndex(e => e.ProviderId, "IX_Tour_ProviderId");
 
             entity.Property(e => e.Createdate)
                 .HasDefaultValueSql("(getdate())")
