@@ -1,4 +1,4 @@
-namespace ASP.NETCoreWebAPITour
+namespace ASPNETCoreWebAPITour
 {
     public class WeatherForecast
     {
