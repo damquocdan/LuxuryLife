@@ -1,0 +1,12 @@
+﻿@model LuxuryLife.Models.Service
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<h1>Xoá</h1>
+<h3>Bạn có muốn xoá dịch vụ <b>@Html.DisplayFor(model => model.ServiceName)</b> của nhà cung cấp <b>@Html.DisplayFor(model => model.Tour.Name)</b> </h3>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="ServiceId" />
+    <input type="submit" value="Xoá" class="btn btn-danger" />
+    <a asp-action="Index">Đóng</a>
+</form>

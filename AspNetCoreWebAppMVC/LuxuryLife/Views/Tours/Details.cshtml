@@ -1,0 +1,242 @@
+﻿@model LuxuryLife.Models.Tour
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    h2 {
+        color: #343a40;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    img {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tour-details {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 1000px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        padding: 10px 20px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .row img {
+        max-height: 200px;
+        margin-bottom: 10px;
+    }
+
+    .col-sm-4 img {
+        width: 100%;
+    }
+
+    dt, dd {
+        margin-bottom: 15px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        ul li {
+            margin-bottom: 15px;
+        }
+
+            ul li strong {
+                display: block;
+                font-weight: bold;
+            }
+
+    .section-title {
+        margin-top: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #495057;
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 5px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #495057;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 5px;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px; /* Negative margin for spacing consistency */
+    }
+
+    .col-md-6 {
+        padding: 15px; /* Adds spacing between columns */
+        display: flex;
+        align-items: center; /* Centers content vertically */
+        justify-content: center; /* Centers content horizontally */
+        overflow: hidden; /* Ensures clean visual boundaries */
+    }
+
+        .col-md-6 img {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 100%;
+            object-fit: cover; /* Ensures images maintain aspect ratio */
+        }
+
+        .col-md-6 p {
+            font-size: 16px;
+            color: #343a40;
+            line-height: 1.5;
+            margin: 0;
+            text-align: justify;
+        }
+
+    .section-container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+</style>
+
+<div class="container">
+    <div class="tour-details">
+        <h2 class="text-center">@Html.DisplayFor(model => model.Name)</h2>
+        <hr />
+        <div class="text-center mb-4">
+            <img src="@Model.Image" alt="@Model.Name" class="img-fluid" />
+        </div>
+
+        <div>
+            <h3 class="section-title text-center">Giới thiệu</h3>
+            <p>@Html.DisplayFor(model => model.Description)</p>
+        </div>
+
+        <div>
+            <h3 class="section-title text-center">Hình ảnh thêm</h3>
+            @if (Model.Listimagestours != null && Model.Listimagestours.Any())
+            {
+                <div class="row">
+                    @foreach (var image in Model.Listimagestours)
+                    {
+                        <div class="col-md-6" style="height:300px;">
+                            <img src="@image.ImageUrl" alt="@image.ImageDescription" class="img-fluid"width="100%" />
+                        </div>
+                        <div class="col-md-6" style="height:300px;">
+                            <p>@image.ImageDescription</p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Không có hình ảnh nào cho tour này</p>
+            }
+        </div>
+
+        
+
+        <div>
+            <h3 class="section-title text-center">Dịch vụ của tour</h3>
+            @if (Model.Services != null && Model.Services.Any())
+            {
+                <div class="row">
+                    @foreach (var service in Model.Services)
+                    {
+                        <div class="col-md-3">
+                            <strong>@service.ServiceName</strong>
+                            <p>@service.Description</p>
+                            <span>@string.Format("{0:C}", service.Price)</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No services available for this tour.</p>
+            }
+        </div>
+
+        
+
+        <div>
+            <h3 class="section-title text-center">Homestays cho tour du lịch</h3>
+            @if (Model.Homestays != null && Model.Homestays.Any())
+            {
+                <div class="row">
+                    @foreach (var homestay in Model.Homestays)
+                    {
+                        <div class="col-md-6">
+                            
+                            <ul>
+                                <li><strong>@homestay.Name</strong></li>
+                                <li>Địa chỉ: @homestay.Address</li>
+                                <li>Giá 1 đêm: @string.Format("{0:C}", homestay.PricePerNight)</li>
+                                <li>Mô tả: @homestay.Description</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@homestay.Image" alt="@homestay.Name" />
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No homestays available yet.</p>
+            }
+        </div>
+        <div>
+            <h3 class="section-title text-center">Price</h3>
+            <p>@string.Format("{0:C}", Model.Price)</p>
+        </div>
+
+        <div>
+            <h3 class="section-title text-center">Customer Reviews</h3>
+            @if (Model.Reviews != null && Model.Reviews.Any())
+            {
+                <ul>
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <li>
+                            <strong>@review.Customer.Name</strong>
+                            <p>@review.Comment</p>
+                            <p><em>Reviewed on: @review.Createdate</em></p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No reviews yet.</p>
+            }
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            <a class="btn btn-secondary" onclick="window.history.back();">Quay lại</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0ExfymJeIhnVLMaErV0mTRB83kC0U8rCce7Xlx8roF4/tF9w" crossorigin="anonymous"></script>

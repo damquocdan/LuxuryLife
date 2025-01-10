@@ -1,0 +1,60 @@
+﻿@model LuxuryLife.Models.News
+
+@{
+    ViewData["Title"] = "Chi Tiết Tin Tức";
+}
+<style>
+    details summary {
+        cursor: pointer;
+        color: #007bff;
+        text-decoration: underline;
+    }
+
+    details[open] summary {
+        color: #0056b3;
+    }
+</style>
+
+<div>
+    <h4>Thông Tin Tin Tức</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tiêu đề <!-- Tiêu đề -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt class="col-sm-2">
+            Nội dung <!-- Nội dung -->
+        </dt>
+        <dd class="col-sm-10">
+            <details>
+                <summary>Xem thêm</summary>
+                @Html.DisplayFor(model => model.Content)
+            </details>
+        </dd>
+
+
+
+        <dt class="col-sm-2">
+            Đường dẫn hình ảnh <!-- Đường dẫn hình ảnh -->
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.ImageUrl" alt="@Model.Title" width="300px" height="300px" />
+        </dd>
+
+        <dt class="col-sm-2">
+            Ngày tạo <!-- Ngày tạo -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Createdate)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.NewId" class="btn btn-warning">Chỉnh sửa</a> <!-- Chỉnh sửa -->
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a> <!-- Quay lại danh sách -->
+</div>

@@ -1,0 +1,94 @@
+﻿@model LuxuryLife.Models.Provider
+
+@{
+    ViewData["Title"] = "Chỉnh sửa nhà cung cấp";
+}
+
+<h1>Chỉnh sửa nhà cung cấp</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProviderId" />
+
+            <div class="form-group row">
+                <label asp-for="Name" class="col-sm-4 col-form-label">Tên</label>
+                <div class="col-sm-8">
+                    <input asp-for="Name" class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-4 col-form-label">Email</label>
+                <div class="col-sm-8">
+                    <input asp-for="Email" class="form-control" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Password" class="col-sm-4 col-form-label">Mật khẩu</label>
+                <div class="col-sm-8">
+                    <input asp-for="Password" class="form-control" required/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Avatar" class="col-sm-4 col-form-label">Ảnh đại diện</label>
+                <div class="col-sm-8">
+                    <input asp-for="Avatar" type="file" class="form-control" />
+                    @if (Model.Avatar != null)
+                    {
+                        <img src="@Url.Content(Model.Avatar)" alt="Current Avatar" class="img-thumbnail mt-2" style="max-width: 150px;" />
+                    }
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Phone" class="col-sm-4 col-form-label">Số điện thoại</label>
+                <div class="col-sm-8">
+                    <input asp-for="Phone" class="form-control"  required/>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Address" class="col-sm-4 col-form-label">Địa chỉ</label>
+                <div class="col-sm-8">
+                    <input asp-for="Address" class="form-control"required />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" hidden>
+                <label asp-for="Rating" class="col-sm-4 col-form-label">Đánh giá</label>
+                <div class="col-sm-8">
+                    <input asp-for="Rating" class="form-control" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" hidden>
+                <label asp-for="Createdate" class="col-sm-4 col-form-label">Ngày tạo</label>
+                <div class="col-sm-8">
+                    <input asp-for="Createdate" class="form-control" />
+                    <span asp-validation-for="Createdate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8">
+                    <input type="submit" value="Lưu" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

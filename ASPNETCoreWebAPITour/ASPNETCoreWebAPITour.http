@@ -1,6 +1,0 @@
-@ASPNETCoreWebAPITour_HostAddress = http://localhost:5039
-
-GET {{ASPNETCoreWebAPITour_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

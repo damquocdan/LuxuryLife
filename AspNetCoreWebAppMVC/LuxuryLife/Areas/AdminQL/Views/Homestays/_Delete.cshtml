@@ -1,0 +1,32 @@
+﻿@model LuxuryLife.Models.Homestay
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xoá</h1>
+
+<h3>Bạn có muốn xoá Homestay:@Html.DisplayFor(model => model.Name) này </h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.PricePerNight)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.PricePerNight)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="HomestayId" />
+        <input type="submit" value="Xoá" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-success">Đóng</a>
+    </form>
+</div>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<LuxuryLife.Models.Tour>
+
+@{
+    ViewData["Title"] = "Danh Sách Tour";
+}
+
+<h1 class="text-primary">Danh Sách Tour</h1>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Tên Tour</th>
+                    <th>Hình Ảnh</th>
+                    <th>Trạng Thái</th>
+                    <th>Nhà Cung Cấp</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td width="450px">
+                            <img src="@item.Image" alt="@item.Name" class="img-thumbnail" style="width:100%; height: 20rem;" />
+                        </td>
+                        <td>
+                            @if (item.Status == "Active")
+                            {
+                                <span class="badge bg-success">Hoạt động</span>
+                            }
+                            else if (item.Status == "Inactive")
+                            {
+                                <span class="badge bg-danger">Không hoạt động</span>
+                            }
+                            else if (item.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Chờ xử lý</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Trạng thái không xác định</span>
+                            }
+
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Provider.Name)</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.TourId })">Sửa</button>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.TourId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.TourId })">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="actionTour"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionTour").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

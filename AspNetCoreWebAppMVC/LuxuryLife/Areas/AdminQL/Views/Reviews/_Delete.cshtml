@@ -1,0 +1,44 @@
+﻿@model LuxuryLife.Models.Review
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xoá</h1>
+
+<h3>Bạn có muốn xoá bình luận đánh giá này ?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Createdate)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Createdate)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Customer.Name) khách hàng
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Tour.Name)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Tour.Name)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ReviewId" />
+        <input type="submit" value="Xoá" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-success">Đóng</a>
+    </form>
+</div>

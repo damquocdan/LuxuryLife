@@ -1,0 +1,75 @@
+﻿@model LuxuryLife.Models.Tour
+
+@{
+    ViewData["Title"] = "Chỉnh sửa trạng thái Tour";
+}
+<h1 class="text-center">Chỉnh sửa trạng thái Tour</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="TourId" />
+
+            <!-- Status Field -->
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="form-label">Trạng thái</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Active">Hoạt động</option>
+                    <option value="Inactive">Không hoạt động</option>
+                    <option value="Pending">Chờ xử lý</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <!-- Hidden Fields (for other data) -->
+            <div class="form-group mb-3">
+                <input asp-for="Name" type="hidden" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3" hidden>
+
+                <input asp-for="Image" type="file" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <input asp-for="Description" type="hidden" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <input asp-for="ServiceId" type="hidden" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <input asp-for="HomestayId" type="hidden" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <input asp-for="PricePerson" type="hidden" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3 d-none">
+                <input asp-for="StartDate" type="date" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3 d-none">
+                <input asp-for="EndDate" type="date" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <input asp-for="Price" type="hidden" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3 d-none">
+                <input asp-for="Createdate" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="ProviderId" class="control-label"></label>
+                <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.ProviderId"></select>
+                <span asp-validation-for="ProviderId" class="text-danger"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

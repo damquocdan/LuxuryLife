@@ -1,0 +1,77 @@
+﻿@model IEnumerable<LuxuryLife.Models.Service>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
+}
+
+<h1>Danh sách các dịch vụ của nhà cung cấp</h1>
+
+<p>
+    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Create")">Thêm mới</button>
+</p>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ServiceName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tour)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tour.Name)
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.ServiceId })">Sửa</button>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.ServiceId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.ServiceId })">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="actionService">
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionService").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

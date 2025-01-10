@@ -1,0 +1,96 @@
+﻿@model IEnumerable<LuxuryLife.Models.Booking>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
+}
+
+<h1>Danh sách các đơn đặt tour</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CheckInDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CheckOutDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tour)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckInDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckOutDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.BookingId">
+                                @Html.DisplayFor(modelItem => item.Customer.Name)
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.BookingId">
+                                @Html.DisplayFor(modelItem => item.Tour.Name)
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.BookingId })">Chi tiết</button>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="detail">
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".detail").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

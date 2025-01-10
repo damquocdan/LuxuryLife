@@ -1,0 +1,121 @@
+﻿﻿﻿﻿@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
+    <!-- Brand Logo -->
+    <a href="/adminql/dashboard" class="brand-link">
+        <img src="~/images/Logo.jpg" alt="Logo Hunre" class="" width="75px">
+        <span class="brand-text font-weight-light ms-2">Nhà cung cấp</span>
+    </a>
+
+    <!-- Sidebar
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex position-fixed bottom-0 ">
+        <div class="image">
+            <img src="~/images/Logo.jpg" class="img-circle elevation-2" alt="Logo">
+        </div>
+        <div class="info">
+            @{
+                if (HttpContextAccessor.HttpContext.Session.GetString("ProviderLogin") != null)
+                {
+                    <a href="#" class="d-block">@HttpContextAccessor.HttpContext.Session.GetString("ProviderLogin")</a>
+                    <a asp-action="Logout" asp-controller="Login">Đăng xuất</a>
+                }
+                else
+                {
+                    <a href="#" class="d-block">DamQuocDan</a>
+                }
+            }
+        </div>
+    </div>
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-item">
+                <a asp-area="ProviderUser" asp-controller="Providers" asp-action="Details" asp-route-id="@Context.Session.GetInt32("ProviderId")" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-solid fa-user-tie fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Tài khoản nhà cung cấp
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="ProviderUser" asp-controller="Customers" asp-action="Index" asp-route-id="@Context.Session.GetInt32("ProviderId")" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-solid fa-house-user fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Quản lý khách hàng
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/provideruser/listimagestours" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-solid fa-house-user fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Quản lý hình ảnh tour
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/provideruser/services" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-solid fa-list fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Quản lý dịch vụ
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/provideruser/bookings" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-regular fa-newspaper fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Quản lý đơn đặt
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/provideruser/homestays" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-solid fa-wallet fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Quản lý homestays
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/provideruser/tours" class="nav-link">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center" style="width: 30px">
+                            <i class="fa-solid fa-file-signature fa-xl"></i>
+                        </div>
+                        <p class="ms-3">
+                            Quản lý tour
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>

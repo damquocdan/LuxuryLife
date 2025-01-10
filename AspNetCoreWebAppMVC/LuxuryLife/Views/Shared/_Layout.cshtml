@@ -1,0 +1,227 @@
+﻿@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!--font-family-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- title of site -->
+    <title>Directory Landing Page</title>
+
+    <!-- For favicon png -->
+    <link rel="shortcut icon" type="image/icon" href="~/assets/logo/favicon.png" />
+
+    <!--font-awesome.min.css-->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+
+    <!--linear icon css-->
+    <link rel="stylesheet" href="~/assets/css/linearicons.css">
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="~/assets/css/animate.css">
+
+    <!--flaticon.css-->
+    <link rel="stylesheet" href="~/assets/css/flaticon.css">
+
+    <!--slick.css-->
+    <link rel="stylesheet" href="~/assets/css/slick.css">
+    <link rel="stylesheet" href="~/assets/css/slick-theme.css">
+
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+
+    <!-- bootsnav -->
+    <link rel="stylesheet" href="~/assets/css/bootsnav.css">
+
+    <!--style.css-->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+
+    <!--responsive.css-->
+    <link rel="stylesheet" href="~/assets/css/responsive.css">
+
+</head>
+<body>
+    <header id="header-top" class="header-top">
+        <ul>
+            <li>
+                <div class="header-top-left">
+                    <ul>
+                        <li class="select-opt">
+                            <select name="language" id="language">
+                                <option value="default">EN</option>
+                                <option value="Bangla">BN</option>
+                                <option value="Arabic">AB</option>
+                            </select>
+                        </li>
+                        <li class="select-opt">
+                            <select name="currency" id="currency">
+                                <option value="usd">USD</option>
+                                <option value="euro">Euro</option>
+                                <option value="bdt">BDT</option>
+                            </select>
+                        </li>
+                        <li class="select-opt">
+                            <a href="#"><span class="lnr lnr-magnifier"></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="head-responsive-right pull-right">
+                <div class="header-top-right">
+                    <ul>
+                        <li class="header-top-contact">
+                            +84 368 966 992
+                        </li>
+                        <li class="header-top-contact">
+                            <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Đăng ký</a>
+                        </li>
+                        <li class="header-top-contact">
+                            <a asp-area="CustomerUser" asp-controller="Login" asp-action="Index">Đăng nhập</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+    </header><!--/.header-top-->
+    <!--header-top end -->
+    <!-- top-area Start -->
+    <section class="top-area">
+        <div class="header-area">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+
+                <div class="container">
+
+                    <!-- Start Header Navigation -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TravelIn<span>VietNam</span></a>
+
+                    </div><!--/.navbar-header-->
+                    <!-- End Header Navigation -->
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li ><a asp-controller="Home" asp-action="Index" >Trang chủ</a></li>
+                            <li ><a asp-controller="Home" asp-action="Index" >Giới thiệu</a></li>
+                            <li ><a asp-controller="Tours" asp-action="Index">Tour du lịch</a></li>
+                            <li ><a asp-controller="Home" asp-action="Index" >Đánh giá</a></li>
+                            <li ><a asp-controller="Home" asp-action="Index" >Tin Tức</a></li>
+                            <li ><a asp-controller="Home" asp-action="Index" >Liên lạc</a></li>
+                        </ul><!--/.nav -->
+                    </div><!-- /.navbar-collapse -->
+                </div><!--/.container-->
+            </nav><!--/nav-->
+            <!-- End Navigation -->
+        </div><!--/.header-area-->
+        <div class="clearfix"></div>
+
+    </section><!-- /.top-area-->
+    <!-- top-area End -->
+    <main role="main" class="pb-3 mt-2">
+        @RenderBody()
+    </main>
+    <!--footer start-->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="footer-menu">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" id="index">TravelIn<span>VietNam</span></a>
+                        </div><!--/.navbar-header-->
+                    </div>
+                    <div class="col-sm-9">
+                        <ul class="footer-menu-item">
+                            <li class="scroll"><a href="#works">Giới thiệu</a></li>
+                            <li class="scroll"><a href="#explore">Tour du lịch</a></li>
+                            <li class="scroll"><a href="#reviews">Đánh giá</a></li>
+                            <li class="scroll"><a href="#blog">Tin tức</a></li>
+                            <li class="scroll"><a href="#contact">Liên lạc</a></li>
+                            <li class=" scroll"><a href="#contact">my account</a></li>
+                        </ul><!--/.nav -->
+                    </div>
+                </div>
+            </div>
+            <div class="hm-footer-copyright">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <p>
+                            &copy;copyright. designed and developed by <a href="https://github.com/damquocdan">Đàm Quốc Dân</a>
+                        </p><!--/p-->
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="footer-social">
+                            <span><i class="fa fa-phone"> (+84) 368 966 992</i></span>
+                            <a href="https://www.facebook.com/damquocdann"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!--/.hm-footer-copyright-->
+        </div><!--/.container-->
+
+        <div id="scroll-Top">
+            <div class="return-to-top">
+                <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+            </div>
+
+        </div><!--/.scroll-Top-->
+
+    </footer><!--/.footer-->
+    <!--footer end-->
+    <script src="~/assets/js/jquery.js"></script>
+
+    <!--modernizr.min.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+    <!--bootstrap.min.js-->
+    <script src="~/assets/js/bootstrap.min.js"></script>
+
+    <!-- bootsnav js -->
+    <script src="~/assets/js/bootsnav.js"></script>
+
+    <!--feather.min.js-->
+    <script src="~/assets/js/feather.min.js"></script>
+
+    <!-- counter js -->
+    <script src="~/assets/js/jquery.counterup.min.js"></script>
+    <script src="~/assets/js/waypoints.min.js"></script>
+
+    <!--slick.min.js-->
+    <script src="~/assets/js/slick.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <!--Custom JS-->
+    <script src="~/assets/js/custom.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,49 @@
+﻿@model LuxuryLife.Models.Review
+
+@{
+    ViewData["Title"] = "Chi Tiết Đánh Giá";
+}
+
+<h1>Chi Tiết Đánh Giá</h1>
+
+<div>
+    <h4>Đánh Giá</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            Đánh Giá Số Sao
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+        <dt class="col-sm-4">
+            Nội Dung BL,DG
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt class="col-sm-4">
+            Ngày Đánh Giá
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Createdate)
+        </dd>
+        <dt class="col-sm-4">
+            Khách Hàng
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+        <dt class="col-sm-4">
+            Tour Du Lịch
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Tour.Name)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Delete" asp-route-id="@Model?.ReviewId" class="btn btn-warning">Xoá</a>
+    <a asp-action="Index" class="btn btn-primary">Đóng</a>
+</div>

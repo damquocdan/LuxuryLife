@@ -1,0 +1,33 @@
+﻿@model LuxuryLife.Models.Admin
+<h3>Bạn có muốn xoá tài khoản @Html.DisplayFor(model => model.Email) này</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-3">
+            Ảnh đại diện
+        </dt>
+        <dd class="col-sm-9">
+            <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="AdminId" />
+        <input type="submit" value="Xoá" class="btn btn-danger" />
+        <a asp-action="Index">Đóng</a>
+    </form>
+</div>
+
+

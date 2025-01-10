@@ -1,0 +1,116 @@
+﻿@model LuxuryLife.Models.Tour
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-center">Chi tiết Tour</h1>
+
+<div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+        <h2 class="card-title display-6">Thông tin Tour</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid rounded border border-primary" alt="Tour Image" />
+            <dt class="col-sm-4">
+                Tên tour
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-4">
+                Mô tả
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt class="col-sm-4">
+                Dịch vụ
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ServiceId)
+            </dd>
+
+            <dt class="col-sm-4">
+                Homestay
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.HomestayId)
+            </dd>
+
+            <dt class="col-sm-4">
+                Giá per người
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.PricePerson)
+            </dd>
+
+            <dt class="col-sm-4">
+                Ngày bắt đầu
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.StartDate)
+            </dd>
+
+            <dt class="col-sm-4">
+                Ngày kết thúc
+            </dt>
+            <dd class="col-sm-8 h5">
+                @Html.DisplayFor(model => model.EndDate)
+            </dd>
+
+            <dt class="col-sm-4">
+                Giá
+            </dt>
+            <dd class="col-sm-8 text-success h5">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <dt class="col-sm-4">
+                Trạng thái
+            </dt>
+            <dd class="col-sm-8 h5">
+                @if (Model.Status == "Active")
+                {
+                    <span class="badge bg-success p-2 h5">Hoạt động</span>
+                }
+                else if (Model.Status == "Inactive")
+                {
+                    <span class="badge bg-danger p-2 h5">Không hoạt động</span>
+                }
+                else if (Model.Status == "Pending")
+                {
+                    <span class="badge bg-warning p-2 h5">Chờ xử lý</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary p-2 h5">Trạng thái không xác định</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">
+                Ngày tạo
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Createdate)
+            </dd>
+
+            <dt class="col-sm-4">
+                Nhà cung cấp
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Provider.Name)
+            </dd>
+            </dl>
+
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a asp-action="Index" class="btn btn-secondary btn-lg px-5">Đóng</a>
+        </div>
+    </div>
+</div>

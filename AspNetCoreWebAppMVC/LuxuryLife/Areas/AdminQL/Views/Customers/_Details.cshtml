@@ -1,0 +1,80 @@
+﻿@model LuxuryLife.Models.Customer
+
+@{
+    ViewData["Title"] = "Chi tiết";
+}
+
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                Thông tin khách hàng            
+                <a asp-action="Index" class="btn btn-secondary text-right">
+                    <i class="bi bi-arrow-left"></i> X
+                </a>
+            </h4>
+        </div>
+        <div class="card-body m-auto">
+            <dl class="row">
+                <dt class="col-sm-5 font-weight-bold">Tên</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Email</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Mật khẩu</dt>
+                <dd class="col-sm-7 text-muted">@Html.DisplayFor(model => model.Password)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Số điện thoại</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Phone)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Ảnh đại diện</dt>
+                <dd class="col-sm-7">
+                    <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail" style="max-width: 150px;">
+                </dd>
+
+                <dt class="col-sm-5 font-weight-bold">Địa chỉ</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Address)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Ngày sinh</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Dob)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Thông tin dân số</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Demographics)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Sở thích</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Preferences)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Lịch sử tìm kiếm</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.SearchHistory)</dd>
+
+                <dt class="col-sm-5 font-weight-bold">Ngày tạo</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.Createdate)</dd>
+            </dl>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a asp-action="Edit" asp-route-id="@Model?.CustomerId" class="btn btn-warning">
+                <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.CustomerId })">Sửa</button>    <i class="bi bi-pencil"></i> Chỉnh sửa
+            </a>
+
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".actionCustomers").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

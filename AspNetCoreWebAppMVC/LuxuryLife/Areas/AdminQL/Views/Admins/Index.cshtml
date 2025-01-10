@@ -1,0 +1,75 @@
+﻿@model IEnumerable<LuxuryLife.Models.Admin>
+
+@{
+    ViewData["Title"] = "Danh sách Admin";
+}
+
+<h1>Danh sách Admin</h1>
+
+<p>
+    <button class="btn btn-primary ajax-action" data-url="@Url.Action("Create")">Tạo mới</button>
+</p>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Tên quản lý
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Hình ảnh
+                    </th>
+                    <th class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" />
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.AdminId })">Sửa</button>
+                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.AdminId })">Chi tiết</button>
+                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.AdminId })">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="click"></div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            // Get the URL from the data attribute
+            var url = $(this).data("url");
+
+            // Load the content into the .click div
+            $(".click").load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>

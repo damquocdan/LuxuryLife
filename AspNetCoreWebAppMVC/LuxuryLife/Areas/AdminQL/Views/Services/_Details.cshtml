@@ -1,0 +1,48 @@
+﻿@model LuxuryLife.Models.Service
+
+@{
+    ViewData["Title"] = "Chi tiết dịch vụ";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Thông tin chi tiết dịch vụ</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-card-text"></i> Tên dịch vụ
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ServiceName)
+                </dd>
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-info-circle"></i> Mô tả
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-currency-dollar"></i> Giá
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                <dt class="col-sm-3 text-primary">
+                    <i class="bi bi-map"></i> Tour
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Tour.Name)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-secondary" asp-action="Index">
+                <i class="bi bi-arrow-left-circle"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>

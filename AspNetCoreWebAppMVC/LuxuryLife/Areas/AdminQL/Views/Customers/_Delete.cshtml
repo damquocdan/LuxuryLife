@@ -1,0 +1,41 @@
+﻿@model LuxuryLife.Models.Customer
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<a asp-action="Index" class="text-right">x</a>
+<h2>Bạn có muốn xoá khách hàng @Html.DisplayFor(model => model.Email) này</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Avatar)
+        </dt>
+        <dd class="col-sm-8">
+            <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail" style="max-width: 150px;">
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CustomerId" />
+        <input type="submit" value="Xoá" class="btn btn-danger" />
+    </form>
+</div>
