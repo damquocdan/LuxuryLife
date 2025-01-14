@@ -1,4 +1,4 @@
-﻿@model LuxuryLife.Models.LoginUser
+﻿@model LuxuryLife.Models.Login
 @{
     ViewData["Title"] = "Đăng nhập";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,20 +10,6 @@
     <div class="row" style="margin-top:50px">
         <div class="">
             <!-- Hiển thị lỗi -->
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach (var modelState in ViewData.ModelState.Values)
-                        {
-                            foreach (var error in modelState.Errors)
-                            {
-                                <li>@error.ErrorMessage</li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
 
             <!-- Form -->
             <form asp-action="Index" method="post">
@@ -40,7 +26,6 @@
                     <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Nhập mật khẩu" required />
                     <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
-
 
                 <!-- Nút đăng nhập -->
                 <div class="text-center">

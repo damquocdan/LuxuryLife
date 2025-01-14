@@ -1,7 +1,9 @@
 ﻿using LuxuryLife.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
-namespace LuxuryLife.Controllers
+namespace LuxuryLifeControllers
 {
     public class LoginController : Controller
     {
@@ -18,7 +20,7 @@ namespace LuxuryLife.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(LoginUser model)
+        public IActionResult Index(Login model)
         {
             if (!ModelState.IsValid)
             {
@@ -35,7 +37,7 @@ namespace LuxuryLife.Controllers
                 HttpContext.Session.SetString("CustomerLogin", model.Email);
                 HttpContext.Session.SetInt32("CustomerId", dataLogin.CustomerId);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { customerId = dataLogin.CustomerId });
             }
             else
             {

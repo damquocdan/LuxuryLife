@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LuxuryLife.Models.Tour>
+﻿@model LuxuryLife.Models.Tour
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -137,7 +137,7 @@
                                             <div class="explore-map-icon">
                                                 <a href="#" style="margin-right:10px;"><i class="fa-solid fa-map-location-dot"></i></a>
 
-                                                <a asp-controller="Favourites" asp-action="Add" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@tour.TourId"><i class="fa-regular fa-heart"></i></a>
+                                                <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Add" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@tour.TourId"><i class="fa-regular fa-heart"></i></a>
                                             </div>
                                         </div>
                                     </div>

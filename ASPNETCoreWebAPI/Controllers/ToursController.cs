@@ -21,87 +21,105 @@ namespace ASPNETCoreWebAPI.Controllers
         }
 
         // GET: api/Tours
-        [HttpGet]
+        [HttpGet("Index")]
         public async Task<ActionResult<IEnumerable<Tour>>> GetTours()
         {
-            return await _context.Tours.ToListAsync();
+            var tours = await _context.Tours
+                                      .Include(t => t.Provider)  // Eager load the related provider
+                                      .ToListAsync();
+
+            // Optionally, you can project the data to return a custom object with only the necessary fields:
+            var result = tours.Select(t => new
+            {
+                t.TourId,
+                t.Name,
+                t.Description,
+                t.Image,
+                t.Price,
+                t.Status,
+                ProviderName = t.Provider.Name,
+                ProviderAvatar = t.Provider.Avatar
+            }).Where(t => t.Status == "Active");
+
+            return Ok(result);  // Return the data as a JSON response
         }
 
-        // GET: api/Tours/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<IActionResult> GetTourDetails(int? id)
         {
-            var tour = await _context.Tours.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound(new { message = "Tour not found" });
+            }
+
+            var tour = await _context.Tours
+                .Include(t => t.Provider)
+                .Include(l => l.Listimagestours)
+                .Include(t => t.Services)
+                .Include(c => c.Homestays)
+                .Include(s => s.Reviews)
+                .FirstOrDefaultAsync(m => m.TourId == id);
 
             if (tour == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Tour not found" });
             }
 
-            return tour;
-        }
-
-        // PUT: api/Tours/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
-        {
-            if (id != tour.TourId)
+            // Prepare a custom response to include the relevant data for the frontend
+            var result = new
             {
-                return BadRequest();
-            }
-
-            _context.Entry(tour).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TourExists(id))
+                tour.TourId,
+                tour.Name,
+                tour.Description,
+                tour.Image,
+                tour.Price,
+                ProviderName = tour.Provider.Name,
+                ProviderAvatar = tour.Provider.Avatar,
+                ListImagesTours = tour.Listimagestours.Select(i => new
                 {
-                    return NotFound();
-                }
-                else
+                    i.ImageUrl,
+                    i.ImageDescription
+                }),
+                Services = tour.Services.Select(s => new
                 {
-                    throw;
-                }
-            }
+                    s.ServiceName,
+                    s.Description,
+                    Price = s.Price.HasValue ? s.Price.Value : 0
+                }),
+                Homestays = tour.Homestays.Select(h => new
+                {
+                    h.Name,
+                    h.Address,
+                    PricePerNight = h.PricePerNight.HasValue ? h.PricePerNight.Value : 0,
+                    h.Description,
+                    h.Image
+                }),
+                Reviews = tour.Reviews.Select(r => new
+                {
+                    CustomerName = r.Customer.Name,
+                    r.Comment,
+                    CreatedDate = r.Createdate
+                })
+            };
 
-            return NoContent();
+            return Ok(result); // Return the tour details as a JSON response
         }
 
-        // POST: api/Tours
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
-        {
-            _context.Tours.Add(tour);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTour", new { id = tour.TourId }, tour);
-        }
-
-        // DELETE: api/Tours/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string query)
         {
-            var tour = await _context.Tours.FindAsync(id);
-            if (tour == null)
+            if (string.IsNullOrEmpty(query))
             {
-                return NotFound();
+                // Return all books if no keyword is provided
+                return Ok(await _context.Tours.ToListAsync());
             }
 
-            _context.Tours.Remove(tour);
-            await _context.SaveChangesAsync();
+            var books = await _context.Tours
+                .Where(b => b.Name.Contains(query))
+                .ToListAsync();
 
-            return NoContent();
-        }
-
-        private bool TourExists(int id)
-        {
-            return _context.Tours.Any(e => e.TourId == id);
+            return Ok(books);
         }
     }
 }

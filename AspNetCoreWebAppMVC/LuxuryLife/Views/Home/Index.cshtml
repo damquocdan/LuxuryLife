@@ -1,10 +1,9 @@
-﻿@model LuxuryLife.Models.Provider
-@{
-    var tours = ViewData["Tours"] as List<LuxuryLife.Models.Tour>;
-    var providers = ViewData["Providers"] as List<LuxuryLife.Models.Provider>;
-    var news = ViewData["News"] as List<LuxuryLife.Models.News>;
-    var customers = ViewData["Customers"] as List<LuxuryLife.Models.Customer>;
-    var reviews = ViewData["Reviews"] as List<LuxuryLife.Models.Review>;
+﻿@{
+    var tours = ViewData["Tours"] as List<dynamic>;
+    var providers = ViewData["Providers"] as List<dynamic>;
+    var customers = ViewData["Customers"] as List<dynamic>;
+    var news = ViewData["News"] as List<dynamic>;
+    var reviews = ViewData["Reviews"] as List<dynamic>;
 }
 @{
     var successMessage = TempData["SuccessMessage"] as string;
@@ -202,81 +201,9 @@
             <p>Khám phá tour du lịch, địa điểm mới, đồ ăn ,văn hoá và nhiều hơn nữa</p>
         </div><!--/.section-header-->
         <div class="explore-content">
-            <div class="row">
-                @foreach (var tour in tours)
-                {
-                    <div class="col-md-4 col-sm-6">
-                        <div class="single-explore-item">
-                            <div class="single-explore-img" style="height:200px!important;">
-                                <img src="@tour.Image" alt="@tour.Image">
-                                <div class="single-explore-img-info">
-                                    <button onclick="window.location.href='#'">featured</button>
-                                    <div class="single-explore-image-icon-box">
-                                        <ul>
-                                            <li>
-                                                <div class="single-explore-image-icon">
-                                                    <i class="fa fa-arrows-alt"></i>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="single-explore-image-icon">
-                                                    <i class="fa fa-bookmark-o"></i>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single-explore-txt bg-theme-2">
-                                <h2><a href="#">@tour.Name</a></h2>
-                                <p class="explore-rating-price">
-                                    <span class="explore-rating">4.5</span>
-                                    <a href="#"> @tour.Reviews.Count</a>
-                                    <span class="explore-price-box">
-                                        Giá:
-                                        <span class="explore-price">@tour.Price</span>
-                                    </span>
-                                    <a href="#">@tour.Provider.Name</a>
-                                </p>
-                                <div class="explore-person">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="explore-person-img">
-                                                <a href="#">
-                                                    <img src="@tour.Provider.Avatar" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p>
-                                                @tour.Description
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="explore-open-close-part">
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <a class="close-btn open-btn" asp-controller="Tours" asp-action="Details" asp-route-id="@tour?.TourId">Xem chi tiết</a>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <div class="explore-map-icon">
-                                                <a href="#" style="margin-right:10px;"><i class="fa-solid fa-map-location-dot"></i></a>
-
-                                                <a asp-controller="Favourites" asp-action="Add" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@tour.TourId"><i class="fa-regular fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-            </div>
+            <div class="row" id="tours-container"></div>
         </div>
     </div><!--/.container-->
-
 </section><!--/.explore-->
 <!--explore end -->
 <!--reviews start -->
@@ -286,42 +213,9 @@
         <p>Khách hàng đánh giá gì về các tour du lịch</p>
     </div>
     <div class="reviews-content">
-        <div class="testimonial-carousel">
-            @foreach (var review in reviews)
-            {
-                <div class="single-testimonial-box">
-                    <div class="testimonial-description">
-                        <div class="testimonial-info">
-                            <div class="testimonial-img">
-                                <img src="@review.Customer.Avatar" alt="clients">
-                            </div><!--/.testimonial-img-->
-                            <div class="testimonial-person">
-                                <h2>@review.Customer.Name</h2>
-                                <h4>@review.Customer.Address</h4>
-                                <div class="testimonial-person-star">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div><!--/.testimonial-person-->
-                        </div><!--/.testimonial-info-->
-                        <div class="testimonial-comment">
-                            <p class="text-truncate">
-                                @review.Comment
-                            </p>
-                            <p class="">
-                                <b>Tour du lịch: @review.Tour.Name</b>
-
-                            </p>
-                        </div><!--/.testimonial-comment-->
-                    </div><!--/.testimonial-description-->
-                </div>
-            }
-        </div>
+        <div class="testimonial-carousel" id="reviews-container"></div>
     </div>
-</section>
+</section><!--/.reviews-->
 <!--/.reviews-->
 <!--reviews end -->
 <!-- statistics strat -->
@@ -373,29 +267,9 @@
             <p>Luôn luôn cập nhật các tin tức và bài viết mới nhất liên quan đến du lịch</p>
         </div><!--/.section-header-->
         <div class="blog-content">
-            <div class="row">
-                @foreach (var n in news)
-                {
-                    <div class="col-md-4 col-sm-6">
-                        <div class="single-blog-item">
-                            <div class="single-blog-item-img" style="height:200px!important;">
-                                <img src="@n.ImageUrl" alt="blog image">
-                            </div>
-                            <div class="single-blog-item-txt">
-                                <h2><a href="#">@n.Title</a></h2>
-                                <h4>posted <span>by</span> <a href="#">admin</a> @n.Createdate</h4>
-                                <p>
-                                    @Html.Raw(n.Content.Length > 100 ? n.Content.Substring(0, 100) + "..." : n.Content)
-                                </p>
-
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+            <div class="row" id="news-container"></div>
         </div>
     </div><!--/.container-->
-
 </section><!--/.blog-->
 <!--blog end -->
 <!--subscription strat -->
@@ -414,7 +288,7 @@
                 <div class="subscription-input-group">
                     <form method="post">
 
-                        <input asp-for="Email" class="subscription-input-form" placeholder="Nhập email của bạn tại đây" />
+                        <input @* asp-for="Email" *@ class="subscription-input-form" placeholder="Nhập email của bạn tại đây" />
 
                         <button class="appsLand-btn subscribe-btn" type="submit">
                             Gửi
@@ -448,4 +322,142 @@
     carousel.addEventListener('mouseout', startAutoScroll);
 
     startAutoScroll();
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Call the API to fetch data
+        fetch('https://localhost:7182/api/Home/Index')
+            .then(response => response.json())
+            .then(data => {
+                // Display Tours
+                const toursContainer = document.getElementById('tours-container');
+                data.tours.forEach(tour => {
+                    const tourElement = document.createElement('div');
+                    tourElement.classList.add('col-md-4', 'col-sm-6');
+                    tourElement.innerHTML = `
+                        <div class="single-explore-item">
+                            <div class="single-explore-img" style="height:200px!important;">
+                                <img src="${tour.image || '/path/to/default/image'}" alt="${tour.name}">
+                                <div class="single-explore-img-info">
+                                    <button onclick="window.location.href='#'">featured</button>
+                                    <div class="single-explore-image-icon-box">
+                                        <ul>
+                                            <li>
+                                                <div class="single-explore-image-icon">
+                                                    <i class="fa fa-arrows-alt"></i>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="single-explore-image-icon">
+                                                    <i class="fa fa-bookmark-o"></i>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-explore-txt bg-theme-2">
+                                <h2><a href="#">${tour.name}</a></h2>
+                                <p class="explore-rating-price">
+                                    <span class="explore-rating">4.5</span>
+                                    <a href="#"> 0</a>
+                                    <span class="explore-price-box">
+                                        Giá:
+                                        <span class="explore-price">${tour.price || 'N/A'}</span>
+                                    </span>
+                                    <a href="#">${tour.providerName}</a>
+                                </p>
+                                <div class="explore-person">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <div class="explore-person-img">
+                                                <a href="#">
+                                                    <img src="${tour.providerAvatar || '/path/to/default/avatar'}" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <p>
+                                                ${tour.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="explore-open-close-part">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <a class="close-btn open-btn" href="#" onclick="viewTourDetails(${tour.tourId})">Xem chi tiết</a>
+
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="explore-map-icon">
+                                                <a href="#" style="margin-right:10px;"><i class="fa-solid fa-map-location-dot"></i></a>
+                                                <a href="Favourites/Add/${tour.tourId}"><i class="fa-regular fa-heart"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    toursContainer.appendChild(tourElement);
+                });
+
+                // Display Reviews
+                const reviewsContainer = document.getElementById('reviews-container');
+                data.reviews.forEach(review => {
+                    const reviewElement = document.createElement('div');
+                    reviewElement.classList.add('single-testimonial-box');
+                    reviewElement.innerHTML = `
+                        <div class="testimonial-description">
+                            <div class="testimonial-info">
+                                <div class="testimonial-img">
+                                    <img src="${review.customer.avatar || '/path/to/default/avatar'}" alt="clients">
+                                </div>
+                                <div class="testimonial-person">
+                                    <h2>${review.customer.name}</h2>
+                                    <h4>${review.customer.address}</h4>
+                                    <div class="testimonial-person-star">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimonial-comment">
+                                <p class="text-truncate">
+                                    ${review.comment}
+                                </p>
+                                <p><b>Tour du lịch: ${review.tour.name}</b></p>
+                            </div>
+                        </div>
+                    `;
+                    reviewsContainer.appendChild(reviewElement);
+                });
+
+                // Display News
+                const newsContainer = document.getElementById('news-container');
+                data.news.forEach(newsItem => {
+                    const newsElement = document.createElement('div');
+                    newsElement.classList.add('col-md-4', 'col-sm-6');
+                    newsElement.innerHTML = `
+                        <div class="single-blog-item">
+                            <div class="single-blog-item-img" style="height:200px!important;">
+                                <img src="${newsItem.imageUrl || '/path/to/default/image'}" alt="blog image">
+                            </div>
+                            <div class="single-blog-item-txt">
+                                <h2><a href="#">${newsItem.title}</a></h2>
+                                <h4>posted <span>by</span> <a href="#">admin</a> ${newsItem.createdate}</h4>
+                                <p>${newsItem.content ? newsItem.content.substring(0, 100) + '...' : ''}</p>
+                            </div>
+                        </div>
+                    `;
+                    newsContainer.appendChild(newsElement);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
+
 </script>

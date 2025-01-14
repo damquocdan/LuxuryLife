@@ -12,6 +12,7 @@ builder.Services.AddDbContext<TourBookingContext>(options =>
 builder.Services.AddHttpClient("ApiClient", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7182/api/"); // Replace with your API base URL
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
@@ -35,11 +36,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
