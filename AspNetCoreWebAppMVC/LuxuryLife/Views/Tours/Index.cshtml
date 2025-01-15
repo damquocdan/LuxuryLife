@@ -1,31 +1,26 @@
-﻿@model LuxuryLife.Models.Tour
+﻿@model dynamic
+
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{
-    var tours = ViewData["Tours"] as List<LuxuryLife.Models.Tour>;
-    var providers = ViewData["Providers"] as List<LuxuryLife.Models.Provider>;
-    var news = ViewData["News"] as List<LuxuryLife.Models.News>;
-    var customers = ViewData["Customers"] as List<LuxuryLife.Models.Customer>;
-    var reviews = ViewData["Reviews"] as List<LuxuryLife.Models.Review>;
-}
+
 <style>
     .welcome-hero{
-        height:400px;
+    height:400px;
     }
 
     .welcome-hero-txt {
-        padding-top: 50px;
+    padding-top: 50px;
     }
 
     .explore {
-        padding: 10px 0 95px;
-        background: #f8fafb;
+    padding: 10px 0 95px;
+    background: #f8fafb;
     }
     .section-header h2{
-        font-size:50px;
-        color: #ff545a;
+    font-size:50px;
+    color: #ff545a;
     }
 </style>
 <section id="home" class="welcome-hero">
@@ -36,27 +31,16 @@
                 Tìm kiếm những Tour du lịch, Homestays và các dịch vụ mọi thứ với chỉ một CLICK
             </p>
         </div>
-        <form asp-action="Index" asp-controller="Tours" method="get">
+        <form asp-action="Search" asp-controller="Tours" method="get">
             <div class="welcome-hero-serch-box">
-
                 <div class="welcome-hero-form">
                     <div class="single-welcome-hero-form">
                         <h3>What?</h3>
-                        <form action="index">
-                            <input type="text" name="query" placeholder="Ex: place, restaurant, food," />
-                        </form>
-                        <div class="welcome-hero-form-icon">
-                            <i class="flaticon-list-with-dots"></i>
-                        </div>
+                        <input type="text" name="query" placeholder="Ex: place, restaurant, food" />
                     </div>
                     <div class="single-welcome-hero-form">
                         <h3>Location</h3>
-                        <form action="index">
-                            <input type="text" name="decription" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
-                        </form>
-                        <div class="welcome-hero-form-icon">
-                            <i class="flaticon-gps-fixed-indicator"></i>
-                        </div>
+                        <input type="text" name="description" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
                     </div>
                 </div>
                 <div class="welcome-hero-serch">
@@ -67,22 +51,43 @@
             </div>
         </form>
     </div>
-
 </section><!--/.welcome-hero-->
+
 <section id="explore" class="explore">
     <div class="container">
         <div class="section-header">
             <h2>Tour du lịch</h2>
-            <p>Khám phá tour du lịch, địa điểm mới, đồ ăn ,văn hoá và nhiều hơn nữa</p>
-        </div><!--/.section-header-->
+            <p>Khám phá tour du lịch, địa điểm mới, đồ ăn, văn hoá và nhiều hơn nữa</p>
+        </div>
+
         <div class="explore-content">
-            <div class="row">
-                @foreach (var tour in tours)
-                {
-                    <div class="col-md-4 col-sm-6">
+            <div class="row" id="tour-container">
+                <!-- Tours will be injected here dynamically -->
+            </div>
+        </div>
+    </div><!--/.container-->
+</section><!--/.explore-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetchTours();
+    });
+
+    function fetchTours() {
+        fetch('https://localhost:7182/api/Tours/Index')
+            .then(response => response.json())
+            .then(data => {
+                const tourContainer = document.getElementById('tour-container');
+                tourContainer.innerHTML = ''; // Clear previous content
+
+                data.forEach(tour => {
+                    // Create tour card HTML dynamically
+                    const tourElement = document.createElement('div');
+                    tourElement.classList.add('col-md-4', 'col-sm-6');
+
+                    tourElement.innerHTML = `
                         <div class="single-explore-item">
                             <div class="single-explore-img" style="height:200px!important;">
-                                <img src="@tour.Image" alt="@tour.Image">
+                                <img src="${tour.image}" alt="${tour.name}">
                                 <div class="single-explore-img-info">
                                     <button onclick="window.location.href='#'">featured</button>
                                     <div class="single-explore-image-icon-box">
@@ -102,53 +107,57 @@
                                 </div>
                             </div>
                             <div class="single-explore-txt bg-theme-2">
-                                <h2><a href="#">@tour.Name</a></h2>
+                                <h2><a href="#">${tour.name}</a></h2>
                                 <p class="explore-rating-price">
                                     <span class="explore-rating">4.5</span>
-                                    <a href="#"> @tour.Reviews.Count</a>
+                                    <a href="#">${tour.reviews?.length || 0}</a>
                                     <span class="explore-price-box">
                                         Giá:
-                                        <span class="explore-price">@tour.Price</span>
+                                        <span class="explore-price">
+                                            ${tour.price ? tour.price : 'Liên hệ'}
+                                        </span>
                                     </span>
-                                    <a href="#">@tour.Provider.Name</a>
+                                    <a href="#">${tour.providerName}</a>
                                 </p>
                                 <div class="explore-person">
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="explore-person-img">
                                                 <a href="#">
-                                                    <img src="@tour.Provider.Avatar" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
+                                                    <img src="${tour.providerAvatar}" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="col-sm-10">
-                                            <p>
-                                                @tour.Description
-                                            </p>
+                                            <p>${tour.description}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="explore-open-close-part">
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <a class="close-btn open-btn" asp-action="Details" asp-route-id="@tour?.TourId">Xem chi tiết</a>
+                                            <a class="close-btn open-btn" href="Tours/Details/${tour.tourId}">Xem chi tiết</a>
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="explore-map-icon">
-                                                <a href="#" style="margin-right:10px;"><i class="fa-solid fa-map-location-dot"></i></a>
-
-                                                <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Add" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@tour.TourId"><i class="fa-regular fa-heart"></i></a>
+                                                <a href="#" style="margin-right:10px;">
+                                                    <i class="fa-solid fa-map-location-dot"></i>
+                                                </a>
+                                                <a href="#"><i class="fa-regular fa-heart"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    `;
 
-            </div>
-        </div>
-    </div><!--/.container-->
-
-</section><!--/.explore-->
+                    // Append the dynamically created tour card to the container
+                    tourContainer.appendChild(tourElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tours:', error);
+            });
+    }
+</script>
