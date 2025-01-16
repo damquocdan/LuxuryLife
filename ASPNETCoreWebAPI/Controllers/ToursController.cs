@@ -107,34 +107,7 @@ namespace ASPNETCoreWebAPI.Controllers
         }
 
 
-        [HttpGet("search")]
-        public async Task<IActionResult> Search(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                return Ok(await _context.Tours.ToListAsync());
-            }
-
-            var tours = await _context.Tours
-                .Where(t => t.Name.Contains(query))
-                .Include(t => t.Provider)  // Eager load provider
-                .Include(t => t.Listimagestours) // Eager load tour images
-                .ToListAsync();
-
-            var result = tours.Select(t => new
-            {
-                t.TourId,
-                t.Name,
-                t.Description,
-                t.Image,
-                t.Price,
-                t.Status,
-                ProviderName = t.Provider.Name,
-                ProviderAvatar = t.Provider.Avatar
-            });
-
-            return Ok(result);
-        }
+        
 
     }
 }

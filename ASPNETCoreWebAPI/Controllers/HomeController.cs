@@ -17,73 +17,52 @@ namespace ASPNETCoreWebAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("Index")]
-        public IActionResult GetIndexData()
+        [HttpGet("latest-tours")]
+        public IActionResult GetLatestTours()
         {
-            var data = new
-            {
-                Tours = _context.Tours
-                    .Where(t => t.Status == "Active")
-                    .Include(t => t.Provider)
-                    .OrderByDescending(t => t.TourId)
-                    .Take(6)
-                    .Select(t => new
-                    {
-                        t.TourId,
-                        t.Name,
-                        t.Description,
-                        t.Image,
-                        t.Price,
-                        ProviderName = t.Provider.Name,
-                        ProviderAvatar = t.Provider.Avatar,
-                        
-                    })
-                    .ToList(),
+            var tours = _context.Tours
+                .Where(t => t.Status == "Active")
+                .Include(t => t.Provider)
+                .OrderByDescending(t => t.TourId)
+                .Take(6)
+                .ToList();
 
-                Providers = _context.Providers
-                    .Select(p => new
-                    {
-                        p.ProviderId,
-                        p.Name,
-                        p.Address
-                    })
-                    .ToList(),
+            return Ok(tours);
+        }
+        [HttpGet("providers")]
+        public IActionResult GetProviders()
+        {
+            var providers = _context.Providers.ToList();
+            return Ok(providers);
+        }
 
-                News = _context.News
-                    .OrderByDescending(n => n.Createdate)
-                    .Take(3)
-                    .Select(n => new
-                    {
-                        n.NewId,
-                        n.Title,
-                        n.Content,
-                        n.Createdate
-                    })
-                    .ToList(),
+        [HttpGet("latest-news")]
+        public IActionResult GetLatestNews()
+        {
+            var news = _context.News
+                .OrderByDescending(n => n.Createdate)
+                .Take(3)
+                .ToList();
 
-                Customers = _context.Customers
-                    .Select(c => new
-                    {
-                        c.CustomerId,
-                        c.Name,
-                        c.Email
-                    })
-                    .ToList(),
+            return Ok(news);
+        }
 
-                Reviews = _context.Reviews
-                    .Include(r => r.Tour)
-                    .Include(r => r.Customer)
-                    .Select(r => new
-                    {
-                        r.ReviewId,
-                        r.Comment,
-                        TourTitle = r.Tour.Name,
-                        CustomerName = r.Customer.Name
-                    })
-                    .ToList()
-            };
+        [HttpGet("customers")]
+        public IActionResult GetCustomers()
+        {
+            var customers = _context.Customers.ToList();
+            return Ok(customers);
+        }
 
-            return Ok(data);
+        [HttpGet("reviews")]
+        public IActionResult GetReviews()
+        {
+            var reviews = _context.Reviews
+                .Include(r => r.Tour)
+                .Include(r => r.Customer)
+                .ToList();
+
+            return Ok(reviews);
         }
     }
 }
