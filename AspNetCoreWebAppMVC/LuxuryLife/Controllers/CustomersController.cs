@@ -6,16 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
+using System.Text;
 
 namespace LuxuryLife.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly TourBookingContext _context;
-
-        public CustomersController(TourBookingContext context)
+        private readonly IHttpClientFactory _httpClientFactory;
+        public CustomersController(TourBookingContext context, IHttpClientFactory httpClientFactory)
         {
             _context = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         // GET: CustomerUser/Customers
@@ -45,6 +47,7 @@ namespace LuxuryLife.Controllers
         // GET: CustomerUser/Customers/Create
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -57,11 +60,41 @@ namespace LuxuryLife.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Dashboard");
+                try
+                {
+                    // Tạo HttpClient từ HttpClientFactory
+                    var httpClient = _httpClientFactory.CreateClient();
 
+                    // Đặt BaseAddress nếu cần
+                    httpClient.BaseAddress = new Uri("https://api.example.com/"); // Thay bằng URL API thực tế
+
+                    // Chuyển đổi đối tượng thành JSON
+                    var jsonContent = JsonSerializer.Serialize(customer);
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    // Gửi yêu cầu POST đến API
+                    var response = await httpClient.PostAsync("api/Customers", httpContent);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Nếu API phản hồi thành công, chuyển hướng về trang Index
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        // Xử lý lỗi từ API
+                        var errorMessage = await response.Content.ReadAsStringAsync();
+                        ModelState.AddModelError(string.Empty, $"API Error: {errorMessage}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Ghi nhật ký và hiển thị thông báo lỗi nếu có ngoại lệ
+                    ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                }
             }
+
+            // Trả về lại view với thông báo lỗi nếu có
             return View(customer);
         }
 
