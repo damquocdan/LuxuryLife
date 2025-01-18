@@ -7,17 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
 using System.Text;
-
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Net.Http;
 namespace LuxuryLife.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly TourBookingContext _context;
-        private readonly IHttpClientFactory _httpClientFactory;
-        public CustomersController(TourBookingContext context, IHttpClientFactory httpClientFactory)
+        private readonly HttpClient _httpClientFactory;
+        public CustomersController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
-            _httpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory.CreateClient("ApiClient");
         }
 
         // GET: CustomerUser/Customers
@@ -56,47 +57,25 @@ namespace LuxuryLife.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Name,Email,Password,Phone,Address,Dob,Demographics,Preferences,SearchHistory,CreateDate")] Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             if (ModelState.IsValid)
             {
-                try
+                var reponse = await _httpClientFactory.PostAsJsonAsync("customers", customer);
+                if (reponse.IsSuccessStatusCode)
                 {
-                    // Tạo HttpClient từ HttpClientFactory
-                    var httpClient = _httpClientFactory.CreateClient();
-
-                    // Đặt BaseAddress nếu cần
-                    httpClient.BaseAddress = new Uri("https://api.example.com/"); // Thay bằng URL API thực tế
-
-                    // Chuyển đổi đối tượng thành JSON
-                    var jsonContent = JsonSerializer.Serialize(customer);
-                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                    // Gửi yêu cầu POST đến API
-                    var response = await httpClient.PostAsync("api/Customers", httpContent);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Nếu API phản hồi thành công, chuyển hướng về trang Index
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        // Xử lý lỗi từ API
-                        var errorMessage = await response.Content.ReadAsStringAsync();
-                        ModelState.AddModelError(string.Empty, $"API Error: {errorMessage}");
-                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (Exception ex)
-                {
-                    // Ghi nhật ký và hiển thị thông báo lỗi nếu có ngoại lệ
-                    ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                else {
+                    ModelState.AddModelError(string.Empty, "Error occurred while creating the customer.");
                 }
             }
 
-            // Trả về lại view với thông báo lỗi nếu có
+            // Nếu dữ liệu không hợp lệ hoặc API trả lỗi, trả về view với dữ liệu đã nhập
             return View(customer);
         }
+
+
 
         // GET: CustomerUser/Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
