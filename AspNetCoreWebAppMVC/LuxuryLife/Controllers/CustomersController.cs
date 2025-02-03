@@ -15,10 +15,10 @@ namespace LuxuryLife.Controllers
     public class CustomersController : Controller
     {
         private readonly TourBookingContext _context;
-        private readonly HttpClient _httpClientFactory;
-        public CustomersController(IHttpClientFactory httpClientFactory)
+
+        public CustomersController(TourBookingContext context)
         {
-            _httpClientFactory = httpClientFactory.CreateClient("ApiClient");
+            _context = context;
         }
 
         // GET: CustomerUser/Customers
@@ -48,7 +48,6 @@ namespace LuxuryLife.Controllers
         // GET: CustomerUser/Customers/Create
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -57,25 +56,17 @@ namespace LuxuryLife.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,Name,Email,Password,Phone,Address,Dob,Demographics,Preferences,SearchHistory,CreateDate")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                var reponse = await _httpClientFactory.PostAsJsonAsync("customers", customer);
-                if (reponse.IsSuccessStatusCode)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else {
-                    ModelState.AddModelError(string.Empty, "Error occurred while creating the customer.");
-                }
-            }
+                _context.Add(customer);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
 
-            // Nếu dữ liệu không hợp lệ hoặc API trả lỗi, trả về view với dữ liệu đã nhập
+            }
             return View(customer);
         }
-
-
 
         // GET: CustomerUser/Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)

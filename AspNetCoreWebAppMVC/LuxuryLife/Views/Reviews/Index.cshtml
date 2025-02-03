@@ -1,0 +1,84 @@
+﻿@model IEnumerable<LuxuryLife.Models.Review>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .welcome-hero {
+        height: 1000px;
+    }
+
+    .welcome-hero-txt {
+        padding-top: 50px;
+    }
+
+    h3 {
+        color: #fff;
+    }
+</style>
+<section id="home" class="welcome-hero">
+    <div class="container">
+        <div class="welcome-hero-txt">
+            <h2>Đánh giá mới nhất</h2>
+            <div class="row">
+                @foreach (var item in Model.OrderByDescending(r => r.Createdate).Take(3))
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="@item.Tour.Image" class="card-img-top" style="height:360px; width:100%" alt="Tour Image">
+                            <div class="card-body">
+                                <h3 class="card-title">@item.Tour.Name</h3>
+                                <p class="card-text"><strong>Số sao:</strong> @item.Rating ⭐</p>
+                                <p class="card-text"><strong>Nội dung đánh giá:</strong> @item.Comment</p>
+                                <p class="card-text"><strong>Khách hàng:</strong> @item.Customer.Name</p>
+                                <p class="card-text"><strong>Giá tour:</strong> @item.Tour.Price VND</p>
+                                <p class="card-text"><strong>Nhà cung cấp:</strong> @item.Tour.Provider</p>
+                                <p class="card-text"><small class="text-muted">Reviewed on: @item.Createdate</small></p>
+                                <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId" class="btn btn-info">View Tour</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section><!--/.welcome-hero-->
+<section id="reviews" class="reviews">
+    <div class="section-header">
+        <h2>Đánh giá của khách hàng</h2>
+        <p>Khách hàng đánh giá gì về các tour du lịch</p>
+    </div>
+    <div class="reviews-content">
+        <div class="testimonial-carousel">
+            @foreach (var review in Model)
+            {
+                <div class="single-testimonial-box">
+                    <div class="testimonial-description">
+                        <div class="testimonial-info">
+                            <div class="testimonial-img">
+                                <img src="@review.Customer.Avatar" alt="clients">
+                            </div><!--/.testimonial-img-->
+                            <div class="testimonial-person">
+                                <h2>@review.Customer.Name</h2>
+                                <h4>@review.Customer.Address</h4>
+                                <div class="testimonial-person-star">
+                                    Số sao: @review.Rating
+                                </div>
+                            </div><!--/.testimonial-person-->
+                        </div><!--/.testimonial-info-->
+                        <div class="testimonial-comment">
+                            <p class="text-truncate">
+                                @review.Comment
+                            </p>
+                            <p class="">
+                                <b>Tour du lịch: @review.Tour.Name</b>
+
+                            </p>
+                        </div><!--/.testimonial-comment-->
+                    </div><!--/.testimonial-description-->
+                </div>
+            }
+        </div>
+    </div>
+</section>

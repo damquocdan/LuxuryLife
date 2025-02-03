@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-namespace LuxuryLifeControllers
+namespace LuxuryLife.Controllers
 {
     public class LoginController : Controller
     {
@@ -37,7 +37,10 @@ namespace LuxuryLifeControllers
                 HttpContext.Session.SetString("CustomerLogin", model.Email);
                 HttpContext.Session.SetInt32("CustomerId", dataLogin.CustomerId);
 
-                return RedirectToAction("Index", "Home", new { customerId = dataLogin.CustomerId });
+                // Lưu thông báo vào TempData
+                TempData["Success"] = "Đăng nhập thành công!";
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -51,6 +54,9 @@ namespace LuxuryLifeControllers
         {
             HttpContext.Session.Remove("CustomerLogin");
             HttpContext.Session.Remove("CustomerId");
+
+            // Lưu thông báo đăng xuất thành công
+            TempData["SuccessMessage"] = "Bạn đã đăng xuất thành công!";
 
             return RedirectToAction("Index");
         }
