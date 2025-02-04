@@ -65,7 +65,7 @@ namespace LuxuryLife.Controllers
             {
                 return NotFound();
             }
-
+            var reviews = new List<Review>();
             var tour = await _context.Tours
                 .Include(t => t.Provider)
                 .Include(l => l.Listimagestours)
@@ -77,7 +77,7 @@ namespace LuxuryLife.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Reviews"] = _context.Reviews.Include(r => r.Tour).Where(r => r.TourId == id).Include(r => r.Customer).ToList();
             return View(tour);
         }
 

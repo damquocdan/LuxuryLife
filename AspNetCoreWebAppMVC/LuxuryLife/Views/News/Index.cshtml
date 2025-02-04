@@ -1,61 +1,138 @@
 ﻿@model IEnumerable<LuxuryLife.Models.News>
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: calc(30% - 40px); /* Adjust the width as needed */
+            box-sizing: border-box;
+            transition: transform 0.2s;
+        }
+
+            .card:hover {
+                transform: scale(1.02);
+            }
+
+            .card img {
+                max-width: 100%;
+                border-radius: 5px;
+            }
+
+            .card h2 {
+                font-size: 1.2em;
+                margin: 10px 0;
+            }
+
+            .card p {
+                font-size: 0.9em;
+                color: #555;
+            }
+
+            .card a {
+                display: inline-block;
+                margin-top: 10px;
+                text-decoration: none;
+                color: #007bff;
+                font-weight: bold;
+            }
+
+                .card a:hover {
+                    color: #0056b3;
+                }
+
+        .welcome-hero {
+            height: 800px;
+        }
+
+        .welcome-hero-txt {
+            padding-top: 50px;
+        }
+
+        .explore {
+            padding: 10px 0 95px;
+            background: #f8fafb;
+        }
+
+        .section-header h2 {
+            font-size: 50px;
+            color: #ff545a;
+        }
+    </style>
 </head>
+
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Createdate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Createdate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.NewId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.NewId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.NewId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <section id="home" class="welcome-hero">
+        <div class="container">
+            <div class="welcome-hero-txt">
+                <h2>Danh sách các tin tức của  <br> TravelInVietNam </h2>
+                <p>
+                    Tin tức sẽ cho bạn biết các lịch trình địa điểm hợp lý
+                </p>
+            </div>
+            <form asp-action="Index" asp-controller="Tours" method="get">
+                <div class="welcome-hero-serch-box">
+                    @foreach (var item in Model)
+                    {
+                        <div class="card">
+                            <img src="@item.ImageUrl" alt="@item.Title" />
+                            <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                            <p>@Html.DisplayFor(modelItem => item.Content)</p>
+                            <p>@Html.DisplayFor(modelItem => item.Createdate)</p>
+                            <a asp-action="Details" asp-route-id="@item.NewId">Chi tiết</a>
+                        </div>
+                    }
+                </div>
+            </form>
+        </div>
+
+    </section><!--/.welcome-hero-->
+    <section id="blog" class="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tin tức và bài viết</h2>
+                <p>Luôn luôn cập nhật các tin tức và bài viết mới nhất liên quan đến du lịch</p>
+            </div><!--/.section-header-->
+            <div class="blog-content">
+                <div class="row">
+                    @foreach (var n in Model)
+                    {
+                        <div class="col-md-4 col-sm-6">
+                            <div class="single-blog-item">
+                                <div class="single-blog-item-img" style="height:200px!important;">
+                                    <img src="@n.ImageUrl" alt="blog image">
+                                </div>
+                                <div class="single-blog-item-txt">
+                                    <h2><a href="#">@n.Title</a></h2>
+                                    <h4>posted <span>by</span> <a href="#">admin</a> @n.Createdate</h4>
+                                    <p>
+                                        @Html.Raw(n.Content.Length > 100 ? n.Content.Substring(0, 100) + "..." : n.Content)
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div><!--/.container-->
+
+    </section><!--/.blog-->
 </body>
 </html>

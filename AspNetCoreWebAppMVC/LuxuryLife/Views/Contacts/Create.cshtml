@@ -1,0 +1,129 @@
+﻿@model LuxuryLife.Models.Contact
+
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    /* Cải thiện giao diện trang liên hệ */
+    .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            width: 30%;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 65%;
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: #0056b3;
+                outline: none;
+                box-shadow: 0px 0px 8px rgba(0, 91, 187, 0.5);
+            }
+
+    .btn-submit {
+        width: 100%;
+        background: #007bff;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .btn-submit:hover {
+            background: #0056b3;
+        }
+
+    h2 {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    p {
+        text-align: center;
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+</style>
+
+<section id="home" class="welcome-hero">
+    <div class="container">
+        <h2>Liên hệ</h2>
+        <p>Hãy liên hệ với chúng tôi để biết thêm chi tiết</p>
+
+        <form asp-action="Create" class="contact-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name">Họ và tên</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone">Số điện thoại</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subject">Chủ đề</label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message">Nội dung</label>
+                <textarea asp-for="Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn-submit">Gửi</button>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

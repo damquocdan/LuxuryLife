@@ -1,5 +1,7 @@
 ﻿@model LuxuryLife.Models.Tour
-
+@{
+    var reviews = ViewData["Reviews"] as List<LuxuryLife.Models.Review>;
+}
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -214,19 +216,29 @@
         </div>
 
         <div>
-            <h3 class="section-title text-center">Customer Reviews</h3>
-            @if (Model.Reviews != null && Model.Reviews.Any())
+            <h3 class="section-title text-center">Khách hàng đánh giá</h3>
+            @if (reviews != null && reviews.Any())
             {
-                <ul>
-                    @foreach (var review in Model.Reviews)
+                <div class="row">
+                    @foreach (var review in reviews)
                     {
-                        <li>
-                            <strong>@review.Customer.Name</strong>
-                            <p>@review.Comment</p>
-                            <p><em>Reviewed on: @review.Createdate</em></p>
-                        </li>
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="@review.Customer.Avatar" class="rounded-circle me-3" width="50" height="50" alt="Avatar">
+                                        <div>
+                                            <h6 class="mb-0">@review.Customer.Name</h6>
+                                            <small class="text-muted">Reviewed on: @review.Createdate</small>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <p class="card-text">Nội dung:@review.Comment</p>
+                                </div>
+                            </div>
+                        </div>
                     }
-                </ul>
+                </div>
             }
             else
             {
