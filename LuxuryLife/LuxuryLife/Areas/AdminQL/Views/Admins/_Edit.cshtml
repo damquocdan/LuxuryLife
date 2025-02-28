@@ -1,27 +1,42 @@
 ﻿@model LuxuryLife.Models.Admin
 
 @{
-    ViewData["Title"] = "Chỉnh sửa thông tin admin";
+    ViewData["Title"] = "Chỉnh sửa";
 }
-
 <style>
-    .body1 {
+    .edit-admin-container {
         background-color: #1b1e20;
         color: white;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        position: relative; /* Thêm position relative để định vị nút đóng */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
     }
 
-    h1 {
-        color: #ff545a;
-        text-align: center;
-        margin-bottom: 30px;
-    }
+        .edit-admin-container h1 {
+            color: #ff545a;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .edit-admin-container h1 i {
+                margin-right: 8px;
+            }
 
     .form-group label {
         color: white;
         font-weight: bold;
+        display: flex;
+        align-items: center;
     }
+
+        .form-group label i {
+            margin-right: 5px;
+            color: #ff545a;
+        }
 
     .form-control {
         background-color: #282c30;
@@ -35,105 +50,91 @@
             box-shadow: 0 0 0 0.2rem rgba(255, 84, 90, 0.25);
         }
 
-    .btn-primary {
+    .save-btn, .close-btn {
         background-color: #ff545a;
-        border-color: #ff545a;
-    }
-
-        .btn-primary:hover {
-            background-color: #d64549;
-            border-color: #d64549;
-        }
-
-    .btn-secondary {
-        background-color: #444;
-        border-color: #444;
+        border: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
         color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
     }
 
-        .btn-secondary:hover {
-            background-color: #555;
-            border-color: #555;
+        .save-btn:hover, .close-btn:hover {
+            background-color: #d64045;
+            transform: scale(1.05); /* Thêm hiệu ứng hover scale */
         }
 
-    img {
+    .avatar-preview {
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         margin-bottom: 10px;
         transition: transform 0.3s ease;
+        object-fit: cover;
     }
 
-        img:hover {
-            transform: scale(1.1);
+        .avatar-preview:hover {
+            transform: scale(1.1); /* Thêm hiệu ứng hover scale */
         }
 
     .text-danger {
         color: #ff545a;
     }
 
-    /* Nút đóng */
-    .closeDetailSection {
+    .close-btn {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 3em;
-        cursor: pointer;
+        padding: 5px 10px;
     }
-
-        .closeDetailSection:hover {
-            color: #ff545a;
-        }
 </style>
+<div class="edit-admin-container">
+    <button class="close-btn" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+    <h1><i class="fas fa-user-edit"></i> Chỉnh sửa thông tin</h1>
 
-<div class="body1">
-    <button class="closeDetailSection" onclick="window.location.href='@Url.Action("Index")'">&times;</button>
-    <h1>Chỉnh sửa thông tin admin</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AdminId" />
 
-    <div class="row">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AdminId" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"><i class="fas fa-user me-2"></i> Tên:</label>
+                    <input asp-for="Name" class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Tên</label>
-                <input asp-for="Name" class="form-control" required />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"><i class="fas fa-envelope me-2"></i> Email:</label>
+                    <input asp-for="Email" class="form-control" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Email" class="control-label">Email</label>
-                <input asp-for="Email" class="form-control" required />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"><i class="fas fa-lock me-2"></i> Mật khẩu:</label>
+                    <input asp-for="Password" class="form-control" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Password" class="control-label">Mật khẩu</label>
-                <input asp-for="Password" class="form-control" required />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"><i class="fas fa-image me-2"></i> Hình đại diện:</label>
 
-            <div class="form-group">
-                <label asp-for="Avatar" class="control-label">Hình đại diện</label>
+                    @if (!string.IsNullOrEmpty(Model.Avatar))
+                    {
+                        <img src="@Model.Avatar" alt="Avatar" class="avatar-preview" />
+                    }
 
-                @if (!string.IsNullOrEmpty(Model.Avatar))
-                {
-                    <img src="@Model.Avatar" alt="Avatar" width="150" height="150" />
-                }
+                    <input asp-for="Avatar" type="file" class="form-control" />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
 
-                <input asp-for="Avatar" type="file" class="form-control" />
-                <span asp-validation-for="Avatar" class="text-danger"></span>
-            </div>
-
-            <div class="form-group text-center">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-
-    <div class="text-center mt-3">
-        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Đóng</a>
+                <div class="form-group text-center">
+                    <input type="submit" value="Lưu" class="btn btn-primary save-btn" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -141,6 +142,9 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        function closeDetailSection() {
+            window.location.href = '@Url.Action("Index", "Admins")';
+        }
+    </script>
 }
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

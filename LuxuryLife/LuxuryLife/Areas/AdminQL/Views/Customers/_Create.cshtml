@@ -53,11 +53,12 @@
     .create-btn, .close-btn {
         background-color: #ff545a;
         border: none;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
         .create-btn:hover, .close-btn:hover {
             background-color: #d64045;
+            transform: scale(1.05); /* Thêm hiệu ứng hover scale */
         }
 
     .close-btn {
@@ -69,7 +70,7 @@
 </style>
 <div class="create-customer-container">
     <div class="header">
-        <h1><i class="fas fa-user-plus"></i> Tạo mới khách hàng</h1>
+        <h1><i class="fas fa-user-plus me-2"></i> Tạo mới khách hàng</h1>
         <button class="close-btn" onclick="closeDetailSection()">
             <i class="fas fa-times"></i>
         </button>
@@ -77,12 +78,12 @@
 
     <hr />
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group row">
-                    <label asp-for="Name" class="col-md-4 col-form-label"><i class="fas fa-user"></i> Tên</label>
+                    <label asp-for="Name" class="col-md-4 col-form-label"><i class="fas fa-user me-2"></i> Tên</label>
                     <div class="col-md-8">
                         <input asp-for="Name" class="form-control" required />
                         <span asp-validation-for="Name" class="text-danger"></span>
@@ -90,7 +91,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Email" class="col-md-4 col-form-label"><i class="fas fa-envelope"></i> Email</label>
+                    <label asp-for="Email" class="col-md-4 col-form-label"><i class="fas fa-envelope me-2"></i> Email</label>
                     <div class="col-md-8">
                         <input asp-for="Email" class="form-control" required />
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -98,7 +99,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Password" class="col-md-4 col-form-label"><i class="fas fa-lock"></i> Mật khẩu</label>
+                    <label asp-for="Password" class="col-md-4 col-form-label"><i class="fas fa-lock me-2"></i> Mật khẩu</label>
                     <div class="col-md-8">
                         <input asp-for="Password" class="form-control" required />
                         <span asp-validation-for="Password" class="text-danger"></span>
@@ -106,7 +107,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Phone" class="col-md-4 col-form-label"><i class="fas fa-phone"></i> Số điện thoại</label>
+                    <label asp-for="Phone" class="col-md-4 col-form-label"><i class="fas fa-phone me-2"></i> Số điện thoại</label>
                     <div class="col-md-8">
                         <input asp-for="Phone" class="form-control" required />
                         <span asp-validation-for="Phone" class="text-danger"></span>
@@ -114,7 +115,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Avatar" class="col-md-4 col-form-label"><i class="fas fa-image"></i> Ảnh đại diện</label>
+                    <label asp-for="Avatar" class="col-md-4 col-form-label"><i class="fas fa-image me-2"></i> Ảnh đại diện</label>
                     <div class="col-md-8">
                         <input asp-for="Avatar" type="file" class="form-control" required />
                         <span asp-validation-for="Avatar" class="text-danger"></span>
@@ -122,7 +123,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Address" class="col-md-4 col-form-label"><i class="fas fa-map-marker-alt"></i> Địa chỉ</label>
+                    <label asp-for="Address" class="col-md-4 col-form-label"><i class="fas fa-map-marker-alt me-2"></i> Địa chỉ</label>
                     <div class="col-md-8">
                         <input asp-for="Address" class="form-control" required />
                         <span asp-validation-for="Address" class="text-danger"></span>
@@ -130,7 +131,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label asp-for="Dob" class="col-md-4 col-form-label"><i class="fas fa-calendar-alt"></i> Ngày sinh</label>
+                    <label asp-for="Dob" class="col-md-4 col-form-label"><i class="fas fa-calendar-alt me-2"></i> Ngày sinh</label>
                     <div class="col-md-8">
                         <input asp-for="Dob" class="form-control" required />
                         <span asp-validation-for="Dob" class="text-danger"></span>
@@ -144,10 +145,6 @@
                 </div>
             </form>
         </div>
-    </div>
-
-    <div class="text-center mt-3">
-        <a asp-action="Index" class="btn btn-secondary close-btn">Đóng</a>
     </div>
 </div>
 

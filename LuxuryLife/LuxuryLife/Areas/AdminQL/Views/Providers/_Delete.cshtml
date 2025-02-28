@@ -126,25 +126,25 @@
     <div class="provider-details">
         <dl class="row">
             <dt class="col-sm-4 review-dt">
-                <i class="fas fa-signature"></i> @Html.DisplayNameFor(model => model.Name)
+                <i class="fas fa-signature me-2"></i> @Html.DisplayNameFor(model => model.Name)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Name)
             </dd>
-            <dt class="col-sm-4 review-dt">
-                <i class="fas fa-envelope"></i> @Html.DisplayNameFor(model => model.Email)
+            <dt class="col-sm-4 review-dt ">
+                <i class="fas fa-envelope me-2"></i> @Html.DisplayNameFor(model => model.Email)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Email)
             </dd>
             <dt class="col-sm-4 review-dt">
-                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Avatar)
+                <i class="fas fa-image me-2"></i> @Html.DisplayNameFor(model => model.Avatar)
             </dt>
             <dd class="col-sm-8">
                 <img src="@Model.Avatar" alt="@Model.Name" class="provider-avatar" />
             </dd>
             <dt class="col-sm-4 review-dt">
-                <i class="fas fa-phone"></i> @Html.DisplayNameFor(model => model.Phone)
+                <i class="fas fa-phone me-2"></i> @Html.DisplayNameFor(model => model.Phone)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Phone)
@@ -157,9 +157,7 @@
             <input type="hidden" asp-for="ProviderId" />
             <div class="text-center">
                 <input type="submit" value="Xóa" class="btn btn-danger btn-delete" />
-                <a asp-action="Index" class="btn btn-secondary btn-close">
-                    <i class="fas fa-window-close"></i> Đóng
-                </a>
+ 
             </div>
         </form>
     </div>

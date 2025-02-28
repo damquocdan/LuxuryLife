@@ -58,7 +58,7 @@
     .delete-btn, .close-btn {
         background-color: #ff545a;
         border: none;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, transform 0.2s ease;
         color: white;
         padding: 8px 16px;
         border-radius: 4px;
@@ -66,6 +66,7 @@
 
         .delete-btn:hover, .close-btn:hover {
             background-color: #d64045;
+            transform: scale(1.05); /* Thêm hiệu ứng hover scale */
         }
 
     .close-btn {
@@ -77,7 +78,7 @@
 </style>
 <div class="delete-customer-container">
     <div class="header">
-        <h2><i class="fas fa-trash-alt"></i> Bạn có muốn xóa khách hàng @Html.DisplayFor(model => model.Email) này?</h2>
+        <h2><i class="fas fa-trash-alt me-2"></i> Bạn có muốn xóa khách hàng @Html.DisplayFor(model => model.Email) này?</h2>
         <button class="close-btn" onclick="closeDetailSection()">
             <i class="fas fa-times"></i>
         </button>
@@ -85,16 +86,16 @@
 
     <div>
         <dl class="row">
-            <dt class="col-sm-4"><i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.Name)</dt>
+            <dt class="col-sm-4"><i class="fas fa-user me-2"></i> @Html.DisplayNameFor(model => model.Name)</dt>
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
 
-            <dt class="col-sm-4"><i class="fas fa-envelope"></i> @Html.DisplayNameFor(model => model.Email)</dt>
+            <dt class="col-sm-4"><i class="fas fa-envelope me-2"></i> @Html.DisplayNameFor(model => model.Email)</dt>
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
 
-            <dt class="col-sm-4"><i class="fas fa-phone"></i> @Html.DisplayNameFor(model => model.Phone)</dt>
+            <dt class="col-sm-4"><i class="fas fa-phone me-2"></i> @Html.DisplayNameFor(model => model.Phone)</dt>
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
 
-            <dt class="col-sm-4"><i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Avatar)</dt>
+            <dt class="col-sm-4"><i class="fas fa-image me-2"></i> @Html.DisplayNameFor(model => model.Avatar)</dt>
             <dd class="col-sm-8">
                 <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail avatar-preview">
             </dd>

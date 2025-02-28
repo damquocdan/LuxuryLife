@@ -128,56 +128,56 @@
     <div class="detail-card">
         <dl class="row">
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-signature"></i> Tên
+                <i class="fas fa-signature me-2"></i> Tên
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Name)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-envelope"></i> Email
+                <i class="fas fa-envelope me-2"></i> Email
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Email)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-key"></i> Mật khẩu
+                <i class="fas fa-key me-2"></i> Mật khẩu
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Password)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-image"></i> Hình đại diện
+                <i class="fas fa-image me-2"></i> Hình đại diện
             </dt>
             <dd class="col-sm-8 detail-dd">
                 <img src="@Model.Avatar" alt="@Model.Name" class="provider-avatar" />
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-phone"></i> Số điện thoại
+                <i class="fas fa-phone me-2"></i> Số điện thoại
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Phone)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-map-marker-alt"></i> Địa chỉ
+                <i class="fas fa-map-marker-alt me-2"></i> Địa chỉ
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Address)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-star"></i> Đánh giá
+                <i class="fas fa-star me-2"></i> Đánh giá
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Rating)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-calendar-alt"></i> Ngày tạo
+                <i class="fas fa-calendar-alt me-2"></i> Ngày tạo
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Createdate)
@@ -189,9 +189,7 @@
         <button class="btn btn-warning btn-action ajax-action" data-url="@Url.Action("Edit", new { id = Model.ProviderId })">
             <i class="fas fa-edit"></i> Sửa
         </button>
-        <a asp-action="Index" class="btn btn-secondary btn-close">
-            <i class="fas fa-window-close"></i> Quay lại danh sách
-        </a>
+  
     </div>
 </div>
 

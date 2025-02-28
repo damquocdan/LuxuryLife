@@ -138,14 +138,14 @@
     <div class="news-details">
         <dl class="row">
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-heading"></i> Tiêu đề
+                <i class="fas fa-heading me-2"></i> Tiêu đề
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Title)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-file-alt"></i> Nội dung
+                <i class="fas fa-file-alt me-2"></i> Nội dung
             </dt>
             <dd class="col-sm-8 detail-dd">
                 <details>
@@ -155,14 +155,14 @@
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-image"></i> Đường dẫn h.ảnh
+                <i class="fas fa-image me-2"></i> Đường dẫn h.ảnh
             </dt>
             <dd class="col-sm-8 detail-dd">
                 <img src="@Model.ImageUrl" alt="@Model.Title" class="news-image" />
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-calendar-alt"></i> Ngày tạo
+                <i class="fas fa-calendar-alt me-2"></i> Ngày tạo
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Createdate)

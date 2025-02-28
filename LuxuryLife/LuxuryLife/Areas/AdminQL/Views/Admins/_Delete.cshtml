@@ -3,116 +3,107 @@
 @{
     ViewData["Title"] = "Xóa Admin";
 }
-
 <style>
-    .body1 {
+    .delete-admin-container {
         background-color: #1b1e20;
         color: white;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        position: relative; /* Thêm position relative để định vị nút đóng */
-    }
-
-    h3 {
-        color: #ff545a;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    dl {
-        background-color: #282c30;
         padding: 20px;
-        border-radius: 5px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
     }
 
-    dt {
-        color: #ff545a;
-        font-weight: bold;
-        margin-bottom: 10px;
-        display: flex; /* Sử dụng flexbox để căn chỉnh icon và text */
-        align-items: center; /* Căn chỉnh theo chiều dọc */
-    }
-
-        dt i {
-            margin-right: 5px; /* Khoảng cách giữa icon và text */
+        .delete-admin-container h3 {
+            color: #ff545a;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-    dd {
-        margin-bottom: 10px;
-    }
+            .delete-admin-container h3 i {
+                margin-right: 8px;
+            }
 
-    img {
+        .delete-admin-container dl {
+            background-color: #282c30;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .delete-admin-container dt {
+            color: #ff545a;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            .delete-admin-container dt i {
+                margin-right: 5px;
+            }
+
+        .delete-admin-container dd {
+            margin-bottom: 10px;
+        }
+
+    .avatar-preview {
+        width: 300px;
+        height: 300px;
         border-radius: 50%;
         transition: transform 0.3s ease;
+        object-fit: cover;
     }
 
-        img:hover {
+        .avatar-preview:hover {
             transform: scale(1.1);
         }
 
-    .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #c82333;
-        }
-
-    .btn-secondary {
-        background-color: #444;
-        border-color: #444;
+    .delete-btn, .close-btn {
+        background-color: #ff545a;
+        border: none;
+        transition: background-color 0.3s ease;
         color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
     }
 
-        .btn-secondary:hover {
-            background-color: #555;
-            border-color: #555;
+        .delete-btn:hover, .close-btn:hover {
+            background-color: #d64045;
         }
 
-    /* Nút đóng */
-    .closeDetailSection {
+    .close-btn {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 3em;
-        cursor: pointer;
+        padding: 5px 10px;
     }
-
-        .closeDetailSection:hover {
-            color: #ff545a;
-        }
 </style>
-
-<div class="body1">
-    <button class="closeDetailSection" onclick="window.location.href='@Url.Action("Index")'">&times;</button>
-    <h3>Bạn có muốn xóa tài khoản @Html.DisplayFor(model => model.Email) này?</h3>
+<div class="delete-admin-container">
+    <button class="close-btn" onclick="window.location.href='@Url.Action("Index")'">
+        <i class="fas fa-times"></i>
+    </button>
+    <h3><i class="fas fa-trash-alt"></i> Bạn có muốn xóa tài khoản @Html.DisplayFor(model => model.Email) này?</h3>
 
     <div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-4"><i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.Name)</dt>
+            <dt class="col-sm-4"><i class="fas fa-user me-2"></i> @Html.DisplayNameFor(model => model.Name)</dt>
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
 
-            <dt class="col-sm-3"><i class="fas fa-envelope"></i> @Html.DisplayNameFor(model => model.Email)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+            <dt class="col-sm-4"><i class="fas fa-envelope me-2"></i> @Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
 
-            <dt class="col-sm-3"><i class="fas fa-image"></i> Ảnh đại diện</dt>
-            <dd class="col-sm-9">
-                <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
+            <dt class="col-sm-4"><i class="fas fa-image me-2"></i> Ảnh đại diện</dt>
+            <dd class="col-sm-8">
+                <img src="@Model.Avatar" alt="@Model.Name" class="avatar-preview" />
             </dd>
         </dl>
 
         <form asp-action="Delete" class="text-center mt-3">
             <input type="hidden" asp-for="AdminId" />
-            <input type="submit" value="Xóa" class="btn btn-danger" />
-            <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+            <input type="submit" value="Xóa" class="btn btn-danger delete-btn" />
         </form>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

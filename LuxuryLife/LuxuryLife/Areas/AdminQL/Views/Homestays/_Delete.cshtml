@@ -126,13 +126,13 @@
     <div class="homestay-details">
         <dl class="row">
             <dt class="col-sm-4 review-dt">
-                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Image)
+                <i class="fas fa-image me-2"></i> Hình ảnh
             </dt>
             <dd class="col-sm-8 detail-dd">
-                <img src="@Model.Image" alt="@Model.Name" class="homestay-image" />
+                <img src="@Model.Image" alt="@Model.Name" class="" width="300px" height="200px" />
             </dd>
             <dt class="col-sm-4 review-dt">
-                <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.PricePerNight)
+                <i class="fas fa-dollar-sign me-2"></i> @Html.DisplayNameFor(model => model.PricePerNight)
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.PricePerNight)

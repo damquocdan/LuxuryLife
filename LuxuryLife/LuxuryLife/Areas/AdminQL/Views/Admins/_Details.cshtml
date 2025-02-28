@@ -1,132 +1,126 @@
 ﻿@model LuxuryLife.Models.Admin
 
 @{
-    ViewData["Title"] = "Chi tiết thông tin Admin";
+    ViewData["Title"] = "Chi tiết ";
 }
-
 <style>
-    .body1 {
+    .admin-details-container {
         background-color: #1b1e20;
         color: white;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        position: relative; /* Thêm position relative để định vị nút đóng */
-    }
-
-    h1 {
-        color: #ff545a;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    dl {
-        background-color: #282c30;
         padding: 20px;
-        border-radius: 5px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
     }
 
-    dt {
-        color: #ff545a;
-        font-weight: bold;
-        margin-bottom: 10px;
-        display: flex; /* Sử dụng flexbox để căn chỉnh icon và text */
-        align-items: center; /* Căn chỉnh theo chiều dọc */
-    }
-
-        dt i {
-            margin-right: 5px; /* Khoảng cách giữa icon và text */
+        .admin-details-container h1 {
+            color: #ff545a;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-    dd {
-        margin-bottom: 10px;
-    }
+            .admin-details-container h1 i {
+                margin-right: 8px;
+            }
 
-    img {
+        .admin-details-container dl {
+            background-color: #282c30;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .admin-details-container dt {
+            color: #ff545a;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            .admin-details-container dt i {
+                margin-right: 5px;
+            }
+
+        .admin-details-container dd {
+            margin-bottom: 10px;
+        }
+
+    .avatar-preview {
+        width: 300px;
+        height: 300px;
         border-radius: 50%;
         transition: transform 0.3s ease;
+        object-fit: cover;
     }
 
-        img:hover {
+        .avatar-preview:hover {
             transform: scale(1.1);
         }
 
-    .btn-warning {
-        background-color: #ffc107;
-        border-color: #ffc107;
-        color: #1b1e20;
-    }
-
-        .btn-warning:hover {
-            background-color: #e0a800;
-            border-color: #e0a800;
-        }
-
-    .btn-secondary {
-        background-color: #444;
-        border-color: #444;
-        color: white;
-    }
-
-        .btn-secondary:hover {
-            background-color: #555;
-            border-color: #555;
-        }
-
-    .ajax-action {
+    .btn-warning, .btn-secondary {
         transition: transform 0.2s ease;
     }
 
-        .ajax-action:hover {
+        .btn-warning:hover, .btn-secondary:hover {
             transform: scale(1.05);
         }
 
-    /* Nút đóng */
-    .closeDetailSection {
+    .delete-btn, .close-btn {
+        background-color: #ff545a;
+        border: none;
+        transition: background-color 0.3s ease;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+        .delete-btn:hover, .close-btn:hover {
+            background-color: #d64045;
+        }
+
+    .close-btn {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 3em;
-        cursor: pointer;
+        padding: 5px 10px;
     }
-
-        .closeDetailSection:hover {
-            color: #ff545a;
-        }
 </style>
-
-<div class="body1">
-    <button class="closeDetailSection" onclick="window.location.href='@Url.Action("Index")'">&times;</button>
-    <h1>Chi tiết thông tin Admin</h1>
+<div class="admin-details-container">
+    <button class="close-btn" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+    <h1><i class="fas fa-user-circle"></i> Chi tiết thông tin</h1>
 
     <div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-3"><i class="fas fa-user"></i> Tên quản lý</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+            <dt class="col-sm-5"><i class="fas fa-user me-2"></i> Tên quản lý</dt>
+            <dd class="col-sm-7">@Html.DisplayFor(model => model.Name)</dd>
 
-            <dt class="col-sm-3"><i class="fas fa-envelope"></i> Email</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+            <dt class="col-sm-5"><i class="fas fa-envelope me-2"></i> Email</dt>
+            <dd class="col-sm-7">@Html.DisplayFor(model => model.Email)</dd>
 
-            <dt class="col-sm-3"><i class="fas fa-lock"></i> Mật khẩu</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Password)</dd>
+            <dt class="col-sm-5"><i class="fas fa-lock me-2"></i> Mật khẩu</dt>
+            <dd class="col-sm-7">@Html.DisplayFor(model => model.Password)</dd>
 
-            <dt class="col-sm-3"><i class="fas fa-image"></i> Ảnh đại diện</dt>
-            <dd class="col-sm-9">
-                <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
+            <dt class="col-sm-4"><i class="fas fa-image me-2"></i> Ảnh đại diện</dt>
+            <dd class="col-sm-8">
+                <img src="@Model.Avatar" alt="@Model.Name" class="avatar-preview" />
             </dd>
         </dl>
     </div>
 
     <div class="text-center mt-3">
-        <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.AdminId })"><i class="fas fa-edit"></i> Sửa</button>
-        <a asp-action="Index" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Đóng</a>
+        <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.AdminId })">
+            <i class="fas fa-edit"></i> Sửa
+        </button>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {

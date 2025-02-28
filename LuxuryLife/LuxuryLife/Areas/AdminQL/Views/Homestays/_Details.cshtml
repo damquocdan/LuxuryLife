@@ -114,35 +114,35 @@
     <div class="homestay-details">
         <dl class="row">
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-signature"></i> @Html.DisplayNameFor(model => model.Name)
+                <i class="fas fa-signature me-2"></i> @Html.DisplayNameFor(model => model.Name)
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Name)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-file-alt"></i> @Html.DisplayNameFor(model => model.Description)
+                <i class="fas fa-file-alt me-2"></i> @Html.DisplayNameFor(model => model.Description)
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Description)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-map-marker-alt"></i> @Html.DisplayNameFor(model => model.Address)
+                <i class="fas fa-map-marker-alt me-2"></i> @Html.DisplayNameFor(model => model.Address)
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.Address)
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Image)
+                <i class="fas fa-image me-2"></i> @Html.DisplayNameFor(model => model.Image)
             </dt>
             <dd class="col-sm-8 detail-dd">
-                <img src="@Model.Image" alt="@Model.Name" class="homestay-image" />
+                <img src="@Model.Image" alt="@Model.Name" class=""width="300px" height="200px" />
             </dd>
 
             <dt class="col-sm-4 detail-dt">
-                <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.PricePerNight)
+                <i class="fas fa-dollar-sign me-2"></i> @Html.DisplayNameFor(model => model.PricePerNight)
             </dt>
             <dd class="col-sm-8 detail-dd">
                 @Html.DisplayFor(model => model.PricePerNight)
@@ -150,7 +150,7 @@
         </dl>
     </div>
 
- 
+  
 </div>
 
 @section Scripts {
