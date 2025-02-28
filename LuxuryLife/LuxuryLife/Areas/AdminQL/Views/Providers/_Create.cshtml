@@ -3,96 +3,200 @@
 @{
     ViewData["Title"] = "Tạo mới nhà cung cấp";
 }
+<style>
+    .create-provider-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<h1>Tạo mới</h1>
+    .create-provider-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-<h4>Nhà cung cấp</h4>
-<hr />
-<div class="row">
-    <div class="">
+        .create-provider-header h1 {
+            font-size: 2.5rem;
+            color: #ff545a;
+            margin: 0;
+        }
+
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .close-btn:hover {
+            color: #ff545a;
+        }
+
+    .divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .col-form-label {
+        font-weight: bold;
+        color: #ff545a;
+        display: flex;
+        align-items: center;
+    }
+
+        .col-form-label i {
+            margin-right: 8px;
+        }
+
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #ff545a;
+            box-shadow: none;
+        }
+
+    .form-control-file {
+        background-color: transparent;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+        background-color: #ff545a;
+        border-color: #ff545a;
+    }
+
+        .btn-primary:hover {
+            background-color: #e64a4f;
+            border-color: #e64a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            border-color: #495057;
+</style>
+<div class="create-provider-container">
+    <div class="create-provider-header">
+        <h1 class="text-center"><i class="fas fa-plus-circle"></i> @ViewData["Title"]</h1>
+        <button type="button" class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="create-form">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Name Field -->
             <div class="form-group row">
-                <label asp-for="Name" class="col-sm-4 col-form-label">Tên</label>
+                <label asp-for="Name" class="col-sm-4 col-form-label"><i class="fas fa-signature"></i> Tên</label>
                 <div class="col-sm-8">
-                    <input asp-for="Name" class="form-control" required />
+                    <input asp-for="Name" class="form-control form-input" required />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Email Field -->
             <div class="form-group row">
-                <label asp-for="Email" class="col-sm-4 col-form-label">Email</label>
+                <label asp-for="Email" class="col-sm-4 col-form-label"><i class="fas fa-envelope"></i> Email</label>
                 <div class="col-sm-8">
-                    <input asp-for="Email" class="form-control" required />
+                    <input asp-for="Email" class="form-control form-input" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Password Field -->
             <div class="form-group row">
-                <label asp-for="Password" class="col-sm-4 col-form-label">Mật khẩu</label>
+                <label asp-for="Password" class="col-sm-4 col-form-label"><i class="fas fa-key"></i> Mật khẩu</label>
                 <div class="col-sm-8">
-                    <input asp-for="Password" class="form-control" type="password" required />
+                    <input asp-for="Password" class="form-control form-input" type="password" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Avatar Field -->
             <div class="form-group row">
-                <label asp-for="Avatar" class="col-sm-4 col-form-label">Hình đại diện</label>
+                <label asp-for="Avatar" class="col-sm-4 col-form-label"><i class="fas fa-image"></i> Hình đại diện</label>
                 <div class="col-sm-8">
-                    <input asp-for="Avatar" class="form-control" type="file"  required/>
+                    <input asp-for="Avatar" class="form-control-file form-input" type="file" required />
                     <span asp-validation-for="Avatar" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Phone Field -->
             <div class="form-group row">
-                <label asp-for="Phone" class="col-sm-4 col-form-label">Số điện thoại</label>
+                <label asp-for="Phone" class="col-sm-4 col-form-label"><i class="fas fa-phone"></i> Số điện thoại</label>
                 <div class="col-sm-8">
-                    <input asp-for="Phone" class="form-control" required />
+                    <input asp-for="Phone" class="form-control form-input" required />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Address Field -->
             <div class="form-group row">
-                <label asp-for="Address" class="col-sm-4 col-form-label">Địa chỉ</label>
+                <label asp-for="Address" class="col-sm-4 col-form-label"><i class="fas fa-map-marker-alt"></i> Địa chỉ</label>
                 <div class="col-sm-8">
-                    <input asp-for="Address" class="form-control" required />
+                    <input asp-for="Address" class="form-control form-input" required />
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Rating Field -->
             <div class="form-group row" hidden>
                 <label asp-for="Rating" class="col-sm-4 col-form-label">Đánh giá</label>
                 <div class="col-sm-8">
-                    <input asp-for="Rating" class="form-control" type="number" step="0.1" min="0" max="5" />
+                    <input asp-for="Rating" class="form-control form-input" type="number" step="0.1" min="0" max="5" />
                     <span asp-validation-for="Rating" class="text-danger"></span>
                 </div>
             </div>
 
-            <!-- Submit Button -->
             <div class="form-group row">
                 <div class="col-sm-4"></div>
-                <div class="col-sm-8">
-                    <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                <div class="col-sm-8 text-center">
+                    <input type="submit" value="Tạo mới" class="btn btn-primary btn-save" />
                 </div>
             </div>
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+    <div class="back-to-list text-center">
+        <a asp-action="Index" class="btn btn-secondary btn-close"><i class="fas fa-window-close"></i> Đóng</a>
+    </div>
 </div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        function closeDetailSection() {
+            window.location.href = "@Url.Action("Index", "Provider")";
+        }
+    </script>
 }

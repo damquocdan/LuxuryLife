@@ -1,32 +1,160 @@
 ﻿@model LuxuryLife.Models.Homestay
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa Homestay";
 }
+<style>
+    .delete-homestay-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<h1>Xoá</h1>
+    .delete-homestay-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
 
-<h3>Bạn có muốn xoá Homestay:@Html.DisplayFor(model => model.Name) này </h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.PricePerNight)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.PricePerNight)
-        </dd>
-    </dl>
+        .delete-homestay-header h1 {
+            font-size: 2.5rem;
+            color: #ff545a;
+            margin: 0;
+        }
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="HomestayId" />
-        <input type="submit" value="Xoá" class="btn btn-danger" /> 
-        <a asp-action="Index" class="btn btn-success">Đóng</a>
-    </form>
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .close-btn:hover {
+            color: #ff545a;
+        }
+
+    .delete-confirm {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .homestay-details {
+        background-color: #343a40;
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .review-dt {
+        font-weight: bold;
+        color: #ff545a;
+        display: flex;
+        align-items: center;
+    }
+
+    review-dt i {
+        margin-right: 8px;
+    }
+
+    .detail-dd {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .homestay-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .btn-danger, .btn-secondary {
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-danger {
+        background-color: #ff545a;
+        border-color: #ff545a;
+    }
+
+        .btn-danger:hover {
+            background-color: #e64a4f;
+            border-color: #e64a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            border-color: #495057;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-close i {
+        margin-right: 5px;
+    }
+</style>
+<div class="delete-homestay-container">
+    <div class="delete-homestay-header">
+        <h1 class="text-center"><i class="fas fa-trash-alt"></i> Xóa Homestay</h1>
+        <button type="button" class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="delete-confirm">
+        <h3>Bạn có muốn xóa Homestay <b>@Html.DisplayFor(model => model.Name)</b>?</h3>
+    </div>
+
+    <div class="homestay-details">
+        <dl class="row">
+            <dt class="col-sm-4 review-dt">
+                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Image)
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                <img src="@Model.Image" alt="@Model.Name" class="homestay-image" />
+            </dd>
+            <dt class="col-sm-4 review-dt">
+                <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.PricePerNight)
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.PricePerNight)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="delete-form">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="HomestayId" />
+            <div class="text-center">
+                <input type="submit" value="Xóa" class="btn btn-danger btn-delete" />
+ 
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        function closeDetailSection() {
+            window.location.href = "@Url.Action("Index", "Homestay")";
+        }
+    </script>
+}

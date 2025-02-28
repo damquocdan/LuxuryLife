@@ -5,36 +5,84 @@
     Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
-<h1 class="my-4">Danh sách đơn đặt</h1>
-<!-- Bootstrap Table -->
-<table class="table table-striped table-bordered table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.BookingDate)</th>
-            <th>@Html.DisplayNameFor(model => model.CheckInDate)</th>
-            <th>@Html.DisplayNameFor(model => model.CheckOutDate)</th>
-            <th>@Html.DisplayNameFor(model => model.TotalPrice)</th>
-            <th>@Html.DisplayNameFor(model => model.Status)</th>
-            <th>@Html.DisplayNameFor(model => model.Customer)</th>
-            <th>@Html.DisplayNameFor(model => model.Tour)</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.BookingDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.CheckInDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.CheckOutDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
-                <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                <td>@Html.DisplayFor(modelItem => item.Customer.Name):(@Html.DisplayFor(modelItem => item.Customer.Email))</td>
-                <td>@Html.DisplayFor(modelItem => item.Tour.Name)</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" asp-action="EditStatus" asp-route-id="@item.BookingId">Sửa trạng thái</a>
-                </td>
-            </tr>
+<style>
+    .body1 {
+        background-image: url('/images/backgroundadmin.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 900px;
+    }
+
+    h1 {
+        color: #ff545a;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .table {
+        background-color: rgba(40, 44, 48, 0.8); /* Mờ nền bảng */
+        color: white;
+    }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(68, 68, 68, 0.5); /* Mờ viền dưới */
         }
-    </tbody>
-</table>
+
+        .table th {
+            font-size: 1.2em;
+        }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #1b1e20;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+        }
+</style>
+<div class="body1">
+    <h1 class="my-4">Danh sách đơn đặt</h1>
+
+    <table class="table   table-bordered  ">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.BookingDate)</th>
+                <th>@Html.DisplayNameFor(model => model.CheckInDate)</th>
+                <th>@Html.DisplayNameFor(model => model.CheckOutDate)</th>
+                <th>@Html.DisplayNameFor(model => model.TotalPrice)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>@Html.DisplayNameFor(model => model.Customer)</th>
+                <th>@Html.DisplayNameFor(model => model.Tour)</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.BookingDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CheckInDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CheckOutDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer.Name):(@Html.DisplayFor(modelItem => item.Customer.Email))</td>
+                    <td>@Html.DisplayFor(modelItem => item.Tour.Name)</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" asp-action="EditStatus" asp-route-id="@item.BookingId"><i class="fas fa-edit"></i> Sửa trạng thái</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

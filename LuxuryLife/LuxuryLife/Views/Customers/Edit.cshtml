@@ -1,0 +1,122 @@
+﻿@model LuxuryLife.Models.Customer
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CustomerId" />
+
+            <div class="form-group row">
+                <label asp-for="Name" class="col-md-5 col-form-label">Tên</label>
+                <div class="col-md-7">
+                    <input asp-for="Name" class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Email" class="col-md-5 col-form-label ">Email</label>
+                <div class="col-md-7">
+                    <input asp-for="Email" class="form-control" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Password" class="col-md-5 col-form-label ">Mật khẩu</label>
+                <div class="col-md-7">
+                    <input asp-for="Password" class="form-control" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Phone" class="col-md-5 col-form-label ">Số điện thoại</label>
+                <div class="col-md-7">
+                    <input asp-for="Phone" class="form-control" required />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label">Hình đại diện</label>
+
+                <!-- Hiển thị ảnh hiện tại -->
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img src="@Model.Avatar" alt="Avatar" width="150px" height="150px" />
+                }
+
+                <!-- Upload hình mới -->
+                <input asp-for="Avatar" type="file" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Address" class="col-md-5 col-form-label ">Địa chỉ</label>
+                <div class="col-md-7">
+                    <input asp-for="Address" class="form-control" required />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Dob" class="col-md-5 col-form-label ">Ngày sinh</label>
+                <div class="col-md-7">
+                    <input asp-for="Dob" type="date" class="form-control" required />
+                    <span asp-validation-for="Dob" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Demographics" class="col-md-5 col-form-label ">Thông tin dân số</label>
+                <div class="col-md-7">
+                    <input asp-for="Demographics" class="form-control" />
+                    <span asp-validation-for="Demographics" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Preferences" class="col-md-5 col-form-label ">Sở thích</label>
+                <div class="col-md-7">
+                    <input asp-for="Preferences" class="form-control" />
+                    <span asp-validation-for="Preferences" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="SearchHistory" class="col-md-5 col-form-label ">Lịch sử tìm kiếm</label>
+                <div class="col-md-7">
+                    <input asp-for="SearchHistory" class="form-control" />
+                    <span asp-validation-for="SearchHistory" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Createdate" class="col-md-5 col-form-label ">Ngày tạo</label>
+                <div class="col-md-7">
+                    <input asp-for="Createdate" class="form-control" />
+                    <span asp-validation-for="Createdate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-7 offset-md-5">
+                    <input type="submit" value="Lưu" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a href="#" onclick="window.history.back()">Trở lại</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,7 +1,97 @@
 ﻿@model LuxuryLife.Models.Admin
-<h1>Chỉnh sửa thông tin admin</h1>
-<div class="row">
-    <div class="col-md-6 offset-md-3">
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin admin";
+}
+
+<style>
+    .body1 {
+        background-color: #1b1e20;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative; /* Thêm position relative để định vị nút đóng */
+    }
+
+    h1 {
+        color: #ff545a;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-group label {
+        color: white;
+        font-weight: bold;
+    }
+
+    .form-control {
+        background-color: #282c30;
+        border: 1px solid #444;
+        color: white;
+    }
+
+        .form-control:focus {
+            background-color: #333;
+            border-color: #ff545a;
+            box-shadow: 0 0 0 0.2rem rgba(255, 84, 90, 0.25);
+        }
+
+    .btn-primary {
+        background-color: #ff545a;
+        border-color: #ff545a;
+    }
+
+        .btn-primary:hover {
+            background-color: #d64549;
+            border-color: #d64549;
+        }
+
+    .btn-secondary {
+        background-color: #444;
+        border-color: #444;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #555;
+            border-color: #555;
+        }
+
+    img {
+        border-radius: 50%;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease;
+    }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+    .text-danger {
+        color: #ff545a;
+    }
+
+    /* Nút đóng */
+    .closeDetailSection {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 3em;
+        cursor: pointer;
+    }
+
+        .closeDetailSection:hover {
+            color: #ff545a;
+        }
+</style>
+
+<div class="body1">
+    <button class="closeDetailSection" onclick="window.location.href='@Url.Action("Index")'">&times;</button>
+    <h1>Chỉnh sửa thông tin admin</h1>
+
+    <div class="row">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AdminId" />
@@ -27,32 +117,30 @@
             <div class="form-group">
                 <label asp-for="Avatar" class="control-label">Hình đại diện</label>
 
-                <!-- Hiển thị ảnh hiện tại -->
                 @if (!string.IsNullOrEmpty(Model.Avatar))
                 {
                     <img src="@Model.Avatar" alt="Avatar" width="150" height="150" />
                 }
 
-                <!-- Upload hình mới -->
                 <input asp-for="Avatar" type="file" class="form-control" />
                 <span asp-validation-for="Avatar" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-center">
                 <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
         </form>
     </div>
+
+    <div class="text-center mt-3">
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Đóng</a>
+    </div>
 </div>
-
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Đóng</a>
-</div>
-
-
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

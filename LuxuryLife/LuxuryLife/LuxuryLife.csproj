@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\AdminQL\Data\" />
-    <Folder Include="Areas\CustomerUser\Data\" />
     <Folder Include="Areas\ProviderUser\Data\" />
     <Folder Include="wwwroot\images\listimagetour\" />
     <Folder Include="wwwroot\images\admins\" />
@@ -39,6 +38,29 @@
     <Folder Include="wwwroot\images\providers\" />
     <Folder Include="wwwroot\images\tour\" />
     <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Favourites\Create.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Favourites\Details.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Favourites\Edit.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Favourites\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Favourites\_FavoriteDetail.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

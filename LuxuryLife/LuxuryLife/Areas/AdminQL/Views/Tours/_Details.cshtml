@@ -1,116 +1,178 @@
 ﻿@model LuxuryLife.Models.Tour
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết Tour";
 }
 
-<h1 class="text-center">Chi tiết Tour</h1>
-
-<div class="card shadow-lg">
-    <div class="card-header bg-primary text-white">
-        <h2 class="card-title display-6">Thông tin Tour</h2>
+<div class="tour-details-container">
+    <div class="tour-details-header">
+        <h1 class="text-center"><i class="fas fa-info-circle"></i> Chi tiết Tour</h1>
+        <button type="button" class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid rounded border border-primary" alt="Tour Image" />
-            <dt class="col-sm-4">
-                Tên tour
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
 
-            <dt class="col-sm-4">
-                Mô tả
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-            <dt class="col-sm-4">
-                Dịch vụ
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ServiceId)
-            </dd>
-
-            <dt class="col-sm-4">
-                Homestay
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.HomestayId)
-            </dd>
-
-            <dt class="col-sm-4">
-                Giá per người
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.PricePerson)
-            </dd>
-
-            <dt class="col-sm-4">
-                Ngày bắt đầu
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.StartDate)
-            </dd>
-
-            <dt class="col-sm-4">
-                Ngày kết thúc
-            </dt>
-            <dd class="col-sm-8 h5">
-                @Html.DisplayFor(model => model.EndDate)
-            </dd>
-
-            <dt class="col-sm-4">
-                Giá
-            </dt>
-            <dd class="col-sm-8 text-success h5">
-                @Html.DisplayFor(model => model.Price)
-            </dd>
-
-            <dt class="col-sm-4">
-                Trạng thái
-            </dt>
-            <dd class="col-sm-8 h5">
-                @if (Model.Status == "Active")
-                {
-                    <span class="badge bg-success p-2 h5">Hoạt động</span>
-                }
-                else if (Model.Status == "Inactive")
-                {
-                    <span class="badge bg-danger p-2 h5">Không hoạt động</span>
-                }
-                else if (Model.Status == "Pending")
-                {
-                    <span class="badge bg-warning p-2 h5">Chờ xử lý</span>
-                }
-                else
-                {
-                    <span class="badge bg-secondary p-2 h5">Trạng thái không xác định</span>
-                }
-            </dd>
-
-            <dt class="col-sm-4">
-                Ngày tạo
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Createdate)
-            </dd>
-
-            <dt class="col-sm-4">
-                Nhà cung cấp
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Provider.Name)
-            </dd>
-            </dl>
-
-
+    <div class="card shadow-lg tour-card">
+        <div class="card-header tour-card-header">
+            <h2 class="card-title display-6"><i class="fas fa-map-signs"></i> Thông tin Tour</h2>
         </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 text-center mb-4">
+                    <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid rounded tour-image" alt="Tour Image" />
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4"><i class="fas fa-signature"></i> Tên tour</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
 
-        <div class="text-center mt-5">
-            <a asp-action="Index" class="btn btn-secondary btn-lg px-5">Đóng</a>
+                        <dt class="col-sm-4"><i class="fas fa-file-alt"></i> Mô tả</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-concierge-bell"></i> Dịch vụ</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.ServiceId)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-home"></i> Homestay</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.HomestayId)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-user-friends"></i> Giá per người</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PricePerson)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-calendar-check"></i> Ngày bắt đầu</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.StartDate)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-calendar-times"></i> Ngày kết thúc</dt>
+                        <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EndDate)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-dollar-sign"></i> Giá</dt>
+                        <dd class="col-sm-8 text-success h5">@Html.DisplayFor(model => model.Price)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-check-circle"></i> Trạng thái</dt>
+                        <dd class="col-sm-8 h5">
+                            @if (Model.Status == "Active")
+                            {
+                                <span class="badge bg-success p-2 h5">Hoạt động</span>
+                            }
+                            else if (Model.Status == "Inactive")
+                            {
+                                <span class="badge bg-danger p-2 h5">Không hoạt động</span>
+                            }
+                            else if (Model.Status == "Pending")
+                            {
+                                <span class="badge bg-warning p-2 h5">Chờ xử lý</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary p-2 h5">Trạng thái không xác định</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-calendar-alt"></i> Ngày tạo</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Createdate)</dd>
+
+                        <dt class="col-sm-4"><i class="fas fa-user-tie"></i> Nhà cung cấp</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Provider.Name)</dd>
+                    </dl>
+                </div>
+            </div>
+ 
         </div>
     </div>
 </div>
+<style>
+    .tour-details-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
+
+    .tour-details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .tour-details-header h1 {
+            font-size: 2.5rem;
+            color: #ff545a;
+            margin: 0;
+        }
+
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .close-btn:hover {
+            color: #ff545a;
+        }
+
+    .tour-card {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .tour-card-header {
+        background-color: #ff545a;
+        color: white;
+    }
+
+    .tour-image {
+        border: 2px solid #ff545a;
+        transition: transform 0.3s ease;
+    }
+
+        .tour-image:hover {
+            transform: scale(1.05);
+        }
+
+    dt {
+        font-weight: bold;
+        color: #ff545a;
+        display: flex;
+        align-items: center;
+    }
+
+        dt i {
+            margin-right: 8px;
+        }
+
+    dd {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: white;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            border-color: #495057;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-close i {
+        margin-right: 5px;
+    }
+</style>
+@section Scripts {
+    <script>
+        function closeDetailSection() {
+            window.location.href = "@Url.Action("Index", "Tour")";
+        }
+    </script>
+}

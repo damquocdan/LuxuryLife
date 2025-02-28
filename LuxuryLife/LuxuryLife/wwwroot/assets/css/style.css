@@ -41,7 +41,7 @@ font-family: 'Roboto', sans-serif;
 }
 body{
 	font-family: 'Poppins', sans-serif;
-	font-size:14px;
+	font-size:16px;
 	color:#a09e9c;
     text-transform:initial;
     max-width:1920px;
@@ -53,7 +53,7 @@ a,a:hover,a:active,a:focus {
 	display:inline-block;
 	text-decoration:none;
 	color: #343a3f;
-	font-size:16px;
+	font-size:18px;
 	padding:0;
     font-weight: 500;
     text-transform: capitalize;
@@ -191,7 +191,7 @@ nav.navbar.bootsnav {
 /*.nav li*/
 nav.navbar.bootsnav ul.nav > li > a {
     color: #859098;
-    font-size: 14px;
+    font-size: 16px !important;
     font-weight: 500;
     text-transform:uppercase;
     -webkit-transition: 0.3s linear; 
@@ -236,6 +236,7 @@ nav.navbar.bootsnav .navbar-toggle {
     top: 0;
 }
 nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
+
 /*.navbar-toggle */
 
 /*-------------------------------------

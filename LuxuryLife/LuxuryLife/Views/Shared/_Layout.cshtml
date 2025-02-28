@@ -90,12 +90,28 @@
                         <li class="header-top-contact">
                             +84 368 966 992
                         </li>
-                        <li class="header-top-contact">
-                            <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Đăng ký</a>
-                        </li>
-                        <li class="header-top-contact">
-                            <a asp-area="CustomerUser" asp-controller="Login" asp-action="Index">Đăng nhập</a>
-                        </li>
+                        @if (Context.Session.GetString("CustomerLogin") != null)
+                        {
+                            <li class="header-top-contact">
+                                <a asp-area="CustomerUser" asp-controller="Favourites" asp-action="Index" asp-route-customerId="@Context.Session.GetInt32("CustomerId")"><i class="fa-regular fa-bookmark"></i></a>
+                            </li>
+                            <li class="header-top-contact">
+                                <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Details" asp-route-customerId="@Context.Session.GetInt32("CustomerId")">Thông tin</a>
+                            </li>
+                            <li class="header-top-contact">
+                                <a asp-area="CustomerUser" asp-controller="Login" asp-action="Logout">Đăng xuất</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="header-top-contact">
+                                <a asp-area="CustomerUser" asp-controller="Customers" asp-action="Create">Đăng ký</a>
+                            </li>
+                            <li class="header-top-contact">
+                                <a asp-area="CustomerUser" asp-controller="Login" asp-action="Index">Đăng nhập</a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </li>

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
 
-namespace LuxuryLife.Controllers
+namespace LuxuryLife.Areas.CustomerUser.Controllers
 {
     public class ToursController : Controller
     {
@@ -18,7 +18,7 @@ namespace LuxuryLife.Controllers
             _context = context;
         }
 
-        // GET: Tours
+        // GET: CustomerUser/Tours
         public async Task<IActionResult> Index(string query, string description)
         {
             // Initialize tours queryable
@@ -58,7 +58,7 @@ namespace LuxuryLife.Controllers
         }
 
 
-        // GET: Tours/Details/5
+        // GET: CustomerUser/Tours/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -68,10 +68,10 @@ namespace LuxuryLife.Controllers
 
             var tour = await _context.Tours
                 .Include(t => t.Provider)
-                .Include(l=>l.Listimagestours)
+                .Include(l => l.Listimagestours)
                 .Include(t => t.Services)
                 .Include(c => c.Homestays)
-                .Include(s =>s.Reviews)
+                .Include(s => s.Reviews)
                 .FirstOrDefaultAsync(m => m.TourId == id);
             if (tour == null)
             {
@@ -81,14 +81,14 @@ namespace LuxuryLife.Controllers
             return View(tour);
         }
 
-        // GET: Tours/Create
+        // GET: CustomerUser/Tours/Create
         public IActionResult Create()
         {
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "Email");
             return View();
         }
 
-        // POST: Tours/Create
+        // POST: CustomerUser/Tours/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -105,7 +105,7 @@ namespace LuxuryLife.Controllers
             return View(tour);
         }
 
-        // GET: Tours/Edit/5
+        // GET: CustomerUser/Tours/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,7 +122,7 @@ namespace LuxuryLife.Controllers
             return View(tour);
         }
 
-        // POST: Tours/Edit/5
+        // POST: CustomerUser/Tours/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -158,7 +158,7 @@ namespace LuxuryLife.Controllers
             return View(tour);
         }
 
-        // GET: Tours/Delete/5
+        // GET: CustomerUser/Tours/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,7 +177,7 @@ namespace LuxuryLife.Controllers
             return View(tour);
         }
 
-        // POST: Tours/Delete/5
+        // POST: CustomerUser/Tours/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

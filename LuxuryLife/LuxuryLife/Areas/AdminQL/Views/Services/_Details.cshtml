@@ -3,46 +3,135 @@
 @{
     ViewData["Title"] = "Chi tiết dịch vụ";
 }
+<style>
+    .service-details-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<div class="container mt-4">
-    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+    .service-details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
 
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Thông tin chi tiết dịch vụ</h4>
+        .service-details-header h1 {
+            font-size: 2.5rem;
+            color: #ff545a;
+            margin: 0;
+        }
+
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .close-btn:hover {
+            color: #ff545a;
+        }
+
+    .service-card {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .service-card-header {
+        background-color: #ff545a;
+        color: white;
+    }
+
+    .service-dt {
+        font-weight: bold;
+        color: #ff545a;
+        display: flex;
+        align-items: center;
+    }
+
+        .service-dt i {
+            margin-right: 8px;
+        }
+
+    dd {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: white;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            border-color: #495057;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-close i {
+        margin-right: 5px;
+    }
+</style>
+<div class="service-details-container">
+    <div class="service-details-header">
+        <h1 class="text-center"><i class="fas fa-info-circle"></i> Chi tiết dịch vụ</h1>
+        <button type="button" class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="card service-card">
+        <div class="card-header service-card-header">
+            <h4 class="mb-0"><i class="fas fa-concierge-bell"></i> Thông tin chi tiết dịch vụ</h4>
         </div>
         <div class="card-body">
             <dl class="row">
-                <dt class="col-sm-3 text-primary">
-                    <i class="bi bi-card-text"></i> Tên dịch vụ
+                <dt class="col-sm-3 service-dt">
+                    <i class="fas fa-signature"></i> Tên dịch vụ
                 </dt>
                 <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.ServiceName)
                 </dd>
-                <dt class="col-sm-3 text-primary">
-                    <i class="bi bi-info-circle"></i> Mô tả
+                <dt class="col-sm-3 service-dt">
+                    <i class="fas fa-file-alt"></i> Mô tả
                 </dt>
                 <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Description)
                 </dd>
-                <dt class="col-sm-3 text-primary">
-                    <i class="bi bi-currency-dollar"></i> Giá
+                <dt class="col-sm-3 service-dt">
+                    <i class="fas fa-dollar-sign"></i> Giá
                 </dt>
                 <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Price)
                 </dd>
-                <dt class="col-sm-3 text-primary">
-                    <i class="bi bi-map"></i> Tour
+                <dt class="col-sm-3 service-dt">
+                    <i class="fas fa-map-signs"></i> Tour
                 </dt>
                 <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Tour.Name)
                 </dd>
             </dl>
         </div>
-        <div class="card-footer text-center">
-            <a class="btn btn-secondary" asp-action="Index">
-                <i class="bi bi-arrow-left-circle"></i> Quay lại danh sách
-            </a>
-        </div>
+ 
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function closeDetailSection() {
+            window.location.href = "@Url.Action("Index", "Service")";
+        }
+    </script>
+}

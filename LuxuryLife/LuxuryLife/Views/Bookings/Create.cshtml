@@ -1,0 +1,82 @@
+﻿
+@model LuxuryLife.Models.Booking
+@using System.Globalization
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<h1>Đặt Tour</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label>Tên khách hàng:</label>
+                <p>@ViewBag.CustomerName</p>
+                <input type="hidden" asp-for="CustomerId" />
+            </div>
+
+            <div class="form-group">
+                <label>Tên Tour:</label>
+                <p>@ViewBag.TourName</p>
+                <input type="hidden" asp-for="TourId" />
+            </div>
+
+            <div class="form-group">
+                <label>Ngày bắt đầu</label>
+                <input asp-for="CheckInDate"
+                       value="@(((DateTime?)ViewBag.CheckInDate)?.ToString("yyyy-MM-dd"))"
+                       class="form-control"
+                       type="date"
+                       readonly />
+                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Ngày kết thúc</label>
+                <input asp-for="CheckOutDate"
+                       value="@(((DateTime?)ViewBag.CheckOutDate)?.ToString("yyyy-MM-dd"))"
+                       class="form-control"
+                       type="date"
+                       readonly />
+                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label>Giá Tour:</label>
+                <p>@ViewBag.TotalPrice</p>
+                <input asp-for="TotalPrice" class="form-control" type="hidden" />
+                <span asp-validation-for="TotalPrice" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Đặt Tour" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a onclick="window.history.back();">Quay lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

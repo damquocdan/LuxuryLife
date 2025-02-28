@@ -4,63 +4,176 @@
     ViewData["Title"] = "Danh sách Khách hàng";
 }
 
-<h1>Danh sách Khách hàng</h1>
+<style>
+    .body1 {
+        background-image: url('/images/backgroundadmin.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 900px;
+    }
 
-<p>
-    <button class="btn btn-primary ajax-action" data-url="@Url.Action("Create")">Tạo mới</button>
-</p>
+    h1 {
+        color: #ff545a;
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-<div class="row">
-    <div class="col-md-8">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Tên</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Ảnh đại diện</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    .btn-primary {
+        background-color: #ff545a;
+        border-color: #ff545a;
+    }
+
+        .btn-primary:hover {
+            background-color: #d64549;
+            border-color: #d64549;
+        }
+
+    .table {
+        background-color: rgba(40, 44, 48, 0.8); /* Mờ nền bảng */
+        color: white;
+    }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(68, 68, 68, 0.5); /* Mờ viền dưới */
+        }
+
+        .table th {
+            font-size: 1.2em;
+        }
+
+        .table img {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+            .table img:hover {
+                transform: scale(1.1);
+            }
+
+    .btn-warning, .btn-info, .btn-danger {
+        margin: 5px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #1b1e20;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+        }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #138496;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+    .actionCustomers {
+        background-color: rgba(40, 44, 48, 0.8); /* Mờ nền actionCustomers div */
+        padding: 20px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .ajax-action {
+        transition: transform 0.2s ease;
+    }
+
+        .ajax-action:hover {
+            transform: scale(1.05);
+        }
+</style>
+
+<div class="body1">
+    <h1>Danh sách Khách hàng</h1>
+
+    <p class="text-center">
+        <button class="btn btn-primary ajax-action" data-url="@Url.Action("Create")"><i class="fas fa-plus"></i> Tạo mới</button>
+    </p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12" id="list-section">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Phone)</td>
-                        <td>
-                            <img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" />
-                        </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.CustomerId })">Sửa</button>
-                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.CustomerId })">Chi tiết</button>
-                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.CustomerId })">Xóa</button>
-                        </td>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Ảnh đại diện</th>
+                        <th>Hành động</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4">
-        <div class="actionCustomers"></div>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                            <td><img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" /></td>
+                            <td>
+                                <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.CustomerId })"><i class="fas fa-edit"></i> Sửa</button>
+                                <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.CustomerId })"><i class="fas fa-info-circle"></i> Chi tiết</button>
+                                <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.CustomerId })"><i class="fas fa-trash-alt"></i> Xóa</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionCustomers"></div>
+        </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {
             e.preventDefault();
 
-            // Get the URL from the data attribute
             var url = $(this).data("url");
 
-            // Load the content into the .click div
+            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
+            if ($("#detail-section").hasClass("d-none")) {
+                $("#list-section").removeClass("col-md-12").addClass("col-md-8");
+                $("#detail-section").removeClass("d-none").addClass("col-md-4");
+            }
+
+            // Load nội dung vào phần chi tiết
             $(".actionCustomers").load(url, function (response, status, xhr) {
-                if (status == "error") {
-                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                if (status === "error") {
+                    alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
                 }
             });
         });
     });
+        function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
+        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+    }
 </script>

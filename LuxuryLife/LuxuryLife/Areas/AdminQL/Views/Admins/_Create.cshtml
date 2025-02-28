@@ -1,45 +1,131 @@
 ﻿@model LuxuryLife.Models.Admin
 
-<h1>Tạo mới tài khoản admin</h1>
-<hr />
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@{
+    ViewData["Title"] = "Tạo mới tài khoản admin";
+}
 
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Tên</label>
-                <input asp-for="Name" class="form-control" required />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+<style>
+    .body1 {
+        background-color: #1b1e20;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative; /* Thêm position relative để định vị nút đóng */
+    }
 
-            <div class="form-group">
-                <label asp-for="Email" class="control-label">Email</label>
-                <input asp-for="Email" class="form-control" required />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+    h1 {
+        color: #ff545a;
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-            <div class="form-group">
-                <label asp-for="Password" class="control-label">Mật khẩu</label>
-                <input asp-for="Password" class="form-control" required />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+    .form-group label {
+        color: white;
+        font-weight: bold;
+        display: flex; /* Sử dụng flexbox để căn chỉnh icon và text */
+        align-items: center; /* Căn chỉnh theo chiều dọc */
+    }
 
-            <div class="form-group">
-                <label asp-for="Avatar" class="control-label">Hình đại diện</label>
-                <input asp-for="Avatar" type="file" class="form-control" required />
-                <span asp-validation-for="Avatar" class="text-danger"></span>
-            </div>
+        .form-group label i {
+            margin-right: 5px; /* Khoảng cách giữa icon và text */
+        }
 
-            <div class="form-group">
-                <input type="submit" value="Tạo mới" class="btn btn-primary" />
-            </div>
-        </form>
+    .form-control {
+        background-color: #282c30;
+        border: 1px solid #444;
+        color: white;
+    }
+
+        .form-control:focus {
+            background-color: #333;
+            border-color: #ff545a;
+            box-shadow: 0 0 0 0.2rem rgba(255, 84, 90, 0.25);
+        }
+
+    .btn-primary {
+        background-color: #ff545a;
+        border-color: #ff545a;
+    }
+
+        .btn-primary:hover {
+            background-color: #d64549;
+            border-color: #d64549;
+        }
+
+    .btn-secondary {
+        background-color: #444;
+        border-color: #444;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #555;
+            border-color: #555;
+        }
+
+    .text-danger {
+        color: #ff545a;
+    }
+
+    /* Nút đóng */
+    .closeDetailSection {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 3em;
+        cursor: pointer;
+    }
+
+        .closeDetailSection:hover {
+            color: #ff545a;
+        }
+</style>
+
+<div class="body1">
+    <button class="closeDetailSection" onclick="window.location.href='@Url.Action("Index")'">&times;</button>
+    <h1>Tạo mới tài khoản admin</h1>
+    <hr />
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"><i class="fas fa-user"></i> Tên</label>
+                    <input asp-for="Name" class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"><i class="fas fa-envelope"></i> Email</label>
+                    <input asp-for="Email" class="form-control" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"><i class="fas fa-lock"></i> Mật khẩu</label>
+                    <input asp-for="Password" class="form-control" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"><i class="fas fa-image"></i> Hình đại diện</label>
+                    <input asp-for="Avatar" type="file" class="form-control" required />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+    <div class="text-center mt-3">
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Đóng</a>
+    </div>
 </div>
 
 @section Scripts {
@@ -47,3 +133,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

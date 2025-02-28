@@ -1,152 +1,152 @@
-﻿﻿﻿﻿@using Microsoft.AspNetCore.Http;
+﻿@using Microsoft.AspNetCore.Http;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<style>
+    .main-sidebar {
+        background-color: #1b1e20;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        width: 250px; /* Điều chỉnh chiều rộng sidebar */
+    }
+
+    .brand-link {
+        background-color: #282c30;
+        border-bottom: 1px solid #444;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+        .brand-link img {
+            border-radius: 50%;
+        }
+
+    .nav-sidebar .nav-link {
+        color: white;
+        padding: 12px 15px;
+        border-bottom: 1px solid #444;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease;
+    }
+
+        .nav-sidebar .nav-link:hover {
+            background-color: #333;
+        }
+
+        .nav-sidebar .nav-link i {
+            margin-right: 10px;
+            color: #ff545a;
+        }
+
+    .user-panel {
+        background-color: #282c30;
+        padding: 15px;
+        border-top: 1px solid #444;
+        display: flex;
+        align-items: center;
+    }
+
+        .user-panel img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user-panel a {
+            color: white;
+            text-decoration: none;
+        }
+
+            .user-panel a:hover {
+                color: #ff545a;
+            }
+</style>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
-    <!-- Brand Logo -->
     <a href="/adminql/dashboard" class="brand-link">
         <img src="~/images/Logo.jpg" alt="Logo Hunre" class="" width="75px">
         <span class="brand-text font-weight-light ms-2">Quản lý</span>
     </a>
 
-    <!-- Sidebar
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex position-fixed bottom-0 ">
-        <div class="image">
-            <img src="~/images/Logo.jpg" class="img-circle elevation-2" alt="Logo-Hunrre">
-        </div>
-        <div class="info">
-            @{
-                if (HttpContextAccessor.HttpContext.Session.GetString("AdminLogin") != null)
-                {
-                    <a href="#" class="d-block">@HttpContextAccessor.HttpContext.Session.GetString("AdminLogin")</a>
-                    <a asp-action="Logout" asp-controller="Login">Đăng xuất</a>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="/adminql/admins" class="nav-link">
+                        <i class="fa-solid fa-user-tie fa-xl"></i>
+                        <p>Tài khoản Admin</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/customers" class="nav-link">
+                        <i class="fa-solid fa-house-user fa-xl"></i>
+                        <p>Quản lý khách hàng</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/providers" class="nav-link">
+                        <i class="fa-solid fa-house-user fa-xl"></i>
+                        <p>Quản lý nhà cung cấp</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/services" class="nav-link">
+                        <i class="fa-solid fa-list fa-xl"></i>
+                        <p>Quản lý dịch vụ</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/news" class="nav-link">
+                        <i class="fa-regular fa-newspaper fa-xl"></i>
+                        <p>Quản lý tin tức</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/reviews" class="nav-link">
+                        <i class="fa-solid fa-graduation-cap fa-xl"></i>
+                        <p>Quản lý đánh giá</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/homestays" class="nav-link">
+                        <i class="fa-solid fa-wallet fa-xl"></i>
+                        <p>Quản lý homestays</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/tours" class="nav-link">
+                        <i class="fa-solid fa-file-signature fa-xl"></i>
+                        <p>Quản lý tour</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adminql/bookings" class="nav-link">
+                        <i class="fa-solid fa-file-signature fa-xl"></i>
+                        <p>Quản lý bookings</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/images/Logo.jpg" class="img-circle elevation-2" alt="Logo-Hunrre">
+            </div>
+            <div class="info">
+                @{
+                    if (HttpContextAccessor.HttpContext.Session.GetString("AdminLogin") != null)
+                    {
+                        <a href="#" class="d-block">@HttpContextAccessor.HttpContext.Session.GetString("AdminLogin")</a>
+                        <a asp-action="Logout" asp-controller="Login">Đăng xuất</a>
+                    }
+                    else
+                    {
+                        <a href="#" class="d-block">DamQuocDan</a>
+                    }
                 }
-                else
-                {
-                    <a href="#" class="d-block">DamQuocDan</a>
-                }
-            }
-
-
+            </div>
         </div>
-    </div>
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-            <li class="nav-item">
-                <a href="/adminql/admins" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-user-tie fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Tài khoản Admin
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/customers" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-house-user fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý khách hàng
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/providers" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-house-user fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý nhà cung cấp
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/services" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-list fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý dịch vụ
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/news" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-regular fa-newspaper fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý tin tức
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/reviews" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-graduation-cap fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý đánh giá
-                        </p>
-                    </div>
-                </a>
-
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/homestays" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-wallet fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý homestays
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/tours" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-file-signature fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý tour
-                        </p>
-                    </div>
-                </a>
-
-            </li>
-            <li class="nav-item">
-                <a href="/adminql/bookings" class="nav-link">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex justify-content-center" style="width: 30px">
-                            <i class="fa-solid fa-file-signature fa-xl"></i>
-                        </div>
-                        <p class="ms-3">
-                            Quản lý bookings
-                        </p>
-                    </div>
-                </a>
-
-            </li>
-        </ul>
-    </nav>
-
     </div>
 </aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

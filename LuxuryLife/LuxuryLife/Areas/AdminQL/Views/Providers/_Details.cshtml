@@ -3,85 +3,204 @@
 @{
     ViewData["Title"] = "Chi tiết nhà cung cấp";
 }
+<style>
+    .provider-details-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<h1>Chi tiết</h1>
+    .provider-details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-<div>
-    <h4>Nhà cung cấp</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-4">
-            Tên
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        .provider-details-header h1 {
+            font-size: 2.5rem;
+            color: #ff545a;
+            margin: 0;
+        }
 
-        <dt class="col-sm-4">
-            Email
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
 
-        <dt class="col-sm-4">
-            Mật khẩu
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
+        .close-btn:hover {
+            color: #ff545a;
+        }
 
-        <dt class="col-sm-4">
-            Hình đại diện
-        </dt>
-        <dd class="col-sm-8">
-            <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
-        </dd>
+    .divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+    }
 
-        <dt class="col-sm-4">
-            Số điện thoại
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
+    .detail-card {
+        background-color: #343a40;
+        padding: 20px;
+        border-radius: 5px;
+    }
 
-        <dt class="col-sm-4">
-            Địa chỉ
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+    .detail-dt {
+        font-weight: bold;
+        color: #ff545a;
+        display: flex;
+        align-items: center;
+    }
 
-        <dt class="col-sm-4">
-            Đánh giá
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
+        .detail-dt i {
+            margin-right: 8px;
+        }
 
-        <dt class="col-sm-4">
-            Ngày tạo
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Createdate)
-        </dd>
-    </dl>
+    .detail-dd {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .provider-avatar {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .actions {
+        margin-top: 20px;
+    }
+
+    .btn-action, .btn-secondary {
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin: 0 10px;
+    }
+
+    .btn-action {
+        background-color: #ff545a;
+        border-color: #ff545a;
+        color: white;
+    }
+
+        .btn-action:hover {
+            background-color: #e64a4f;
+            border-color: #e64a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            border-color: #495057;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-close i {
+        margin-right: 5px;
+    }
+</style>
+<div class="provider-details-container">
+    <div class="provider-details-header">
+        <h1 class="text-center"><i class="fas fa-info-circle"></i> @ViewData["Title"]</h1>
+        <button type="button" class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="detail-card">
+        <dl class="row">
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-signature"></i> Tên
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-envelope"></i> Email
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-key"></i> Mật khẩu
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-image"></i> Hình đại diện
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                <img src="@Model.Avatar" alt="@Model.Name" class="provider-avatar" />
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-phone"></i> Số điện thoại
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-map-marker-alt"></i> Địa chỉ
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-star"></i> Đánh giá
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Rating)
+            </dd>
+
+            <dt class="col-sm-4 detail-dt">
+                <i class="fas fa-calendar-alt"></i> Ngày tạo
+            </dt>
+            <dd class="col-sm-8 detail-dd">
+                @Html.DisplayFor(model => model.Createdate)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="actions text-center">
+        <button class="btn btn-warning btn-action ajax-action" data-url="@Url.Action("Edit", new { id = Model.ProviderId })">
+            <i class="fas fa-edit"></i> Sửa
+        </button>
+        <a asp-action="Index" class="btn btn-secondary btn-close">
+            <i class="fas fa-window-close"></i> Quay lại danh sách
+        </a>
+    </div>
 </div>
 
-<div>
-    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.ProviderId })">Sửa</button>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
-</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {
             e.preventDefault();
-
-            // Get the URL from the data attribute
             var url = $(this).data("url");
-
-            // Load the content into the .click div
             $(".actionProviders").load(url, function (response, status, xhr) {
                 if (status == "error") {
                     alert("Error: " + xhr.status + " " + xhr.statusText);
@@ -89,4 +208,8 @@
             });
         });
     });
+
+    function closeDetailSection() {
+        window.location.href = "@Url.Action("Index", "Provider")";
+    }
 </script>

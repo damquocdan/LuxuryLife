@@ -1,42 +1,174 @@
 ﻿@model LuxuryLife.Models.Provider
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa nhà cung cấp";
 }
+<style>
+    .delete-provider-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<h1>Bạn có muốn xoá nhà cung cấp này</h1>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Avatar)
-        </dt>
-        <dd class="col-sm-8">
-            <img src="@Model.Avatar" alt="@Model.Name" width="300px" height="300px" />
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-    </dl>
+    .delete-provider-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ProviderId" />
-        <input type="submit" value="Xoá" class="btn btn-danger" />
-        <a asp-action="Index">Đóng</a>
-    </form>
+        .delete-provider-header h1 {
+            font-size: 2.5rem;
+            color: #ff545a;
+            margin: 0;
+        }
+
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .close-btn:hover {
+            color: #ff545a;
+        }
+
+    .delete-confirm {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .provider-details {
+        background-color: #343a40;
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .review-dt {
+        font-weight: bold;
+        color: #ff545a;
+        display: flex;
+        align-items: center;
+    }
+
+    review-dt i {
+        margin-right: 8px;
+    }
+
+    dd {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+    .provider-avatar {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .btn-danger, .btn-secondary {
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 5px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-danger {
+        background-color: #ff545a;
+        border-color: #ff545a;
+    }
+
+        .btn-danger:hover {
+            background-color: #e64a4f;
+            border-color: #e64a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            border-color: #495057;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-close i, .btn-delete i {
+        margin-right: 5px;
+    }
+</style>
+<div class="delete-provider-container">
+    <div class="delete-provider-header">
+        <h1 class="text-center"><i class="fas fa-trash-alt"></i> Xóa nhà cung cấp</h1>
+        <button type="button" class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="delete-confirm">
+        <h3>Bạn có muốn xóa nhà cung cấp này?</h3>
+    </div>
+
+    <div class="provider-details">
+        <dl class="row">
+            <dt class="col-sm-4 review-dt">
+                <i class="fas fa-signature"></i> @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-4 review-dt">
+                <i class="fas fa-envelope"></i> @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-4 review-dt">
+                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Avatar)
+            </dt>
+            <dd class="col-sm-8">
+                <img src="@Model.Avatar" alt="@Model.Name" class="provider-avatar" />
+            </dd>
+            <dt class="col-sm-4 review-dt">
+                <i class="fas fa-phone"></i> @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="delete-form">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="ProviderId" />
+            <div class="text-center">
+                <input type="submit" value="Xóa" class="btn btn-danger btn-delete" />
+                <a asp-action="Index" class="btn btn-secondary btn-close">
+                    <i class="fas fa-window-close"></i> Đóng
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        function closeDetailSection() {
+            window.location.href = "@Url.Action("Index", "Provider")";
+        }
+    </script>
+}

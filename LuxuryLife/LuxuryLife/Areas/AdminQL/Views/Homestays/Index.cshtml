@@ -5,60 +5,153 @@
     Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
-<h1 class="text-center mb-4 display-4">Danh sách các Homestay</h1>
-<div class="row">
-    <div class="col-md-8">
-        <table class="table table-bordered table-hover table-striped text-center align-middle">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Tên Homestay</th>
-                    <th>Hình ảnh</th>
-                    <th>Giá mỗi đêm</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<style>
+    .body1 {
+        background-image: url('/images/backgroundadmin.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 900px;
+    }
+
+    h1 {
+        color: #ff545a;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .table {
+        background-color: rgba(40, 44, 48, 0.8); /* Mờ nền bảng */
+        color: white;
+    }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(68, 68, 68, 0.5); /* Mờ viền dưới */
+        }
+
+        .table th {
+            font-size: 1.2em;
+        }
+
+        .table img {
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+            .table img:hover {
+                transform: scale(1.1);
+            }
+
+    .btn-info, .btn-danger {
+        margin: 5px;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #138496;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+    .actionHomestays {
+        background-color: rgba(40, 44, 48, 0.8); /* Mờ nền actionHomestays div */
+        padding: 20px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .ajax-action {
+        transition: transform 0.2s ease;
+    }
+
+        .ajax-action:hover {
+            transform: scale(1.05);
+        }
+</style>
+<div class="body1">
+    <h1 class="text-center mb-4 display-4">Danh sách các Homestay</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-12" id="list-section">
+            <table class="table table-bordered   text-center align-middle">
+                <thead class="thead-dark">
                     <tr>
-                        <td class="font-weight-bold">
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            <img src="@Html.DisplayFor(modelItem => item.Image)" alt="Homestay Image" class="img-thumbnail" style="max-width: 100px;" />
-                        </td>
-                        <td class="text-success font-weight-bold">
-                            @Html.DisplayFor(modelItem => item.PricePerNight)
-                        </td>
-                        <td>
-                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.HomestayId })">Chi tiết</button>
-                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.HomestayId })">Xóa</button>
-                        </td>
+                        <th>Tên Homestay</th>
+                        <th>Hình ảnh</th>
+                        <th>Giá mỗi đêm</th>
+                        <th>Hành động</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="font-weight-bold">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                <img src="@Html.DisplayFor(modelItem => item.Image)" alt="Homestay Image" style="width:100%; height:350px;" />
+                            </td>
+                            <td class="text-success font-weight-bold">
+                                @Html.DisplayFor(modelItem => item.PricePerNight)
+                            </td>
+                            <td>
+                                <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.HomestayId })"><i class="fas fa-info-circle"></i> Chi tiết</button>
+                                <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.HomestayId })"><i class="fas fa-trash-alt"></i> Xóa</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionCustomers"></div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <div class="actionHomestays"></div>
-    </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {
             e.preventDefault();
 
-            // Get the URL from the data attribute
             var url = $(this).data("url");
 
-            // Load the content into the .click div
-            $(".actionHomestays").load(url, function (response, status, xhr) {
-                if (status == "error") {
-                    alert("Error: " + xhr.status + " " + xhr.statusText);
+            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
+            if ($("#detail-section").hasClass("d-none")) {
+                $("#list-section").removeClass("col-md-12").addClass("col-md-8");
+                $("#detail-section").removeClass("d-none").addClass("col-md-4");
+            }
+
+            // Load nội dung vào phần chi tiết
+            $(".actionCustomers").load(url, function (response, status, xhr) {
+                if (status === "error") {
+                    alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
                 }
             });
         });
     });
+        function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
+        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+    }
 </script>

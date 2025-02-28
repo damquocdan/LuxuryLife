@@ -3,8 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace LuxuryLife.Controllers
+namespace LuxuryLife.Areas.CustomerUser.Controllers
 {
+  
     public class PaymentController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -14,7 +15,7 @@ namespace LuxuryLife.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("payment/create")]
+        [HttpGet("create")]
         public IActionResult CreatePayment(decimal amount)
         {
             string vnp_TmnCode = _configuration["VNPay:TmnCode"];
@@ -40,36 +41,29 @@ namespace LuxuryLife.Controllers
             };
 
             // Tạo URL thanh toán
-            string rawData = string.Join("&", vnPayParams.Select(x => $"{x.Key}={x.Value}")); // Không sử dụng UrlEncode
+            string queryString = string.Join("&", vnPayParams.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}"));
+            string rawData = queryString + "&" + vnp_HashSecret;
             string vnp_SecureHash = GenerateHmacSHA512(rawData, vnp_HashSecret);
 
-            // Tạo chuỗi query string (URL cần mã hóa ở đây)
-            string queryString = string.Join("&", vnPayParams.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}"));
             string paymentUrl = $"{vnp_Url}?{queryString}&vnp_SecureHash={vnp_SecureHash}";
-
             return Redirect(paymentUrl);
-
         }
 
-        [HttpGet("payment/return")]
+        [HttpGet("return")]
         public IActionResult Return()
         {
             var queryParams = HttpContext.Request.Query;
             var vnp_SecureHash = queryParams["vnp_SecureHash"];
             string hashSecret = _configuration["VNPay:HashSecret"];
 
-            // Lọc bỏ tham số vnp_SecureHash, sắp xếp các tham số còn lại theo tên khóa
+            // Xác minh chữ ký
             var sortedParams = queryParams.Where(x => x.Key != "vnp_SecureHash")
                                           .OrderBy(x => x.Key)
                                           .ToDictionary(x => x.Key, x => x.Value.ToString());
 
-            // Tạo chuỗi rawData từ các tham số đã sắp xếp
-            string rawData = string.Join("&", sortedParams.Select(x => $"{x.Key}={x.Value}"));
-
-            // Tính toán lại mã băm từ rawData và HashSecret
+            string rawData = string.Join("&", sortedParams.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}"));
             string calculatedHash = GenerateHmacSHA512(rawData, hashSecret);
 
-            // Kiểm tra nếu mã băm tính toán khớp với mã băm trả về
             if (calculatedHash == vnp_SecureHash)
             {
                 string transactionStatus = queryParams["vnp_TransactionStatus"];

@@ -3,78 +3,135 @@
 @{
     ViewData["Title"] = "Chi tiết";
 }
+<style>
+    .customer-details-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<div class="container">
-    <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white">
+        .customer-details-container h4 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .customer-details-container h4 i {
+                margin-right: 8px;
+            }
+
+        .customer-details-container dt {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+            .customer-details-container dt i {
+                margin-right: 8px;
+                color: #ff545a;
+            }
+
+        .customer-details-container dd {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+    .avatar-preview {
+        max-width: 150px;
+        height: auto;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+        .avatar-preview:hover {
+            transform: scale(1.1);
+        }
+
+    .edit-btn, .close-btn {
+        background-color: #ff545a;
+        border: none;
+        transition: background-color 0.3s ease;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+        .edit-btn:hover, .close-btn:hover {
+            background-color: #d64045;
+        }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+    }
+</style>
+<div class="customer-details-container">
+    <div class=" shadow-lg">
+        <div class="bg-primary text-white">
             <h4 class="mb-0">
-                Thông tin khách hàng            
-                <a asp-action="Index" class="btn btn-secondary text-right">
-                    <i class="bi bi-arrow-left"></i> X
-                </a>
+                <i class="fas fa-info-circle"></i> Thông tin khách hàng
+                <button class="close-btn" onclick="closeDetailSection()">
+                    <i class="fas fa-times"></i>
+                </button>
             </h4>
         </div>
-        <div class="card-body m-auto">
+        <div class="m-auto">
             <dl class="row">
-                <dt class="col-sm-5 font-weight-bold">Tên</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-user"></i> Tên</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Name)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Email</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-envelope"></i> Email</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Email)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Mật khẩu</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-lock"></i> Mật khẩu</dt>
                 <dd class="col-sm-7 text-muted">@Html.DisplayFor(model => model.Password)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Số điện thoại</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-phone"></i> Số điện thoại</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Phone)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Ảnh đại diện</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-image"></i> Ảnh đại diện</dt>
                 <dd class="col-sm-7">
-                    <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail" style="max-width: 150px;">
+                    <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail avatar-preview">
                 </dd>
 
-                <dt class="col-sm-5 font-weight-bold">Địa chỉ</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-map-marker-alt"></i> Địa chỉ</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Address)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Ngày sinh</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-calendar-alt"></i> Ngày sinh</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Dob)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Thông tin dân số</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-info-circle"></i> Thông tin dân số</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Demographics)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Sở thích</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-heart"></i> Sở thích</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Preferences)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Lịch sử tìm kiếm</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-history"></i> Lịch sử tìm kiếm</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.SearchHistory)</dd>
 
-                <dt class="col-sm-5 font-weight-bold">Ngày tạo</dt>
+                <dt class="col-sm-5 font-weight-bold"><i class="fas fa-calendar-plus"></i> Ngày tạo</dt>
                 <dd class="col-sm-7">@Html.DisplayFor(model => model.Createdate)</dd>
             </dl>
         </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a asp-action="Edit" asp-route-id="@Model?.CustomerId" class="btn btn-warning">
-                <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.CustomerId })">Sửa</button>    <i class="bi bi-pencil"></i> Chỉnh sửa
+        <div class="card-footer d-flex justify-content-center">
+            <a asp-action="Edit" asp-route-id="@Model?.CustomerId" class="btn btn-warning edit-btn">
+                <i class="fas fa-pencil-alt"></i> Chỉnh sửa
             </a>
-
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    $(document).ready(function () {
-        $(".ajax-action").click(function (e) {
-            e.preventDefault();
-
-            // Get the URL from the data attribute
-            var url = $(this).data("url");
-
-            // Load the content into the .click div
-            $(".actionCustomers").load(url, function (response, status, xhr) {
-                if (status == "error") {
-                    alert("Error: " + xhr.status + " " + xhr.statusText);
-                }
-            });
-        });
-    });
+    function closeDetailSection() {
+        window.location.href = '@Url.Action("Index", "Customers")';
+    }
 </script>

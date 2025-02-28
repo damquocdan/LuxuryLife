@@ -1,41 +1,114 @@
 ﻿@model LuxuryLife.Models.Customer
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa";
 }
-<a asp-action="Index" class="text-right">x</a>
-<h2>Bạn có muốn xoá khách hàng @Html.DisplayFor(model => model.Email) này</h2>
+<style>
+    .delete-customer-container {
+        background-color: #1b1e20;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Avatar)
-        </dt>
-        <dd class="col-sm-8">
-            <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail" style="max-width: 150px;">
-        </dd>
-    </dl>
+        .delete-customer-container h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="CustomerId" />
-        <input type="submit" value="Xoá" class="btn btn-danger" />
-    </form>
+            .delete-customer-container h2 i {
+                margin-right: 8px;
+                color: #ff545a;
+            }
+
+        .delete-customer-container dt {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+            .delete-customer-container dt i {
+                margin-right: 8px;
+                color: #ff545a;
+            }
+
+        .delete-customer-container dd {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+    .avatar-preview {
+        max-width: 150px;
+        height: auto;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+        .avatar-preview:hover {
+            transform: scale(1.1);
+        }
+
+    .delete-btn, .close-btn {
+        background-color: #ff545a;
+        border: none;
+        transition: background-color 0.3s ease;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+        .delete-btn:hover, .close-btn:hover {
+            background-color: #d64045;
+        }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+    }
+</style>
+<div class="delete-customer-container">
+    <div class="header">
+        <h2><i class="fas fa-trash-alt"></i> Bạn có muốn xóa khách hàng @Html.DisplayFor(model => model.Email) này?</h2>
+        <button class="close-btn" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div>
+        <dl class="row">
+            <dt class="col-sm-4"><i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt class="col-sm-4"><i class="fas fa-envelope"></i> @Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+            <dt class="col-sm-4"><i class="fas fa-phone"></i> @Html.DisplayNameFor(model => model.Phone)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
+
+            <dt class="col-sm-4"><i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Avatar)</dt>
+            <dd class="col-sm-8">
+                <img src="@Model.Avatar" alt="Ảnh đại diện" class="img-thumbnail avatar-preview">
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="CustomerId" />
+            <input type="submit" value="Xóa" class="btn btn-danger delete-btn" />
+        </form>
+    </div>
 </div>
+
+<script>
+    function closeDetailSection() {
+        window.location.href = '@Url.Action("Index", "Customers")';
+    }
+</script>
