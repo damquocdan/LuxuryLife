@@ -1,7 +1,8 @@
-
+﻿
 using LuxuryLife.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Net.payOS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("LuxuryLifeConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<TourBookingContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Đọc cấu hình PayOS từ appsettings.json
+var payOsConfig = builder.Configuration.GetSection("PayOS");
+var clientId = payOsConfig["ClientId"];
+var apiKey = payOsConfig["ApiKey"];
+var checksumKey = payOsConfig["ChecksumKey"];
+
+// Khởi tạo PayOS
+var payOS = new PayOS(clientId, apiKey, checksumKey);
+builder.Services.AddSingleton(payOS);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();

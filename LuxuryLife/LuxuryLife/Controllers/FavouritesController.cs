@@ -29,7 +29,7 @@ namespace LuxuryLife.Controllers
             if (customerId == null)
             {
                 // Chuyển hướng đến trang đăng nhập
-                return RedirectToAction("Index", "Login", new { area = "CustomerUser" });
+                return RedirectToAction("Index", "Login");
             }
 
             // Lọc danh sách yêu thích theo CustomerId
@@ -53,7 +53,7 @@ namespace LuxuryLife.Controllers
             if (customerId == null)
             {
                 TempData["Error"] = "Bạn cần đăng nhập để sử dụng chức năng này.";
-                return RedirectToAction("Index", "Login", new { area = "CustomerUser" });
+                return RedirectToAction("Index", "Login");
 
             }
 
@@ -64,7 +64,7 @@ namespace LuxuryLife.Controllers
             if (existingFavorite != null)
             {
                 TempData["Error"] = "Tour đã có trong danh sách yêu thích!";
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Home");
             }
 
             // Thêm tour vào danh sách yêu thích
@@ -78,7 +78,7 @@ namespace LuxuryLife.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Tour đã được thêm vào danh sách yêu thích!";
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Home");
         }
         // GET: CustomerUser/Favorites/Details/5
         public async Task<IActionResult> Details(int? id)

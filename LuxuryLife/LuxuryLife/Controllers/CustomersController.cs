@@ -59,7 +59,7 @@ namespace LuxuryLife.Controllers
             {
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Home");
 
             }
             return View(customer);

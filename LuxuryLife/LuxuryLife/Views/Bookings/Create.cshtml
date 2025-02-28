@@ -16,7 +16,12 @@
         </ul>
     </div>
 }
-
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
 <h1>Đặt Tour</h1>
 <hr />
 <div class="row">
