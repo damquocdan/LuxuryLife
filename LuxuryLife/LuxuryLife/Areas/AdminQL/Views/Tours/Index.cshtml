@@ -95,19 +95,25 @@
             transform: scale(1.05);
         }
 </style>
+<link rel="stylesheet" href="~/css/style.css" />
 
 <div class="body1">
-    <h1 class="text-primary">Danh Sách Tour</h1>
+    <h1 class="titleh1 text-center">
+        <span class="icon plane"><i class="fa-solid fa-plane fa-beat fa-2xl" style="color: #63E6BE;"></i></span>
+        <i class="fa-solid fa-passport fa-bounce" style="color: #74C0FC;"></i>
+        Danh sách tour
+        <i class="fa-solid fa-umbrella-beach fa-beat" style="color: #FFD43B;"></i>
+    </h1>
     <div class="row justify-content-center">
         <div class="col-md-12" id="list-section">
             <table class="table table-bordered   ">
                 <thead class="table-dark">
                     <tr>
-                        <th>Tên Tour</th>
-                        <th>Hình Ảnh</th>
-                        <th>Trạng Thái</th>
-                        <th>Nhà Cung Cấp</th>
-                        <th>Hành Động</th>
+                        <th width="15%">Tên Tour</th>
+                        <th width="55%">Hình Ảnh</th>
+                        <th width="10%">Trạng Thái</th>
+                        <th width ="10%">Nhà Cung Cấp</th>
+                        <th width="10%">Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,7 +122,7 @@
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Name)</td>
                             <td width="450px">
-                                <img src="@item.Image" alt="@item.Name" class="img-thumbnail" style="width:100%; height: 20rem;" />
+                                <img src="@item.Image" alt="@item.Name" class="img-thumbnail" style="width:100%; height: 25rem;" />
                             </td>
                             <td>
                                 @if (item.Status == "Active")

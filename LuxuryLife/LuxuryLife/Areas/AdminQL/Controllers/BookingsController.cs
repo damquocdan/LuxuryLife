@@ -157,7 +157,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             }
 
             // Thay đổi trạng thái booking
-            booking.Status = booking.Status == "Chưa thanh toán" ? "Đã thanh toán" : "Chưa thanh toán";
+            booking.Status = booking.Status == "Cancelled" ? "Confirmed" : "Cancelled";
 
             // Lưu thay đổi
             _context.Update(booking);

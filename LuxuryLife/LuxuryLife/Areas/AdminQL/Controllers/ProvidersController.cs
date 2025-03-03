@@ -95,6 +95,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
                         provider.Avatar = existingAdmin.Avatar;
                     }
                 }
+                provider.Createdate = DateTime.Now;
                 _context.Add(provider);
                 await _context.SaveChangesAsync();
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")

@@ -6,7 +6,7 @@
         background-color: #1b1e20;
         color: white;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        width: 250px; /* Điều chỉnh chiều rộng sidebar */
+        width: 250px;
     }
 
     .brand-link {
@@ -37,6 +37,12 @@
         .nav-sidebar .nav-link i {
             margin-right: 10px;
             color: #ff545a;
+            transition: transform 0.3s ease; /* Smooth transition for animation */
+        }
+
+        /* Bounce effect on hover */
+        .nav-sidebar .nav-link:hover i {
+            animation: fa-bounce 1s infinite; /* Font Awesome bounce effect */
         }
 
     .user-panel {
@@ -79,19 +85,19 @@
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/customers" class="nav-link">
-                        <i class="fa-solid fa-house-user fa-xl"></i>
+                        <i class="fa-solid fa-users fa-xl"></i> <!-- Changed to represent multiple customers -->
                         <p>Quản lý khách hàng</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/providers" class="nav-link">
-                        <i class="fa-solid fa-house-user fa-xl"></i>
+                        <i class="fa-solid fa-building fa-xl"></i> <!-- Changed to represent providers/businesses -->
                         <p>Quản lý nhà cung cấp</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/services" class="nav-link">
-                        <i class="fa-solid fa-list fa-xl"></i>
+                        <i class="fa-solid fa-concierge-bell fa-xl"></i> <!-- Changed to a service-related icon -->
                         <p>Quản lý dịch vụ</p>
                     </a>
                 </li>
@@ -103,25 +109,25 @@
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/reviews" class="nav-link">
-                        <i class="fa-solid fa-graduation-cap fa-xl"></i>
+                        <i class="fa-solid fa-star fa-xl"></i> <!-- Changed to a star for reviews -->
                         <p>Quản lý đánh giá</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/homestays" class="nav-link">
-                        <i class="fa-solid fa-wallet fa-xl"></i>
+                        <i class="fa-solid fa-house fa-xl"></i> <!-- Changed to a house for homestays -->
                         <p>Quản lý homestays</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/tours" class="nav-link">
-                        <i class="fa-solid fa-file-signature fa-xl"></i>
+                        <i class="fa-solid fa-plane-departure fa-xl"></i> <!-- Changed to a plane departure for tours -->
                         <p>Quản lý tour</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/adminql/bookings" class="nav-link">
-                        <i class="fa-solid fa-file-signature fa-xl"></i>
+                        <i class="fa-solid fa-ticket fa-xl"></i> <!-- Changed to a ticket for bookings -->
                         <p>Quản lý bookings</p>
                     </a>
                 </li>
@@ -149,4 +155,4 @@
     </div>
 </aside>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>

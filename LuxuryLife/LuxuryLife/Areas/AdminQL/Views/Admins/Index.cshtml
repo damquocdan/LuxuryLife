@@ -12,14 +12,9 @@
         background-attachment: fixed;
         color: white;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        min-height:900px;
+        min-height: 900px;
     }
 
-    h1 {
-        color: #ff545a;
-        text-align: center;
-        margin-bottom: 30px;
-    }
 
     .btn-primary {
         background-color: #ff545a;
@@ -105,9 +100,15 @@
             transform: scale(1.05);
         }
 </style>
+<link rel="stylesheet" href="~/css/style.css" />
 
 <div class="body1">
-    <h1>Danh sách Admin</h1>
+    <h1 class="titleh1 text-center">
+        <span class="icon plane"><i class="fa-solid fa-plane fa-beat fa-2xl" style="color: #63E6BE;"></i></span>
+        <i class="fa-solid fa-passport fa-bounce" style="color: #74C0FC;"></i>
+        Danh sách Admin
+        <i class="fa-solid fa-umbrella-beach fa-beat" style="color: #FFD43B;"></i>
+    </h1>
 
     <p class="text-center">
         <button class="btn btn-primary ajax-action" data-url="@Url.Action("Create")"><i class="fas fa-plus"></i> Tạo mới</button>

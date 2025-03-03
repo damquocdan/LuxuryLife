@@ -1,0 +1,92 @@
+﻿/* Style for the title */
+.titleh1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 2px;
+    width:100% !important;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 15px 30px;
+    border-radius: 10px;
+    display: inline-block;
+    position: relative; /* Context for icon positioning */
+    margin: 50px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(8px)) {
+    .titleh1 {
+        background: rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Common styles for icons */
+.titleh1 .icon {
+    position: absolute;
+    font-size: 1.5rem; /* Base size, overridden by fa-xl where applicable */
+}
+
+/* Plane animation: moves from "D" to "n" */
+.plane {
+    top: -25px; /* Above the title */
+    left: 0; /* Starting near "D" */
+    animation: flyFromDToN 4s infinite ease-in-out; /* Custom animation */
+}
+
+/* Approximate "D" to "n" movement */
+@keyframes flyFromDToN {
+    0% {
+        left: 0;
+        transform: translateX(0);
+    }
+    /* Start at "D" (left edge) */
+    100% {
+        left: 100%;
+        transform: translateX(-50%);
+    }
+    /* End near "n" */
+}
+
+/* Passport icon: positioned with bounce */
+.passport {
+    top: -20px;
+    right: 20px;
+    /* fa-bounce is provided by Font Awesome */
+}
+
+/* Beach icon: positioned with beat */
+.beach {
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    /* fa-beat is provided by Font Awesome */
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .titleh1 {
+        font-size: 2.5rem;
+        padding: 10px 20px;
+    }
+
+        .titleh1 .icon {
+            font-size: 1.2rem;
+        }
+
+    .plane {
+        top: -15px;
+    }
+
+    .passport {
+        top: -15px;
+        right: 10px;
+    }
+
+    .beach {
+        bottom: -20px;
+    }
+}

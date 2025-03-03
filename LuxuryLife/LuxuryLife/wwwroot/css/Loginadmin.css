@@ -1,0 +1,192 @@
+﻿/* Background with travel theme */
+body.login-page {
+    background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+    /* Overlay for contrast */
+    body.login-page::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
+        z-index: 1;
+    }
+
+/* Login box */
+.login-box {
+    width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2; /* Above overlay */
+}
+
+.login-title {
+    font-weight: 700;
+    font-size: 28px;
+    color: #1b1e20;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+/* Animated travel icons around title */
+.travel-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Prevents icons from interfering with clicks */
+}
+
+    .travel-icons i {
+        position: absolute;
+        color: #ff545a;
+        font-size: 1.5rem;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
+
+.plane-icon {
+    top: -30px;
+    left: 10%;
+    animation: flyPlane 6s infinite;
+}
+
+.suitcase-icon {
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: shake 2s infinite;
+}
+
+.palm-icon {
+    top: -25px;
+    right: 10%;
+    animation: sway 3s infinite;
+}
+
+/* Animations */
+@keyframes flyPlane {
+    0% {
+        left: 10%;
+        top: -30px;
+        transform: rotate(0deg);
+    }
+
+    50% {
+        left: 50%;
+        top: -40px;
+        transform: rotate(10deg);
+    }
+
+    100% {
+        left: 90%;
+        top: -30px;
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(-50%) translate(0, 0);
+    }
+
+    25% {
+        transform: translateX(-50%) translate(2px, 2px);
+    }
+
+    50% {
+        transform: translateX(-50%) translate(-2px, -2px);
+    }
+
+    75% {
+        transform: translateX(-50%) translate(2px, -2px);
+    }
+
+    100% {
+        transform: translateX(-50%) translate(0, 0);
+    }
+}
+
+@keyframes sway {
+    0% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(-5deg);
+    }
+}
+
+/* Input fields */
+.custom-input {
+    border-radius: 8px;
+    margin-top: 15px;
+    height: 48px;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .custom-input:focus {
+        border-color: #ff545a;
+        box-shadow: 0 0 8px rgba(255, 84, 90, 0.3);
+        outline: none;
+    }
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 25px;
+    background-color: #ff545a;
+    border-color: #ff545a;
+    padding: 12px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #e64a4f;
+        border-color: #e64a4f;
+        transform: translateY(-2px);
+    }
+
+/* Alert */
+.alert {
+    margin-top: 20px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .login-box {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .login-title {
+        font-size: 24px;
+    }
+}

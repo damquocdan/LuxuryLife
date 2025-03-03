@@ -21,8 +21,11 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // GET: AdminQL/Tours
         public async Task<IActionResult> Index()
         {
-            var tourBookingContext = _context.Tours.Include(t => t.Provider);
-            return View(await tourBookingContext.ToListAsync());
+            var tours = await _context.Tours
+                .Include(t => t.Provider)
+                .Where(t => t.Status != "Deleted") // Filter out deleted tours
+                .ToListAsync();
+            return View(tours);
         }
 
         // GET: AdminQL/Tours/Details/5
@@ -193,6 +196,7 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             {
                 return NotFound();
             }
+
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return PartialView("_Delete", tour);
@@ -200,16 +204,19 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             return View(tour);
         }
 
-        // POST: AdminQL/Tours/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tour = await _context.Tours.FindAsync(id);
-            if (tour != null)
+            if (tour == null)
             {
-                _context.Tours.Remove(tour);
+                return NotFound();
             }
+
+            // Change status to "Đã xóa" instead of deleting
+            tour.Status = "Deleted";
+            _context.Tours.Update(tour);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
