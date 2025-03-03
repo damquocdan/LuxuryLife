@@ -1,0 +1,110 @@
+﻿@model IEnumerable<LuxuryLife.Models.Service>
+
+@{
+    ViewData["Title"] = "Danh sách dịch vụ";
+}
+<link rel="stylesheet" href="~/css/service.css">
+<style>
+    .welcome-hero{
+        height:400px;
+    }
+
+    .welcome-hero-txt {
+        padding-top: 50px;
+    }
+
+    .explore {
+        padding: 10px 0 95px;
+        background: #f8fafb;
+    }
+    .section-header h2{
+        font-size:50px;
+        color: #ff545a;
+    }
+</style>
+<section id="home" class="welcome-hero">
+    <div class="container">
+        <div class="welcome-hero-txt">
+            <h2>Dịch vụ du lịch tốt nhất <br> cho tất cả những gì bạn cần </h2>
+            <p>
+                Tìm kiếm những Tour du lịch, Homestays và các dịch vụ mọi thứ với chỉ một CLICK
+            </p>
+        </div>
+        <form asp-action="Index" asp-controller="Tours" method="get">
+            <div class="welcome-hero-serch-box">
+
+                <div class="welcome-hero-form">
+                    <div class="single-welcome-hero-form">
+                        <h3>What?</h3>
+                        <form action="index">
+                            <input type="text" name="query" placeholder="Ex: place, restaurant, food," />
+                        </form>
+                        <div class="welcome-hero-form-icon">
+                            <i class="flaticon-list-with-dots"></i>
+                        </div>
+                    </div>
+                    <div class="single-welcome-hero-form">
+                        <h3>Location</h3>
+                        <form action="index">
+                            <input type="text" name="decription" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
+                        </form>
+                        <div class="welcome-hero-form-icon">
+                            <i class="flaticon-gps-fixed-indicator"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="welcome-hero-serch">
+                    <button type="submit" class="welcome-hero-btn">
+                        Tìm kiếm <i data-feather="search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+ 
+
+<section id="services-section" class="services-section">
+    <div class=" ">
+        <h1 class="section-title text-center">
+            Danh sách dịch vụ
+            @if (ViewBag.SelectedCategory != null)
+            {
+                <small class="category-subtitle">(@ViewBag.SelectedCategory)</small>
+            }
+        </h1>
+        <hr class="divider" />
+
+        <div class="row">
+            @foreach (var service in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- Hiển thị ảnh từ Tour.Image, nếu không có thì dùng ảnh mặc định -->
+                            <img src="@(service.Tour?.Image ?? "/images/default-service.jpg")" alt="@service.ServiceName" class="img-fluid" />
+                        </div>
+                        <div class="service-content">
+                            <h5 class="service-title">@Html.DisplayFor(modelItem => service.ServiceName)</h5>
+                            <p class="service-description">
+                                @(service.Description.Length > 80 ? service.Description.Substring(0, 80) + "..." : service.Description)
+                            </p>
+                            <p class="service-price"><strong>Giá:</strong> @service.GetFormattedPrice()</p>
+                            <p class="service-tour"><strong>Tour:</strong> @Html.DisplayFor(modelItem => service.Tour.Name)</p>
+                            <p class="service-provider">
+                                <img src="@Html.DisplayFor(modelItem => service.Tour.Provider.Avatar)" class="avatar " width="100" height="100" />
+                                <strong>Nhà cung cấp:</strong> @Html.DisplayFor(modelItem => service.Tour.Provider.Name)
+                            </p>
+                            <a asp-action="Details" asp-route-id="@service.ServiceId" class="btn btn-primary btn-details">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-action="Index" class="btn btn-secondary btn-show-all">Hiển thị tất cả</a>
+        </div>
+    </div>
+</section>

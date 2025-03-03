@@ -9,28 +9,23 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Controllers
 {
-    public class NewsController : Controller
+    public class ContactsController : Controller
     {
         private readonly TourBookingContext _context;
 
-        public NewsController(TourBookingContext context)
+        public ContactsController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: News
+        // GET: Contacts
         public async Task<IActionResult> Index()
         {
-            // Lấy 9 tin tức mới nhất, sắp xếp theo Createdate giảm dần
-            var latestNews = await _context.News
-                .OrderByDescending(n => n.Createdate) // Sắp xếp theo ngày tạo giảm dần
-                .Take(9) // Giới hạn 9 bản ghi
-                .ToListAsync();
-
-            return View(latestNews);
+            var tourBookingContext = _context.Contacts.Include(c => c.Customer);
+            return View(await tourBookingContext.ToListAsync());
         }
 
-        // GET: News/Details/5
+        // GET: Contacts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,39 +33,42 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News
-                .FirstOrDefaultAsync(m => m.NewId == id);
-            if (news == null)
+            var contact = await _context.Contacts
+                .Include(c => c.Customer)
+                .FirstOrDefaultAsync(m => m.ContactId == id);
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(news);
+            return View(contact);
         }
 
-        // GET: News/Create
+        // GET: Contacts/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email");
             return View();
         }
 
-        // POST: News/Create
+        // POST: Contacts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NewId,Title,Content,ImageUrl,Createdate")] News news)
+        public async Task<IActionResult> Create([Bind("ContactId,CustomerId,Name,Email,Phone,Subject,Message,CreatedDate,Status")] Contact contact)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(news);
+                _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(news);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", contact.CustomerId);
+            return View(contact);
         }
 
-        // GET: News/Edit/5
+        // GET: Contacts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,22 +76,23 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News.FindAsync(id);
-            if (news == null)
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact == null)
             {
                 return NotFound();
             }
-            return View(news);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", contact.CustomerId);
+            return View(contact);
         }
 
-        // POST: News/Edit/5
+        // POST: Contacts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NewId,Title,Content,ImageUrl,Createdate")] News news)
+        public async Task<IActionResult> Edit(int id, [Bind("ContactId,CustomerId,Name,Email,Phone,Subject,Message,CreatedDate,Status")] Contact contact)
         {
-            if (id != news.NewId)
+            if (id != contact.ContactId)
             {
                 return NotFound();
             }
@@ -102,12 +101,12 @@ namespace LuxuryLife.Controllers
             {
                 try
                 {
-                    _context.Update(news);
+                    _context.Update(contact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NewsExists(news.NewId))
+                    if (!ContactExists(contact.ContactId))
                     {
                         return NotFound();
                     }
@@ -118,10 +117,11 @@ namespace LuxuryLife.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(news);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", contact.CustomerId);
+            return View(contact);
         }
 
-        // GET: News/Delete/5
+        // GET: Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,34 +129,35 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News
-                .FirstOrDefaultAsync(m => m.NewId == id);
-            if (news == null)
+            var contact = await _context.Contacts
+                .Include(c => c.Customer)
+                .FirstOrDefaultAsync(m => m.ContactId == id);
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(news);
+            return View(contact);
         }
 
-        // POST: News/Delete/5
+        // POST: Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var news = await _context.News.FindAsync(id);
-            if (news != null)
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact != null)
             {
-                _context.News.Remove(news);
+                _context.Contacts.Remove(contact);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NewsExists(int id)
+        private bool ContactExists(int id)
         {
-            return _context.News.Any(e => e.NewId == id);
+            return _context.Contacts.Any(e => e.ContactId == id);
         }
     }
 }

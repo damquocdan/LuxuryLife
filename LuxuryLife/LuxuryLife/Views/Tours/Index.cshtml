@@ -10,6 +10,7 @@
     var customers = ViewData["Customers"] as List<LuxuryLife.Models.Customer>;
     var reviews = ViewData["Reviews"] as List<LuxuryLife.Models.Review>;
 }
+<link rel="stylesheet" href="~/css/Tour.css">
 <style>
     .welcome-hero{
         height:400px;
@@ -72,8 +73,21 @@
 <section id="explore" class="explore">
     <div class="container">
         <div class="section-header">
-            <h2>Tour du lịch</h2>
-            <p>Khám phá tour du lịch, địa điểm mới, đồ ăn ,văn hoá và nhiều hơn nữa</p>
+            <section id="tour-section" class="tour-section">
+                <div class="container">
+                    <div class="tour-header">
+                        <h2>Tour du lịch</h2>
+                        <span class="plane-icon"><i class="fas fa-plane"></i></span>
+                        <div class="travel-icons">
+                            <i class="fas fa-suitcase"></i>
+                            <i class="fas fa-camera"></i>
+                            <i class="fas fa-map-marked-alt"></i>
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <p>Khám phá tour du lịch, địa điểm mới, đồ ăn, văn hoá và nhiều hơn nữa</p>
+                    </div>
+                </div>
+            </section>
         </div><!--/.section-header-->
         <div class="explore-content">
             <div class="row">
@@ -149,6 +163,6 @@
 
             </div>
         </div>
-    </div><!--/.container-->
+    </div> 
 
-</section><!--/.explore-->
+</section> 

@@ -1,0 +1,176 @@
+﻿/* CSS cho section About Us */
+.welcome-hero {
+    height: 300px;
+}
+
+.welcome-hero-txt {
+    padding-top: 50px;
+}
+
+.explore {
+    padding: 10px 0 95px;
+    background: #f8fafb;
+}
+
+.section-header h2 {
+    font-size: 50px;
+    color: #ff545a;
+}
+.about-us-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Container chung */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Tiêu đề chính */
+.animated-title {
+    font-size:4rem;
+    font-weight: bold;
+    color: #2c3e50;
+    position: relative;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section box chung */
+.section-box {
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+    transition: transform 0.3s ease;
+}
+
+    .section-box:hover {
+        transform: translateY(-5px);
+    }
+
+/* Tiêu đề section */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    .section-title::after {
+        content: '';
+        width: 50px;
+        height: 3px;
+        background-color: #3498db;
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+    }
+
+/* Nội dung văn bản */
+.section-box p {
+    font-size: 1.7rem;
+    line-height: 1.6;
+    color: #7f8c8d;
+}
+
+/* Wrapper cho hình ảnh */
+.image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.travel-img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.image-wrapper:hover .travel-img {
+    transform: scale(1.05);
+}
+
+/* Overlay trên hình ảnh */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-wrapper:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-overlay span {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Đảo ngược thứ tự cho các section xen kẽ */
+.reverse .col-md-6 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Điều chỉnh responsive */
+@media (max-width: 768px) {
+    .section-box {
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .animated-title {
+        font-size: 2rem;
+    }
+
+    .section-box p {
+        font-size: 1rem;
+    }
+
+    .col-md-6 {
+        margin-bottom: 20px;
+    }
+
+    .reverse .col-md-6 {
+        order: unset !important;
+    }
+}
+
+/* Tinh chỉnh cho các section đặc biệt */
+.history-section, .team-section, .tours-section {
+    background-color: #ecf0f1;
+}
+
+.text-center {
+    text-align: center;
+}

@@ -9,28 +9,23 @@ using LuxuryLife.Models;
 
 namespace LuxuryLife.Controllers
 {
-    public class NewsController : Controller
+    public class HomestaysController : Controller
     {
         private readonly TourBookingContext _context;
 
-        public NewsController(TourBookingContext context)
+        public HomestaysController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: News
+        // GET: Homestays
         public async Task<IActionResult> Index()
         {
-            // Lấy 9 tin tức mới nhất, sắp xếp theo Createdate giảm dần
-            var latestNews = await _context.News
-                .OrderByDescending(n => n.Createdate) // Sắp xếp theo ngày tạo giảm dần
-                .Take(9) // Giới hạn 9 bản ghi
-                .ToListAsync();
-
-            return View(latestNews);
+            var tourBookingContext = _context.Homestays.Include(h => h.Tour);
+            return View(await tourBookingContext.ToListAsync());
         }
 
-        // GET: News/Details/5
+        // GET: Homestays/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,39 +33,42 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News
-                .FirstOrDefaultAsync(m => m.NewId == id);
-            if (news == null)
+            var homestay = await _context.Homestays
+                .Include(h => h.Tour)
+                .FirstOrDefaultAsync(m => m.HomestayId == id);
+            if (homestay == null)
             {
                 return NotFound();
             }
 
-            return View(news);
+            return View(homestay);
         }
 
-        // GET: News/Create
+        // GET: Homestays/Create
         public IActionResult Create()
         {
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name");
             return View();
         }
 
-        // POST: News/Create
+        // POST: Homestays/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NewId,Title,Content,ImageUrl,Createdate")] News news)
+        public async Task<IActionResult> Create([Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId,TourId")] Homestay homestay)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(news);
+                _context.Add(homestay);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(news);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", homestay.TourId);
+            return View(homestay);
         }
 
-        // GET: News/Edit/5
+        // GET: Homestays/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,22 +76,23 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News.FindAsync(id);
-            if (news == null)
+            var homestay = await _context.Homestays.FindAsync(id);
+            if (homestay == null)
             {
                 return NotFound();
             }
-            return View(news);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", homestay.TourId);
+            return View(homestay);
         }
 
-        // POST: News/Edit/5
+        // POST: Homestays/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NewId,Title,Content,ImageUrl,Createdate")] News news)
+        public async Task<IActionResult> Edit(int id, [Bind("HomestayId,Name,Description,Address,Image,PricePerNight,ProviderId,TourId")] Homestay homestay)
         {
-            if (id != news.NewId)
+            if (id != homestay.HomestayId)
             {
                 return NotFound();
             }
@@ -102,12 +101,12 @@ namespace LuxuryLife.Controllers
             {
                 try
                 {
-                    _context.Update(news);
+                    _context.Update(homestay);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NewsExists(news.NewId))
+                    if (!HomestayExists(homestay.HomestayId))
                     {
                         return NotFound();
                     }
@@ -118,10 +117,11 @@ namespace LuxuryLife.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(news);
+            ViewData["TourId"] = new SelectList(_context.Tours, "TourId", "Name", homestay.TourId);
+            return View(homestay);
         }
 
-        // GET: News/Delete/5
+        // GET: Homestays/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,34 +129,35 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            var news = await _context.News
-                .FirstOrDefaultAsync(m => m.NewId == id);
-            if (news == null)
+            var homestay = await _context.Homestays
+                .Include(h => h.Tour)
+                .FirstOrDefaultAsync(m => m.HomestayId == id);
+            if (homestay == null)
             {
                 return NotFound();
             }
 
-            return View(news);
+            return View(homestay);
         }
 
-        // POST: News/Delete/5
+        // POST: Homestays/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var news = await _context.News.FindAsync(id);
-            if (news != null)
+            var homestay = await _context.Homestays.FindAsync(id);
+            if (homestay != null)
             {
-                _context.News.Remove(news);
+                _context.Homestays.Remove(homestay);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NewsExists(int id)
+        private bool HomestayExists(int id)
         {
-            return _context.News.Any(e => e.NewId == id);
+            return _context.Homestays.Any(e => e.HomestayId == id);
         }
     }
 }

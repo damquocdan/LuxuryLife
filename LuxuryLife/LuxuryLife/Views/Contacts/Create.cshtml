@@ -1,0 +1,82 @@
+﻿@model LuxuryLife.Models.Contact
+
+@{
+    ViewData["Title"] = "Liên hệ với chúng tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="welcome-hero">
+    <div class="container">
+        <h1 class="text-center contact-title">Liên hệ với chúng tôi</h1>
+        <p class="text-center contact-subtitle">Hãy để chúng tôi giúp bạn lên kế hoạch cho chuyến du lịch hoàn hảo!</p>
+        <hr class="divider" />
+
+        <div class="row">
+            <!-- Form liên hệ -->
+            <div class="col-md-6">
+                <form asp-action="Create" class="contact-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">Họ và tên</label>
+                        <input asp-for="Name" class="form-control" placeholder="Nhập họ và tên của bạn" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="Nhập email của bạn" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Phone" class="control-label">Số điện thoại</label>
+                        <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Subject" class="control-label">Chủ đề</label>
+                        <input asp-for="Subject" class="form-control" placeholder="Chủ đề liên hệ" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Message" class="control-label">Tin nhắn</label>
+                        <textarea asp-for="Message" class="form-control" rows="5" placeholder="Hãy cho chúng tôi biết ý kiến hoặc câu hỏi của bạn"></textarea>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input type="submit" value="Gửi liên hệ" class="btn btn-primary btn-contact" />
+                    </div>
+                </form>
+            </div>
+
+            <!-- Thông tin liên hệ và bản đồ -->
+            <div class="col-md-6 contact-info">
+                <h3>Thông tin liên hệ</h3>
+                <ul class="contact-details">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Đường Du Lịch, Hà Nội, Việt Nam</li>
+                    <li><i class="fas fa-phone"></i> +84 123 456 789</li>
+                    <li><i class="fas fa-envelope"></i> contact@luxurylifetravel.com</li>
+                    <li><i class="fas fa-globe"></i> www.luxurylifetravel.com</li>
+                </ul>
+
+                <h3>Bản đồ Việt Nam</h3>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14896.313914223984!2d105.8411712!3d21.0277644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9bd9861d3d%3A0x4e3b6f8f0e9f9c6d!2sHanoi%2C%20Vietnam!5e0!3m2!1sen!2s!4v1634567890123!5m2!1sen!2s" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="~/css/Contact.css">

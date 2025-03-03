@@ -1,61 +1,42 @@
 ﻿@model IEnumerable<LuxuryLife.Models.News>
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Tin tức du lịch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Createdate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Createdate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.NewId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.NewId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.NewId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-</body>
-</html>
+<link rel="stylesheet" href="~/css/new.css">
+<section class="welcome-hero">
+    <div class="news-section">
+        <h1 class="news-title text-center">Tin tức du lịch</h1>
+        <p class="news-subtitle text-center">Khám phá những câu chuyện và thông tin mới nhất về du lịch</p>
+        <hr class="divider" />
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="news-card">
+                        <div class="news-image">
+                            <img src="@item.ImageUrl" alt="@item.Title" class="img-fluid" />
+                            <div class="news-date">
+                                <!-- Sử dụng điều kiện để xử lý nullable DateTime -->
+                                <span>@(item.Createdate.HasValue ? item.Createdate.Value.ToString("dd MMM yyyy") : "Không có ngày")</span>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-card-title">
+                                <a asp-action="Details" asp-route-id="@item.NewId">@item.Title</a>
+                            </h3>
+                            <p class="news-excerpt">
+                                @(item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content)
+                            </p>
+                            <div class="news-actions">
+                                <a asp-action="Details" asp-route-id="@item.NewId" class="btn btn-outline-info btn-sm">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

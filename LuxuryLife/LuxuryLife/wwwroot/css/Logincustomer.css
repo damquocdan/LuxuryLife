@@ -1,0 +1,159 @@
+﻿/* CSS cho Login Section */
+.login-section {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/welcome-hero/banner.jpg') no-repeat center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    padding: 60px 0;
+    margin:auto;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Container chung */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Login Card */
+.login-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Tiêu đề */
+.login-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+/* Đường phân cách */
+.divider {
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+    margin: 0 auto 30px;
+    border: none;
+}
+
+/* Form */
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        outline: none;
+    }
+
+.text-danger {
+    font-size: 0.95rem;
+    margin-top: 5px;
+}
+
+/* Nút Đăng nhập */
+.btn-login {
+    background-color: #3498db;
+    color: #fff;
+    border: 1px solid #2c3e50;
+    padding: 15px 40px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-radius: 10px;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-login:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+    }
+
+/* Đăng ký */
+.text-muted {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+}
+
+    .text-muted a {
+        font-size: 1.1rem;
+        color: #3498db;
+        transition: color 0.3s ease;
+    }
+
+        .text-muted a:hover {
+            color: #2980b9;
+        }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-title {
+        font-size: 2rem;
+    }
+
+    .login-subtitle {
+        font-size: 1rem;
+    }
+
+    .form-label {
+        font-size: 1.1rem;
+    }
+
+    .form-control {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .btn-login {
+        padding: 12px 30px;
+        font-size: 1.2rem;
+    }
+
+    .text-muted, .text-muted a {
+        font-size: 0.95rem;
+    }
+
+    .login-card {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-8 {
+        width: 100%;
+    }
+}

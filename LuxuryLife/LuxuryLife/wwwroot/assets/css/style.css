@@ -347,14 +347,17 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
     top: -98px;
     z-index: 1;
 }
-.list-topics-content ul li { display: inline-block;}
+    .list-topics-content ul li {
+        display: inline-block;
+        float: inline-end;
+    }
 
 .single-list-topics-content{
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    width: 205px;
+    width: 204px;
     height: 170px;
     background:#fff;
     border-radius: 3px;
