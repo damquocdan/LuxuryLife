@@ -7,7 +7,7 @@
 
 <h1>Danh sách các khách hàng </h1>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12" id="list-section">
         <table class="table">
             <thead>
                 <tr>
@@ -50,7 +50,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-md-4">
+    <div class ="col-md-4 d-none" id="detail-section">
         <div class="actionCustomer"></div>
     </div>
 </div>
@@ -61,15 +61,24 @@
         $(".ajax-action").click(function (e) {
             e.preventDefault();
 
-            // Get the URL from the data attribute
             var url = $(this).data("url");
 
-            // Load the content into the .click div
+            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
+            if ($("#detail-section").hasClass("d-none")) {
+                $("#list-section").removeClass("col-md-12").addClass("col-md-8");
+                $("#detail-section").removeClass("d-none").addClass("col-md-4");
+            }
+
+            // Load nội dung vào phần chi tiết
             $(".actionCustomer").load(url, function (response, status, xhr) {
-                if (status == "error") {
-                    alert("Error: " + xhr.status + " " + xhr.statusText);
+                if (status === "error") {
+                    alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
                 }
             });
         });
     });
+        function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
+        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+    }
 </script>

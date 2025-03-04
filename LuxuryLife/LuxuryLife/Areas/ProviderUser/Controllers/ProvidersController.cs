@@ -74,5 +74,74 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 
             return View(provider);
         }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var provider = await _context.Providers.FindAsync(id);
+            if (provider == null)
+            {
+                return NotFound();
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", provider);
+            }
+            return View(provider);
+        }
+
+        // POST: AdminQL/Providers/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ProviderId,Name,Email,Password,Avatar,Phone,Address,Rating,Createdate")] Provider provider)
+        {
+            if (id != provider.ProviderId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Any() && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        var fileName = file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\providers", fileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            provider.Avatar = "/images/providers/" + fileName;
+                        }
+                    }
+                    _context.Update(provider);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProviderExists(provider.ProviderId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Details));
+            }
+            return View(provider);
+        }
+        private bool ProviderExists(int id)
+        {
+            return _context.Providers.Any(e => e.ProviderId == id);
+        }
     }
 }

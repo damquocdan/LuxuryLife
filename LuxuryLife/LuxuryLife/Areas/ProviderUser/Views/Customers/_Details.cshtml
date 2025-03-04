@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Chi tiết khách hàng <b>@Html.DisplayFor(model => model.Name)</b> </h1>
+<h1>Khách hàng <b>@Html.DisplayFor(model => model.Name)</b> </h1>
 
 <div>
     <hr />
@@ -28,7 +28,7 @@
             @Html.DisplayFor(model => model.Phone)
         </dd>
         <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Avatar)
+            <img src="@Html.DisplayNameFor(model => model.Avatar)" alt="@Html.DisplayNameFor(model => model.Name)" width="300px" height="300px" />
         </dt>
         <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.Avatar)

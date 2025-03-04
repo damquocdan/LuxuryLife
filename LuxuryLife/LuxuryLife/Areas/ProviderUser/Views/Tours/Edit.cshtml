@@ -23,21 +23,6 @@
                         <input asp-for="Description" class="form-control" required />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="ServiceId" class="control-label"></label>
-                        <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
-                        <span asp-validation-for="ServiceId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PricePerson" class="control-label"></label>
-                        <input asp-for="PricePerson" class="form-control" required />
-                        <span asp-validation-for="PricePerson" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="StartDate" class="control-label"></label>
-                        <input asp-for="StartDate" type="date" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")" required />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
-                    </div>
                 </div>
 
                 <div class="col-md-6">
@@ -50,23 +35,31 @@
                         <input type="file" name="Image" class="form-control" /> <!-- Sửa từ asp-for sang name -->
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="HomestayId" class="control-label"></label>
-                        <select asp-for="HomestayId" class="form-control" asp-items="ViewBag.HomestayId"></select>
-                        <span asp-validation-for="HomestayId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="EndDate" class="control-label"></label>
-                        <input asp-for="EndDate" type="date" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")" required />
-                        <span asp-validation-for="EndDate" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Price" class="control-label"></label>
-                        <input asp-for="Price" type="number" class="form-control" required />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
+ 
                 </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" type="date" id="StartDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")" required />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" type="date" id="EndDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")" required />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PricePerson" class="control-label"></label>
+                <input asp-for="PricePerson" type="number" id="PricePerson" class="form-control" required />
+                <span asp-validation-for="PricePerson" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" type="number" id="Price" class="form-control" required readonly />
+                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
             <div class="form-group" hidden>
@@ -98,4 +91,32 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        function calculatePrice() {
+            // Lấy giá trị từ các ô nhập
+            let startDate = new Date(document.getElementById("StartDate").value);
+            let endDate = new Date(document.getElementById("EndDate").value);
+            let pricePerson = parseFloat(document.getElementById("PricePerson").value) || 0;
+
+            // Kiểm tra nếu giá trị hợp lệ
+            if (!isNaN(startDate) && !isNaN(endDate) && pricePerson > 0) {
+                let timeDiff = endDate - startDate;
+                let daysDiff = timeDiff / (1000 * 60 * 60 * 24); // Chuyển đổi mili giây sang ngày
+
+                if (daysDiff > 0) {
+                    let totalPrice = daysDiff * pricePerson;
+                    document.getElementById("Price").value = totalPrice;
+                } else {
+                    document.getElementById("Price").value = 0; // Nếu ngày không hợp lệ
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("StartDate").addEventListener("change", calculatePrice);
+            document.getElementById("EndDate").addEventListener("change", calculatePrice);
+            document.getElementById("PricePerson").addEventListener("input", calculatePrice);
+        });
+    </script>
+
 }

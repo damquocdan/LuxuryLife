@@ -3,19 +3,48 @@
 @{
     ViewData["Title"] = "Delete";
 }
-
-<h1>Xoá</h1>
-
-<h3>
-    Bạn có muốn xoá tour du lịch: <b> @Html.DisplayFor(model => model.Name)</b> của nhà cung cấp
-    <b>@Html.DisplayFor(model => model.Provider.Name)</b>
-</h3>
-<div>
-    <hr />
-    <img src="@Model.Image" alt="@Model.Name" width="100%" height="300px" />
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="TourId" />
-        <input type="submit" value="Xoá" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-success">Đóng</a>
-    </form>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h2 class="card-title display-5 text-center w-100">Xác nhận xóa Tour</h2>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Đóng" onclick="closeDetailSection()"></button>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <h3 class="mt-4">
+                            Bạn có muốn xóa tour du lịch: <b>@Html.DisplayFor(model => model.Name)</b> của nhà cung cấp
+                            <b>@Html.DisplayFor(model => model.Provider.Name)</b>
+                        </h3>
+                    </div>
+                    <hr />
+                    <div class="text-center">
+                        <img src="@Model.Image" alt="@Model.Name" class="img-fluid rounded tour-image" />
+                    </div>
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="TourId" />
+                        <div class="text-center">
+                            <input type="submit" value="Xóa" class="btn btn-danger btn-lg px-4" />
+  
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .tour-image {
+        max-height: 300px; /* Adjust as needed */
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .tour-image:hover {
+            transform: scale(1.05);
+        }
+</style>
+
+ 

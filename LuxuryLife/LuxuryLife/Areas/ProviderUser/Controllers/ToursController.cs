@@ -78,14 +78,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Truyền danh sách Service và Homestay của nhà cung cấp
-            ViewBag.Services = _context.Services
-                .Where(s => s.Tour.ProviderId == providerId)
-                .ToList();
-            ViewBag.Homestays = _context.Homestays
-                .Where(h => h.ProviderId == providerId)
-                .ToList();
-
             ViewData["ProviderId"] = providerId.Value;
             return View();
         }
@@ -140,17 +132,7 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                     tour.Image = "/images/tour/default.png";
                 }
 
-                // Xử lý SelectedServiceIds và SelectedHomestayIds
-                if (SelectedServiceIds != null && SelectedServiceIds.Length > 0)
-                {
-                    tour.ServiceId = SelectedServiceIds[0]; // Lưu ID đầu tiên vào ServiceId
-                                                            // Nếu cần lưu nhiều dịch vụ, bạn có thể xử lý thêm ở đây (ví dụ: lưu vào bảng trung gian)
-                }
-                if (SelectedHomestayIds != null && SelectedHomestayIds.Length > 0)
-                {
-                    tour.HomestayId = SelectedHomestayIds[0]; // Lưu ID đầu tiên vào HomestayId
-                                                              // Nếu cần lưu nhiều homestay, bạn có thể xử lý thêm ở đây
-                }
+ 
 
                 tour.Status = " ";
                 tour.Createdate = DateTime.Now;
@@ -189,29 +171,14 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 return NotFound();
             }
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            {
-                ViewData["ServiceId"] = new SelectList(_context.Services, "ServiceId", "ServiceName", tour.ServiceId);
-                ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "Name", tour.HomestayId);
-                ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
-                return PartialView("_Edit",tour);
-
-            }
-            // Truyền danh sách ServiceName và Homestay Name vào dropdown
-            ViewData["ServiceId"] = new SelectList(_context.Services, "ServiceId", "ServiceName", tour.ServiceId);
-            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "Name", tour.HomestayId);
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
 
             return View(tour);
         }
 
-
-        // POST: ProviderUser/Tours/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour)
+        public async Task<IActionResult> Edit(int id, [Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Status,Createdate,ProviderId")] Tour tour)
         {
             if (id != tour.TourId)
             {
@@ -245,16 +212,29 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                     }
                     else
                     {
-                        tour.Image = existingTour.Image; // Giữ ảnh cũ
+                        tour.Image = existingTour.Image;
                     }
+
                     if (tour.Createdate == null)
                     {
                         tour.Createdate = existingTour.Createdate;
                     }
-                    // Giữ ProviderId cũ nếu không gửi từ form
+
                     if (tour.ProviderId == null)
                     {
                         tour.ProviderId = existingTour.ProviderId;
+                    }
+
+                    // Tính toán giá dựa trên ngày bắt đầu, ngày kết thúc và giá mỗi người
+                    if (tour.StartDate.HasValue && tour.EndDate.HasValue)
+                    {
+                        TimeSpan duration = tour.EndDate.Value - tour.StartDate.Value;
+                        tour.Price = duration.Days * tour.PricePerson;
+                    }
+
+                    else
+                    {
+                        tour.Price = existingTour.Price;
                     }
 
                     _context.Update(tour);

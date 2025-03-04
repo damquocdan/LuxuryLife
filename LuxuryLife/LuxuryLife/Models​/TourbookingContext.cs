@@ -187,7 +187,10 @@ public partial class TourBookingContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.PricePerNight).HasColumnType("decimal(18, 2)");
 
-            entity.HasOne(d => d.Tour).WithMany(p => p.Homestays).HasForeignKey(d => d.TourId);
+            entity.HasOne(d => d.Tour).WithMany(p => p.Homestays)
+                .HasForeignKey(d => d.TourId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Homestay_Tour");
         });
 
         modelBuilder.Entity<Listimagestour>(entity =>
