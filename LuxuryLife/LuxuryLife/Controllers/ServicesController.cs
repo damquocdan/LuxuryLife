@@ -36,21 +36,27 @@ namespace LuxuryLife.Controllers
         }
 
         // GET: Services/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var service = await _context.Services
+            var service = _context.Services
                 .Include(s => s.Tour)
-                .FirstOrDefaultAsync(m => m.ServiceId == id);
+                .ThenInclude(t => t.Provider)
+                .FirstOrDefault(s => s.ServiceId == id);
+
             if (service == null)
             {
                 return NotFound();
             }
 
+            // Fetch related services (e.g., top 3 other services excluding the current one)
+            var relatedServices = _context.Services
+                .Include(s => s.Tour)
+                .Where(s => s.ServiceId != id)
+                .OrderByDescending(s => s.Price) // Or another sorting criterion
+                .Take(3)
+                .ToList();
+
+            ViewBag.RelatedServices = relatedServices;
             return View(service);
         }
 

@@ -31,20 +31,22 @@ namespace LuxuryLife.Controllers
         }
 
         // GET: News/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var news = await _context.News
-                .FirstOrDefaultAsync(m => m.NewId == id);
+            var news = _context.News.FirstOrDefault(n => n.NewId == id);
             if (news == null)
             {
                 return NotFound();
             }
 
+            // Fetch related news (e.g., top 3 other news items excluding the current one)
+            var relatedNews = _context.News
+                .Where(n => n.NewId != id)
+                .OrderByDescending(n => n.Createdate)
+                .Take(3)
+                .ToList();
+
+            ViewBag.RelatedNews = relatedNews;
             return View(news);
         }
 

@@ -1,78 +1,148 @@
 ﻿@model LuxuryLife.Models.Provider
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Thông tin nhà cung cấp";
     Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
 
-<h1>Thông tin cá nhân</h1>
+<link rel="stylesheet" href="~/css/ProviderUserDetails.css" />
+ 
 
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Avatar)
-            </dt>
-            <dd class="col-sm-10">
-                <img src="@Model.Avatar" alt="@Model.Name" width="350px" height="350px" />
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Phone)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Phone)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Address)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Address)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Rating)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Rating)
-            </dd>
-        </dl>
-    </div>
-    <div class="col-md-6">
-        <div class="provider">
-
+<section class="provider-profile  ">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="@Model.Avatar" alt="@Model.Name" class="avatar-img" />
+        </div>
+        <div class="profile-info">
+            <h1 class="provider-name">@Html.DisplayFor(model => model.Name)</h1>
+            <p class="provider-rating">Đánh giá: @Html.DisplayFor(model => model.Rating) / 5</p>
+            <a href="@Url.Action("Edit", new { id = Model.ProviderId })" class="btn btn-edit">Chỉnh sửa</a>
         </div>
     </div>
-</div>
-<div>
-    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = Model.ProviderId })">Sửa</button>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".ajax-action").click(function (e) {
-            e.preventDefault();
 
-            // Get the URL from the data attribute
-            var url = $(this).data("url");
+    <!-- Profile Details -->
+    <div class="profile-content row">
+        <!-- Left Column: Basic Info -->
+        <div class="col-md-2 profile-details">
+            <h3>Thông tin cơ bản</h3>
+            <dl>
+                <dt>Email:</dt>
+                <dd>@Html.DisplayFor(model => model.Email)</dd>
+                <dt>Số điện thoại:</dt>
+                <dd>@Html.DisplayFor(model => model.Phone)</dd>
+                <dt>Địa chỉ:</dt>
+                <dd>@Html.DisplayFor(model => model.Address)</dd>
+            </dl>
+        </div>
 
-            // Load the content into the .click div
-            $(".provider").load(url, function (response, status, xhr) {
-                if (status == "error") {
-                    alert("Error: " + xhr.status + " " + xhr.statusText);
+        <!-- Middle Column: Tours and Services -->
+        <div class="col-md-7 profile-posts">
+            <!-- Latest Tours -->
+            <div class="posts-section">
+                <h3>Tour mới nhất</h3>
+                @if (ViewBag.Tours != null && ((IEnumerable<LuxuryLife.Models.Tour>)ViewBag.Tours).Any())
+                {
+                    <div class="post-list">
+                        @foreach (var tour in (IEnumerable<LuxuryLife.Models.Tour>)ViewBag.Tours)
+                        {
+                            <div class="post-item">
+                                <!-- Carousel -->
+                                <div id="carousel-@tour.TourId" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="@tour.Image" alt="@tour.Name" class="d-block post-img" />
+                                        </div>
+                                        @if (tour.Listimagestours != null && tour.Listimagestours.Any())
+                                        {
+                                            foreach (var image in tour.Listimagestours)
+                                            {
+                                                <div class="carousel-item">
+                                                    <img src="@image.ImageUrl" alt="@image.ImageDescription" class="d-block w-100 post-img" />
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@tour.TourId" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-@tour.TourId" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <!-- Tour Info -->
+                                <div class="post-content">
+                                    <h4>@tour.Name</h4>
+                                    <p>@tour.Description</p>
+                                    <p class="post-price">Giá: @tour.GetFormattedPrice()</p>
+                                    <p class="post-date">Đăng ngày: @tour.Createdate?.ToString("dd/MM/yyyy")</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 }
-            });
-        });
-    });
-</script>
+                else
+                {
+                    <p>Chưa có tour nào được đăng.</p>
+                }
+            </div>
+
+            <!-- Latest Services -->
+            <div class="posts-section">
+                <h3>Dịch vụ mới nhất</h3>
+                @if (ViewBag.Services != null && ((IEnumerable<LuxuryLife.Models.Service>)ViewBag.Services).Any())
+                {
+                    <div class="post-list">
+                        @foreach (var service in (IEnumerable<LuxuryLife.Models.Service>)ViewBag.Services)
+                        {
+                            <div class="post-item">
+                                <img src="@service.Tour?.Image" alt="@service.ServiceName" class="post-img" />
+                                <div class="post-content">
+                                    <h4>@service.ServiceName</h4>
+                                    <p>@service.Description</p>
+                                    <p class="post-price">Giá: @service.Price)}</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Chưa có dịch vụ nào được đăng.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Right Column: Booked Customers -->
+        <div class="col-md-3 booked-customers">
+            <h3>Khách hàng đặt tour</h3>
+            @if (ViewBag.BookedCustomers != null && ((IEnumerable<dynamic>)ViewBag.BookedCustomers).Any())
+            {
+                <div class="customer-list">
+                    @foreach (var customer in (IEnumerable<dynamic>)ViewBag.BookedCustomers)
+                    {
+                        <div class="customer-item">
+                            <img src="@customer.CustomerAvatar" alt="@customer.CustomerName" class="customer-avatar" />
+                            <div class="customer-content">
+                                <h4>@customer.CustomerName</h4>
+                                <p>Email: @customer.CustomerEmail</p>
+                                <p>Tour: @customer.TourName</p>
+                                <p>Ngày đặt: @customer.BookingDate.ToString("dd/MM/yyyy")</p>
+                                <p>Tổng giá: @customer.TotalPrice)}</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Chưa có khách hàng nào đặt tour.</p>
+            }
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

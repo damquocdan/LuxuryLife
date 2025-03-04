@@ -59,6 +59,7 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
 
 
         // GET: CustomerUser/Tours/Details/5
+        // GET: CustomerUser/Tours/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -68,15 +69,26 @@ namespace LuxuryLife.Areas.CustomerUser.Controllers
 
             var tour = await _context.Tours
                 .Include(t => t.Provider)
-                .Include(l => l.Listimagestours)
+                .Include(t => t.Listimagestours)
                 .Include(t => t.Services)
-                .Include(c => c.Homestays)
-                .Include(s => s.Reviews)
+                .Include(t => t.Homestays)
+                .Include(t => t.Reviews)
+                    .ThenInclude(r => r.Customer) // Include Customer for Reviews
                 .FirstOrDefaultAsync(m => m.TourId == id);
+
             if (tour == null)
             {
                 return NotFound();
             }
+
+            // Optional: Fetch related tours for a "Related Tours" section
+            var relatedTours = await _context.Tours
+                .Where(t => t.TourId != id && t.Status == "Active")
+                .OrderByDescending(t => t.Createdate)
+                .Take(3)
+                .ToListAsync();
+
+            ViewBag.RelatedTours = relatedTours;
 
             return View(tour);
         }

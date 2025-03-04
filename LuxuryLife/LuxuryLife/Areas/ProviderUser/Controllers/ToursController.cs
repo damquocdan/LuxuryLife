@@ -47,14 +47,24 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             var tour = await _context.Tours
                 .Include(t => t.Provider)
                 .FirstOrDefaultAsync(m => m.TourId == id);
+
             if (tour == null)
             {
                 return NotFound();
             }
+
+            // Truy vấn Service và Homestay theo khóa ngoại
+            var service = await _context.Services.FirstOrDefaultAsync(s => s.ServiceId == tour.ServiceId);
+            var homestay = await _context.Homestays.FirstOrDefaultAsync(h => h.HomestayId == tour.HomestayId);
+
+            ViewBag.ServiceName = service?.ServiceName ?? "Không có dịch vụ";
+            ViewBag.HomestayName = homestay?.Name ?? "Không có homestay";
+
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return PartialView("_Details", tour);
             }
+
             return View(tour);
         }
 
@@ -122,23 +132,37 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         // GET: ProviderUser/Tours/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            var tour = await _context.Tours.FindAsync(id);
+            var tour = await _context.Tours
+                .Include(t => t.Services)
+                .Include(t => t.Homestays)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.TourId == id.Value);
+
             if (tour == null)
             {
                 return NotFound();
             }
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return PartialView("_Edit", tour);
+                ViewData["ServiceId"] = new SelectList(_context.Services, "ServiceId", "ServiceName", tour.ServiceId);
+                ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "Name", tour.HomestayId);
+                ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
+                return PartialView("_Edit",tour);
+
             }
+            // Truyền danh sách ServiceName và Homestay Name vào dropdown
+            ViewData["ServiceId"] = new SelectList(_context.Services, "ServiceId", "ServiceName", tour.ServiceId);
+            ViewData["HomestayId"] = new SelectList(_context.Homestays, "HomestayId", "Name", tour.HomestayId);
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
+
             return View(tour);
         }
+
 
         // POST: ProviderUser/Tours/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -156,37 +180,41 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             {
                 try
                 {
+                    var existingTour = await _context.Tours.AsNoTracking().FirstOrDefaultAsync(a => a.TourId == tour.TourId);
+                    if (existingTour == null)
+                    {
+                        return NotFound();
+                    }
+
                     var files = HttpContext.Request.Form.Files;
                     if (files.Any() && files[0].Length > 0)
                     {
                         var file = files[0];
-
-                        // Đảm bảo thư mục lưu trữ tồn tại
                         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/tours");
                         Directory.CreateDirectory(uploadsFolder);
-
-                        // Tạo tên file duy nhất để tránh xung đột
                         var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
                         var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                        // Lưu file vào thư mục
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await file.CopyToAsync(stream);
                         }
-
-                        // Cập nhật đường dẫn Avatar
                         tour.Image = "/images/tours/" + uniqueFileName;
                     }
                     else
                     {
-                        // Nếu không upload file mới, giữ nguyên ảnh cũ
-                        var existingTour = await _context.Tours.AsNoTracking().FirstOrDefaultAsync(a => a.TourId == tour.TourId);
-                        if (existingTour != null)
-                        {
-                            tour.Image = existingTour.Image;
-                        }
+                        tour.Image = existingTour.Image; // Giữ ảnh cũ
                     }
+                    if (tour.Createdate == null)
+                    {
+                        tour.Createdate = existingTour.Createdate;
+                    }
+                    // Giữ ProviderId cũ nếu không gửi từ form
+                    if (tour.ProviderId == null)
+                    {
+                        tour.ProviderId = existingTour.ProviderId;
+                    }
+
                     _context.Update(tour);
                     await _context.SaveChangesAsync();
                 }
@@ -203,10 +231,13 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit");
+            }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
             return View(tour);
         }
-
         // GET: ProviderUser/Tours/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

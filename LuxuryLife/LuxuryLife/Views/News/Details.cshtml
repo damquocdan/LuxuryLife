@@ -1,43 +1,58 @@
 ﻿@model LuxuryLife.Models.News
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết tin tức";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<link rel="stylesheet" href="~/css/NewsDetails.css">
 
-<div>
-    <h4>News</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Createdate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Createdate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.NewId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<section class="news-detail-section">
+    <div class="container">
+        <!-- Main News Article -->
+        <div class="news-header">
+            <h1 class="news-title">@Html.DisplayFor(model => model.Title)</h1>
+            <p class="news-date">Đăng ngày: @Html.DisplayFor(model => model.Createdate)</p>
+            <hr class="divider" />
+        </div>
+
+        <div class="news-content">
+            <div class="news-image">
+                <img src="@Html.DisplayFor(model => model.ImageUrl)" alt="@Html.DisplayFor(model => model.Title)" class="img-fluid" />
+            </div>
+            <div class="news-body">
+                <p>@Html.DisplayFor(model => model.Content)</p> <!-- Use Html.Raw for rich text if content includes HTML -->
+            </div>
+        </div>
+
+        <!-- Action Links -->
+        <div class="news-actions">
+ 
+            <a asp-action="Index" class="btn btn-back">Quay lại danh sách</a>
+        </div>
+
+        <!-- Related News Section -->
+        <div class="related-news">
+            <h3 class="related-title">Tin tức khác</h3>
+            <div class="related-news-list">
+                @if (ViewBag.RelatedNews != null)
+                {
+                    foreach (var news in ViewBag.RelatedNews as IEnumerable<LuxuryLife.Models.News>)
+                    {
+                        <div class="related-news-item">
+                            <a asp-action="Details" asp-route-id="@news.NewId">
+                                <img src="@news.ImageUrl" alt="@news.Title" class="related-news-img" />
+                                <h4 class="related-news-title">@news.Title</h4>
+                                <p class="related-news-date">@news.Createdate</p>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Không có tin tức liên quan.</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>

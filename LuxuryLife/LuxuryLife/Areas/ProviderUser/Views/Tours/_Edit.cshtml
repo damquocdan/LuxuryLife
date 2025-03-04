@@ -24,8 +24,8 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="ServiceId" class="control-label">Dịch vụ</label>
-                        <input asp-for="ServiceId" class="form-control" />
+                        <label asp-for="ServiceId" class="control-label"></label>
+                        <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
                         <span asp-validation-for="ServiceId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="StartDate" class="control-label"></label>
-                        <input asp-for="StartDate" class="form-control" required />
+                        <input asp-for="StartDate" type="date" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")" required />
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -47,17 +47,18 @@
                         {
                             <img src="@Model.Image" alt="Avatar" width="150px" height="150px" />
                         }
-                        <input asp-for="Image" type="file" class="form-control" required />
+                        <input type="file" name="Image" class="form-control" /> <!-- Sửa từ asp-for sang name -->
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="HomestayId" class="control-label"></label>
-                        <input asp-for="HomestayId" class="form-control" />
+                        <select asp-for="HomestayId" class="form-control" asp-items="ViewBag.HomestayId"></select>
                         <span asp-validation-for="HomestayId" class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="EndDate" class="control-label"></label>
-                        <input asp-for="EndDate" class="form-control" required />
+                        <input asp-for="EndDate" type="date" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")" required />
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -78,7 +79,12 @@
                 <input asp-for="Createdate" class="form-control" />
                 <span asp-validation-for="Createdate" class="text-danger"></span>
             </div>
-            <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
+            <!-- Sửa cách gửi ProviderId -->
+            <div class="form-group" hidden>
+                <label asp-for="ProviderId" class="control-label"></label>
+                <input asp-for="ProviderId" class="form-control" value="@Model.ProviderId" />
+                <span asp-validation-for="ProviderId" class="text-danger"></span>
+            </div>
 
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -87,7 +93,6 @@
         </form>
     </div>
 </div>
-
 
 @section Scripts {
     @{

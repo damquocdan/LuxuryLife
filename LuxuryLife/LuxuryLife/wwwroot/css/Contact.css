@@ -1,184 +1,217 @@
 ﻿/* CSS cho section Contact */
 
-
 /* Container chung */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 15px !important;
 }
 
 /* Tiêu đề chính */
 .contact-title {
-    margin-top:30px;
-    font-size: 3.75rem; /* 2.5rem * 1.5 = 3.75rem */
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 10px;
+    margin-top: 30px !important;
+    font-size: 3.75rem !important;
+    font-weight: bold !important;
+    color: #fff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+    margin-bottom: 10px !important;
 }
 
 .contact-subtitle {
-    font-size: 1.8rem; /* 1.2rem * 1.5 = 1.8rem */
-    color: #fff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    font-size: 1.8rem !important;
+    color: #fff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Đường phân cách */
 .divider {
-    width: 100px;
-    height: 3px;
-    background-color: #3498db;
-    margin: 20px auto;
-    border: none;
+    width: 100px !important;
+    height: 3px !important;
+    background-color: #3498db !important;
+    margin: 20px auto !important;
+    border: none !important;
 }
 
 /* Form liên hệ */
 .contact-form {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9) !important;
+    padding: 20px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important; /* Prevent wrapping to new line */
 }
 
 .control-label {
-    font-weight: 600;
-    color: #2c3e50;
-    font-size: 1.65rem; /* 1.1rem ngầm định * 1.5 = 1.65rem */
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+    font-size: 1.65rem !important;
+    transition: font-size 0.3s ease !important;
+    display: inline-block !important; /* Side by side */
+    vertical-align: middle !important; /* Align vertically */
+    width: 20% !important; /* Fixed width for label */
+    min-width: 120px !important; /* Minimum width to prevent collapse */
+    padding-right: 10px !important; /* Space between label and input */
 }
 
 .form-control {
-    width: 100%;
-    padding: 15px; /* Tăng padding để ô input lớn hơn */
-    border: 1px solid #ddd;
-    border-radius: 15px; /* Bo tròn ô input */
-    font-size: 1.5rem; /* 1rem * 1.5 = 1.5rem */
+    width: 100% !important; /* 80% width as required */
+    padding: 25px !important; /* Increased padding */
+    border: 1px solid #ddd !important;
+    border-radius: 15px !important;
+    font-size: 1.5rem !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important; /* Side by side */
+    vertical-align: middle !important; /* Align vertically */
 }
 
     .form-control:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-        outline: none;
+        border-color: #3498db !important;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5) !important;
+        outline: none !important;
     }
 
+textarea.form-control {
+    width: 80% !important;
+    padding: 25px !important; /* Match increased padding */
+    height: auto !important;
+    display: block !important; /* Textarea should stack below */
+    white-space: normal !important; /* Allow wrapping in textarea */
+}
+
+/* Button */
 .btn-contact {
-    background-color: #3498db;
-    border: none;
-    padding: 18px 45px; /* Tăng padding cho nút lớn hơn */
-    font-size: 1.65rem; /* 1.1rem * 1.5 = 1.65rem */
-    transition: background-color 0.3s ease;
-    border-radius: 10px; /* Bo tròn nút */
+    background-color: #3498db !important;
+    border: none !important;
+    padding: 18px 45px !important;
+    font-size: 1.65rem !important;
+    transition: background-color 0.3s ease !important;
+    border-radius: 10px !important;
 }
 
     .btn-contact:hover {
-        background-color: #2980b9;
+        background-color: #2980b9 !important;
     }
 
 /* Thông tin liên hệ */
 .contact-info {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    height
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9) !important;
+    padding: 9px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
     .contact-info h3 {
-        font-size: 2.25rem; /* 1.5rem * 1.5 = 2.25rem */
-        color: #2c3e50;
-        margin-bottom: 15px;
+        font-size: 2.25rem !important;
+        color: #2c3e50 !important;
+        margin-bottom: 15px !important;
     }
 
 .contact-details {
-    list-style: none;
-    padding: 0;
+    list-style: none !important;
+    padding: 0 !important;
 }
 
     .contact-details li {
-        font-size: 1.65rem; /* 1.1rem * 1.5 = 1.65rem */
-        color: #7f8c8d;
-        margin-bottom: 10px;
+        font-size: 1.65rem !important;
+        color: #7f8c8d !important;
+        margin-bottom: 10px !important;
     }
 
     .contact-details i {
-        color: #3498db;
-        margin-right: 10px;
-        font-size: 1.8rem; /* 1.2rem * 1.5 = 1.8rem */
+        color: #3498db !important;
+        margin-right: 10px !important;
+        font-size: 1.8rem !important;
     }
 
 /* Bản đồ */
 .map-container {
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 
     .map-container iframe {
-        width: 100%;
-        height: 372px;
-        border-radius: 5px;
+        width: 100% !important;
+        height: 372px !important;
+        border-radius: 5px !important;
     }
 
 /* Link quay lại */
 .back-link {
-    color: #3498db;
-    font-size: 1.65rem; /* 1.1rem * 1.5 = 1.65rem */
-    text-decoration: none;
-    transition: color 0.3s ease;
+    color: #3498db !important;
+    font-size: 1.65rem !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease !important;
 }
 
     .back-link:hover {
-        color: #2980b9;
-        text-decoration: underline;
+        color: #2980b9 !important;
+        text-decoration: underline !important;
     }
 
 /* Responsive */
 @media (max-width: 768px) {
     .contact-title {
-        font-size: 3rem; /* 2rem * 1.5 = 3rem */
+        font-size: 3rem !important;
     }
 
     .contact-subtitle {
-        font-size: 1.5rem; /* 1rem * 1.5 = 1.5rem */
+        font-size: 1.5rem !important;
+    }
+
+    .form-group {
+        white-space: normal !important; /* Allow wrapping on mobile */
     }
 
     .control-label {
-        font-size: 1.35rem; /* Điều chỉnh cho nhỏ hơn một chút */
+        font-size: 1.35rem !important;
+        display: block !important; /* Stack on mobile */
+        width: 100% !important; /* Full width on mobile */
+        min-width: unset !important; /* Remove min-width on mobile */
+        padding-right: 0 !important;
     }
 
     .form-control {
-        font-size: 1.35rem; /* Điều chỉnh cho nhỏ hơn một chút */
+        width: 100% !important; /* Full width on mobile */
+        font-size: 1.35rem !important;
+        padding: 20px !important; /* Slightly reduced on mobile */
+        display: block !important; /* Stack on mobile */
+    }
+
+    textarea.form-control {
+        width: 100% !important;
     }
 
     .btn-contact {
-        font-size: 1.35rem;
-        padding: 15px 40px;
+        font-size: 1.35rem !important;
+        padding: 15px 40px !important;
     }
 
     .contact-info h3 {
-        font-size: 1.8rem;
+        font-size: 1.8rem !important;
     }
 
     .contact-details li {
-        font-size: 1.35rem;
+        font-size: 1.35rem !important;
     }
 
     .contact-details i {
-        font-size: 1.5rem;
+        font-size: 1.5rem !important;
     }
 
     .back-link {
-        font-size: 1.35rem;
+        font-size: 1.35rem !important;
     }
 
     .contact-form,
     .contact-info {
-        margin-bottom: 20px;
+        margin-bottom: 20px !important;
     }
 
     .col-md-6 {
-        width: 100%;
+        width: 100% !important;
     }
 }

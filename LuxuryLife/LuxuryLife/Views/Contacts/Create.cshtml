@@ -4,6 +4,8 @@
     ViewData["Title"] = "Liên hệ với chúng tôi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+ 
+<link rel="stylesheet" href="~/css/Contact.css">
 
 <section class="welcome-hero">
     <div class="container">
@@ -69,7 +71,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
@@ -77,6 +78,23 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function () {
+                    const label = this.previousElementSibling;
+                    if (label && label.classList.contains('control-label')) {
+                        label.style.fontSize = '3.3rem'; // 2x of 1.65rem
+                    }
+                });
+                input.addEventListener('blur', function () {
+                    const label = this.previousElementSibling;
+                    if (label && label.classList.contains('control-label')) {
+                        label.style.fontSize = '1.65rem'; // Back to normal
+                    }
+                });
+            });
+        });
+    </script>
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="~/css/Contact.css">

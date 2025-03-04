@@ -319,6 +319,7 @@ public partial class TourBookingContext : DbContext
             entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.Image).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.NumberOfPeople).HasDefaultValue(1);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.PricePerson).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
