@@ -21,7 +21,7 @@ namespace LuxuryLife.Controllers
         {
             ViewData["Tours"] = _context.Tours
                 .Where(t => t.Status == "Active") // Filter by active status
-                .Include(t => t.Provider)
+                .Include(t => t.Provider).Include(t => t.Reviews)
                 .OrderByDescending(t => t.TourId) // Sort by TourId in descending order (newest first)
                 .Take(6) // Get only the 6 latest active tours
                 .ToList();

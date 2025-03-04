@@ -69,31 +69,56 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
         }
 
         // GET: ProviderUser/Tours/Create
+
         public IActionResult Create()
         {
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            var providerId = HttpContext.Session.GetInt32("ProviderId");
+            if (providerId == null)
             {
-                return PartialView("_Create");
+                return RedirectToAction("Login", "Account");
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId");
+
+            // Truyền danh sách Service và Homestay của nhà cung cấp
+            ViewBag.Services = _context.Services
+                .Where(s => s.Tour.ProviderId == providerId)
+                .ToList();
+            ViewBag.Homestays = _context.Homestays
+                .Where(h => h.ProviderId == providerId)
+                .ToList();
+
+            ViewData["ProviderId"] = providerId.Value;
             return View();
         }
 
         // POST: ProviderUser/Tours/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour)
+        public async Task<IActionResult> Create([Bind("TourId,Name,Image,Description,ServiceId,HomestayId,PricePerson,StartDate,EndDate,Price,Status,Createdate,ProviderId")] Tour tour, int[] SelectedServiceIds, int[] SelectedHomestayIds)
         {
-            // Gán ProviderId từ session
-            ViewData["ProviderId"] = HttpContext.Session.GetInt32("ProviderId");
             var providerId = HttpContext.Session.GetInt32("ProviderId");
             if (providerId == null)
             {
-                return RedirectToAction("Login", "Account"); // Chuyển hướng nếu session không hợp lệ
+                return RedirectToAction("Login", "Account");
             }
             tour.ProviderId = providerId.Value;
+
+            // Xử lý ngày và tính giá
+            if (tour.StartDate.HasValue && tour.EndDate.HasValue)
+            {
+                if (tour.EndDate.Value >= tour.StartDate.Value)
+                {
+                    var daysDiff = (tour.EndDate.Value - tour.StartDate.Value).Days;
+                    tour.Price = daysDiff * tour.PricePerson;
+                }
+                else
+                {
+                    ModelState.AddModelError("EndDate", "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Ngày bắt đầu và ngày kết thúc không được để trống.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -101,12 +126,9 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 if (files.Count > 0 && files[0].Length > 0)
                 {
                     var file = files[0];
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName); // Tạo tên tệp duy nhất
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\tour", fileName);
-
-                    // Tạo thư mục nếu chưa tồn tại
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/tour", fileName);
                     Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
@@ -115,19 +137,39 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 }
                 else
                 {
-                    tour.Image = "/images/tour/default.png"; // Đặt ảnh mặc định nếu không có ảnh được tải lên
+                    tour.Image = "/images/tour/default.png";
                 }
+
+                // Xử lý SelectedServiceIds và SelectedHomestayIds
+                if (SelectedServiceIds != null && SelectedServiceIds.Length > 0)
+                {
+                    tour.ServiceId = SelectedServiceIds[0]; // Lưu ID đầu tiên vào ServiceId
+                                                            // Nếu cần lưu nhiều dịch vụ, bạn có thể xử lý thêm ở đây (ví dụ: lưu vào bảng trung gian)
+                }
+                if (SelectedHomestayIds != null && SelectedHomestayIds.Length > 0)
+                {
+                    tour.HomestayId = SelectedHomestayIds[0]; // Lưu ID đầu tiên vào HomestayId
+                                                              // Nếu cần lưu nhiều homestay, bạn có thể xử lý thêm ở đây
+                }
+
+                tour.Status = " ";
+                tour.Createdate = DateTime.Now;
 
                 _context.Add(tour);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Trả lại dữ liệu nếu không hợp lệ
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
+            // Truyền lại danh sách nếu form không hợp lệ
+            ViewBag.Services = _context.Services
+                .Where(s => s.Tour.ProviderId == providerId)
+                .ToList();
+            ViewBag.Homestays = _context.Homestays
+                .Where(h => h.ProviderId == providerId)
+                .ToList();
+            ViewData["ProviderId"] = providerId.Value;
             return View(tour);
         }
-
 
         // GET: ProviderUser/Tours/Edit/5
         public async Task<IActionResult> Edit(int? id)
