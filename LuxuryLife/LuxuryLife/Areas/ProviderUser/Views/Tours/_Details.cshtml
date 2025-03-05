@@ -4,80 +4,83 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="container">
+<div class=" ">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h2 class="card-title display-5 text-center w-100">Thông tin Tour</h2>
+        <div class="col-md-12">
+            <div class="card shadow-lg tour-card">
+                <div class="card-header text-white d-flex justify-content-between align-items-center">
+                    <h2 class="card-title display-5 text-center w-100">🚀 Thông tin Tour</h2>
                     <button type="button" class="btn-close btn-close-white" aria-label="Đóng" onclick="closeDetailSection()"></button>
                 </div>
                 <div class="card-body">
                     <div class="row align-items-center">
+                        <dl class="row tour-details">
+                            <img src="@Html.DisplayFor(model => model.Image)" class="" alt="Tour Image"  height="300px"/>
 
-                        <dl class="row">
-                            <img src="@Html.DisplayFor(model => model.Image)" class="img-fluid rounded border border-primary tour-image" alt="Tour Image" />
-
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Tên tour
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                🌍 Tên tour
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg text-black">
                                 @Html.DisplayFor(model => model.Name)
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Mô tả
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                📜 Mô tả
                             </dt>
-                            <dd class="col-sm-8 text-lg">
-                                @Html.DisplayFor(model => model.Description)
+                            <dd class="col-sm-7 text-lg text-black">
+                                <details class="description-dropdown">
+                                    <summary class="font-weight-bold text-primary">Nhấn để xem chi tiết</summary>
+                                    <p class="mt-2">@Html.DisplayFor(model => model.Description)</p>
+                                </details>
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Dịch vụ
+
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                🛎️ Dịch vụ
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg text-black">
                                 @ViewBag.ServiceName
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Homestay
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                🏡 Homestay
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg text-black">
                                 @ViewBag.HomestayName
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Giá per người
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                💰 Giá per người
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg text-black">
                                 @Html.DisplayFor(model => model.PricePerson)
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Ngày bắt đầu
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                📅 Ngày bắt đầu
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg text-black">
                                 @Html.DisplayFor(model => model.StartDate)
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Ngày kết thúc
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                📅 Ngày kết thúc
                             </dt>
-                            <dd class="col-sm-8 text-lg h5">
+                            <dd class="col-sm-7 text-lg text-black h5">
                                 @Html.DisplayFor(model => model.EndDate)
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Giá
+                            <dt class="col-sm-5 text-lg  font-weight-bold">
+                                💲 Giá
                             </dt>
-                            <dd class="col-sm-8 text-success text-lg h5">
+                            <dd class="col-sm-7 text-success text-lg h5">
                                 @Html.DisplayFor(model => model.Price)
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Trạng thái
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                🔥 Trạng thái
                             </dt>
-                            <dd class="col-sm-8 text-lg h5">
+                            <dd class="col-sm-7 text-lg h5">
                                 @if (Model.Status == "Active")
                                 {
                                     <span class="badge bg-success p-2 h5">Hoạt động</span>
@@ -96,17 +99,17 @@
                                 }
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Ngày tạo
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                🕒 Ngày tạo
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg">
                                 @Html.DisplayFor(model => model.Createdate)
                             </dd>
 
-                            <dt class="col-sm-4 text-lg font-weight-bold">
-                                Nhà cung cấp
+                            <dt class="col-sm-5 text-lg font-weight-bold">
+                                👤 Nhà cung cấp
                             </dt>
-                            <dd class="col-sm-8 text-lg">
+                            <dd class="col-sm-7 text-lg">
                                 @Html.DisplayFor(model => model.Provider.Name)
                             </dd>
                         </dl>
@@ -118,12 +121,70 @@
 </div>
 
 <style>
+ 
+
+    /* Tăng chiều cao và chỉnh style */
+    .tour-card {
+        height: 800px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 15px;
+    }
+
+    /* Ảnh tour phóng to khi hover */
     .tour-image {
         transition: transform 0.3s ease-in-out;
+        border-radius: 10px;
+        max-height: 300px;
     }
 
         .tour-image:hover {
             transform: scale(1.1);
         }
-</style>
 
+    /* Chỉnh các tiêu đề */
+    .tour-details dt {
+        transition: all 0.3s ease-in-out;
+        font-size: 0.5rem;
+        color: #007bff;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+    }
+
+        .tour-details dt:hover {
+            font-size: 0.6rem;
+            color: #ff5733;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Định dạng badge trạng thái */
+    .badge {
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+    .description-dropdown {
+        background: rgba(255, 255, 255, 0.6);
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        cursor: pointer;
+    }
+
+    .description-dropdown summary {
+        font-size: 1.1rem;
+        color: #007bff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .description-dropdown summary:hover {
+        color: #ff4500;
+        text-decoration: underline;
+    }
+
+    .description-dropdown p {
+        margin-top: 10px;
+        font-size: 1rem;
+        color: #333;
+    }
+</style>

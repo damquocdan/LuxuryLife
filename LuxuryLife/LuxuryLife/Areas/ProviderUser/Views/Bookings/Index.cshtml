@@ -1,77 +1,70 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách đơn đặt tour";
     Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
 
-<h1>Danh sách các đơn đặt tour</h1>
+<div class="body">
+    <h1 class="text-light"><i class="fas fa-list"></i> Danh sách các đơn đặt tour</h1>
 
-<div class="row" >
-    <div class="col-md-12" id="list-section">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CheckInDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CheckOutDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TotalPrice)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Customer)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Tour)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-
+    <div class="row">
+        <div class="col-md-12 table-container" id="list-section">
+            <table class="table" id="bookingList">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CheckInDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CheckOutDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalPrice)
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.BookingId">
-                                @Html.DisplayFor(modelItem => item.Customer.Name)
-                            </a>
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.BookingId">
-                                @Html.DisplayFor(modelItem => item.Tour.Name)
-                            </a>
-                        </td>
-                        <td>
-                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.BookingId })">Chi tiết</button>
-                        </td>
-
+                        <th><i class="fas fa-calendar-check"></i> @Html.DisplayNameFor(model => model.CheckInDate)</th>
+                        <th><i class="fas fa-calendar-times"></i> @Html.DisplayNameFor(model => model.CheckOutDate)</th>
+                        <th><i class="fas fa-info-circle"></i> @Html.DisplayNameFor(model => model.Status)</th>
+                        <th><i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.TotalPrice)</th>
+                        <th><i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.Customer)</th>
+                        <th><i class="fas fa-map"></i> @Html.DisplayNameFor(model => model.Tour)</th>
+                        <th>
+                            <button class="btn btn-success btn-sm ajax-action" data-url="@Url.Action("Create")">
+                                <i class="fas fa-plus-circle"></i> Thêm mới
+                            </button>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4 d-none" id="detail-section">
-        <div class="detail">
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.CheckInDate)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CheckOutDate)</td>
+                            <td>
+                                @if (item.Status == "Confirmed")
+                                {
+                                    <span class="text-success font-weight-bold">Đã thanh toán</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger font-weight-bold">Chưa thanh toán</span>
+                                }
+                            </td>
 
+                            <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
+                            <td><a asp-action="Details" asp-route-id="@item.BookingId">@Html.DisplayFor(modelItem => item.Customer.Name)</a></td>
+                            <td><a asp-action="Details" asp-route-id="@item.BookingId">@Html.DisplayFor(modelItem => item.Tour.Name)</a></td>
+                            <td>
+                                <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.BookingId })">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </button>
+                                <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.BookingId })">
+                                    <i class="fas fa-eye"></i> Chi tiết
+                                </button>
+                                <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.BookingId })">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionBooking"></div>
         </div>
     </div>
 </div>
@@ -81,25 +74,81 @@
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {
             e.preventDefault();
-
             var url = $(this).data("url");
 
-            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
             if ($("#detail-section").hasClass("d-none")) {
                 $("#list-section").removeClass("col-md-12").addClass("col-md-8");
                 $("#detail-section").removeClass("d-none").addClass("col-md-4");
             }
 
-            // Load nội dung vào phần chi tiết
-            $(".detail").load(url, function (response, status, xhr) {
+            $(".actionBooking").load(url, function (response, status, xhr) {
                 if (status === "error") {
                     alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
                 }
             });
         });
     });
-        function closeDetailSection() {
-        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
-        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
     }
 </script>
+
+<style>
+    .body {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        max-height: 1000px;
+    }
+
+    .table-container {
+        overflow-y: auto;
+        border-radius: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        scroll-behavior: smooth;
+        height: 800px;
+    }
+
+    .table {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+            color: black;
+            font-size: 1.3rem;
+        }
+
+        .table thead {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: bold;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+    /* Hiệu ứng khi mở chi tiết */
+    #detail-section {
+        transition: all 0.5s ease-in-out;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+</style>

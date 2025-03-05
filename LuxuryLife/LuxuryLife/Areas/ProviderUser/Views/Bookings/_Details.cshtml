@@ -31,7 +31,17 @@
             @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Status)
+ 
+                @if (Model.Status == "Confirmed")
+                {
+                    <span class="text-success font-weight-bold">Đã thanh toán</span>
+                }
+                else
+                {
+                    <span class="text-danger font-weight-bold">Chưa thanh toán</span>
+                }
+ 
+
         </dd>
         <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.TotalPrice)

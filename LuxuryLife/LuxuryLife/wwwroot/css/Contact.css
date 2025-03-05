@@ -76,7 +76,7 @@
     }
 
 textarea.form-control {
-    width: 80% !important;
+    width: 100% !important;
     padding: 25px !important; /* Match increased padding */
     height: auto !important;
     display: block !important; /* Textarea should stack below */

@@ -1,57 +1,51 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Customer>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách khách hàng";
     Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
 
-<h1>Danh sách các khách hàng </h1>
-<div class="row">
-    <div class="col-md-12" id="list-section">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Phone)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Avatar)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<div class="body">
+    <h1 class="text-light"><i class="fas fa-users"></i> Danh sách khách hàng</h1>
+
+    <div class="row">
+        <div class="col-md-12 table-container" id="list-section">
+            <table class="table" id="customerList">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            <img src="@item.Avatar" alt="@item.Name" width="100px" height="100px" />
-                        </td>
-                        <td>
-                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.CustomerId })">Chi tiết</button>
-                        </td>
+                        <th><i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.Name)</th>
+                        <th><i class="fas fa-envelope"></i> @Html.DisplayNameFor(model => model.Email)</th>
+                        <th><i class="fas fa-phone"></i> @Html.DisplayNameFor(model => model.Phone)</th>
+                        <th><i class="fas fa-image"></i> Avatar</th>
+                        <th>
+                            <button class="btn btn-success btn-sm ajax-action" data-url="@Url.Action("Create")">
+                                <i class="fas fa-plus-circle"></i> Thêm mới
+                            </button>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class ="col-md-4 d-none" id="detail-section">
-        <div class="actionCustomer"></div>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                            <td><img src="@item.Avatar" alt="@item.Name" class="customer-img"></td>
+                            <td>
+                                <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.CustomerId })">
+                                    <i class="fas fa-eye"></i> Chi tiết
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionCustomer"></div>
+        </div>
     </div>
 </div>
 
@@ -60,16 +54,11 @@
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {
             e.preventDefault();
-
             var url = $(this).data("url");
-
-            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
             if ($("#detail-section").hasClass("d-none")) {
                 $("#list-section").removeClass("col-md-12").addClass("col-md-8");
                 $("#detail-section").removeClass("d-none").addClass("col-md-4");
             }
-
-            // Load nội dung vào phần chi tiết
             $(".actionCustomer").load(url, function (response, status, xhr) {
                 if (status === "error") {
                     alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
@@ -77,8 +66,73 @@
             });
         });
     });
-        function closeDetailSection() {
-        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
-        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
     }
 </script>
+
+<style>
+    .body {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+    }
+
+    .table-container {
+        overflow-y: auto;
+        border-radius: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        scroll-behavior: smooth;
+        height: 800px;
+    }
+
+    .table {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+            color: black;
+            font-size: 1.3rem;
+        }
+
+        .table thead {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: bold;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+    .customer-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .customer-img:hover {
+            transform: scale(1.1);
+        }
+
+    h1 {
+        text-align: center;
+        padding: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+</style>

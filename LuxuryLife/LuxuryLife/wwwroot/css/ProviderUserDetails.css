@@ -1,15 +1,22 @@
-﻿/* Provider Profile Section */
+﻿/* Thêm Google Fonts Sigmar */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Provider Profile Section */
 .provider-profile {
+    background-image: url('/images/TourHalong.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     padding: 20px 0;
-    background: #f5f6fa;
     position: relative;
+    z-index: 1; /* Đảm bảo nội dung nằm trên overlay */
 }
 
 /* Profile Header */
 .profile-header {
     display: flex;
     align-items: center;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.4); /* Nền trắng trong suốt nhẹ */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -35,13 +42,13 @@
 
 .provider-name {
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: #000; /* Màu đen đậm */
     margin: 0;
 }
 
 .provider-rating {
     font-size: 1.1rem;
-    color: #7f8c8d;
+    color: #000; /* Màu đen đậm */
     margin-bottom: 10px;
 }
 
@@ -61,8 +68,12 @@
     }
 
 /* Profile Content */
+.profile-details, .booked-customers {
+    background: rgba(255, 255, 255, 0.7);
+    color: #000; /* Màu đen đậm */
+}
+
 .profile-details, .profile-posts, .booked-customers {
-    background: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -70,28 +81,28 @@
 }
 
     .profile-details h3, .posts-section h3, .booked-customers h3 {
-        font-size: 1.6rem; /* Tăng kích thước chữ */
-        color: #1abc9c; /* Màu xanh ngọc thường thấy ở web du lịch */
+        font-size: 1.3rem;
+        color: #000; /* Màu đen đậm */
         margin-bottom: 15px;
         display: flex;
         align-items: center;
-        gap: 10px; /* Khoảng cách giữa icon và chữ */
+        gap: 10px;
     }
 
         .profile-details h3 i, .posts-section h3 i, .booked-customers h3 i {
-            font-size: 1.8rem; /* Tăng kích thước icon */
-            color: #16a085; /* Màu xanh đậm hơn cho icon */
+            font-size: 1.8rem;
+            color: #000; /* Màu đen đậm */
         }
 
     .profile-details dl dt {
         font-weight: bold;
-        color: #34495e;
+        color: #000; /* Màu đen đậm */
         margin-bottom: 5px;
     }
 
     .profile-details dl dd {
         margin-bottom: 15px;
-        color: #7f8c8d;
+        color: #000; /* Màu đen đậm */
     }
 
 /* Posts Section */
@@ -104,9 +115,10 @@
 .post-item {
     display: flex;
     padding: 15px;
-    background: #f9f9f9;
+    background: rgba(249, 249, 249, 0.2); /* Nền xám nhạt trong suốt */
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
+    color: #000; /* Màu đen đậm */
 }
 
     .post-item:hover {
@@ -137,8 +149,9 @@
     display: flex;
     align-items: center;
     padding: 15px;
-    background: #f9f9f9;
+    background: rgba(249, 249, 249, 0.2); /* Nền xám nhạt trong suốt */
     border-radius: 8px;
+    color: #000; /* Màu đen đậm */
 }
 
 .customer-avatar {
@@ -151,20 +164,20 @@
 
 .customer-content h4 {
     font-size: 1.1rem;
-    color: #2c3e50;
+    color: #000; /* Màu đen đậm */
     margin: 0 0 5px;
 }
 
 .customer-content p {
     font-size: 0.9rem;
-    color: #34495e;
+    color: #000; /* Màu đen đậm */
     margin: 0 0 5px;
 }
 
 /* Common Styles */
 .post-content h4 {
     font-size: 1.2rem;
-    color: #2c3e50;
+    color: #000; /* Màu đen đậm */
     margin: 0 0 5px;
 }
 
@@ -173,20 +186,20 @@
 }
 
     .post-content p {
-        font-size: 1rem;
-        color: #34495e;
+        font-size: 1.2rem;
+        color: #000; /* Màu đen đậm */
         margin: 0 0 5px;
     }
 
 .post-price {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #e74c3c;
     font-weight: bold;
 }
 
 .post-date {
     font-size: 0.9rem;
-    color: #7f8c8d;
+    color: #000; /* Màu đen đậm */
 }
 
 /* Scroll to Top Button */
@@ -227,6 +240,11 @@
     }
 
     .post-img {
+        width: 100%;
         height: 200px;
+    }
+
+    .carousel {
+        width: 100%;
     }
 }

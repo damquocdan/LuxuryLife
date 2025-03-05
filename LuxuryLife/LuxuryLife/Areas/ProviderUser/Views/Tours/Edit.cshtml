@@ -4,87 +4,96 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Sửa thông tin Tour</h1>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TourId" />
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" required />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="container-fluid background-container">
+    <div class="overlay"></div>
+    <div class="content-container">
+        <h1 class="title"><i class="fas fa-plane"></i> Sửa tour du lịch</h1>
+        <hr />
+        <div class="row">
+
+            <div class="col-md-12">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="TourId" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" required />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" required />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Image" class="control-label"></label>
+                                @if (!string.IsNullOrEmpty(Model.Image))
+                                {
+                                    <img src="@Model.Image" alt="Avatar" width="150px" height="150px" />
+                                }
+                                <input type="file" name="Image" class="form-control" /> <!-- Sửa từ asp-for sang name -->
+                                <span asp-validation-for="Image" class="text-danger"></span>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" required />
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <label asp-for="StartDate" class="control-label"></label>
+                        <input asp-for="StartDate" type="date" id="StartDate" class="form-control" value="@Model.StartDate?.ToString("dd-MM-yyyy")" required />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
-                </div>
 
-                <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="Image" class="control-label"></label>
-                        @if (!string.IsNullOrEmpty(Model.Image))
-                        {
-                            <img src="@Model.Image" alt="Avatar" width="150px" height="150px" />
-                        }
-                        <input type="file" name="Image" class="form-control" /> <!-- Sửa từ asp-for sang name -->
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <label asp-for="EndDate" class="control-label"></label>
+                        <input asp-for="EndDate" type="date" id="EndDate" class="form-control" value="@Model.EndDate?.ToString("dd-MM-yyyy")" required />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
- 
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" type="date" id="StartDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")" required />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+
+                    <div class="form-group">
+                        <label asp-for="PricePerson" class="control-label"></label>
+                        <input asp-for="PricePerson" type="number" id="PricePerson" class="form-control" required />
+                        <span asp-validation-for="PricePerson" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" type="number" id="Price" class="form-control" required readonly />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label asp-for="Status" class="control-label"></label>
+                        <input asp-for="Status" class="form-control" />
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label asp-for="Createdate" class="control-label"></label>
+                        <input asp-for="Createdate" class="form-control" />
+                        <span asp-validation-for="Createdate" class="text-danger"></span>
+                    </div>
+                    <!-- Sửa cách gửi ProviderId -->
+                    <div class="form-group" hidden>
+                        <label asp-for="ProviderId" class="control-label"></label>
+                        <input asp-for="ProviderId" class="form-control" value="@Model.ProviderId" />
+                        <span asp-validation-for="ProviderId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+                    </div>
+                </form>
             </div>
 
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" type="date" id="EndDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")" required />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="PricePerson" class="control-label"></label>
-                <input asp-for="PricePerson" type="number" id="PricePerson" class="form-control" required />
-                <span asp-validation-for="PricePerson" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" type="number" id="Price" class="form-control" required readonly />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="form-group" hidden>
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden>
-                <label asp-for="Createdate" class="control-label"></label>
-                <input asp-for="Createdate" class="form-control" />
-                <span asp-validation-for="Createdate" class="text-danger"></span>
-            </div>
-            <!-- Sửa cách gửi ProviderId -->
-            <div class="form-group" hidden>
-                <label asp-for="ProviderId" class="control-label"></label>
-                <input asp-for="ProviderId" class="form-control" value="@Model.ProviderId" />
-                <span asp-validation-for="ProviderId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Đóng</a>
-            </div>
-        </form>
     </div>
+
 </div>
 
 @section Scripts {
@@ -92,31 +101,111 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        function calculatePrice() {
-            // Lấy giá trị từ các ô nhập
-            let startDate = new Date(document.getElementById("StartDate").value);
-            let endDate = new Date(document.getElementById("EndDate").value);
+                function calculatePrice() {
+            let startDateValue = document.getElementById("StartDate").value;
+            let endDateValue = document.getElementById("EndDate").value;
             let pricePerson = parseFloat(document.getElementById("PricePerson").value) || 0;
 
-            // Kiểm tra nếu giá trị hợp lệ
-            if (!isNaN(startDate) && !isNaN(endDate) && pricePerson > 0) {
-                let timeDiff = endDate - startDate;
-                let daysDiff = timeDiff / (1000 * 60 * 60 * 24); // Chuyển đổi mili giây sang ngày
+            if (startDateValue && endDateValue && pricePerson > 0) {
+                let startDate = new Date(startDateValue);
+                let endDate = new Date(endDateValue);
 
-                if (daysDiff > 0) {
-                    let totalPrice = daysDiff * pricePerson;
-                    document.getElementById("Price").value = totalPrice;
-                } else {
-                    document.getElementById("Price").value = 0; // Nếu ngày không hợp lệ
+                if (!isNaN(startDate) && !isNaN(endDate)) {
+                    let timeDiff = endDate.getTime() - startDate.getTime();
+                    let daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+                    if (daysDiff >= 0) {
+                        let totalPrice = (daysDiff || 1) * pricePerson; // Đảm bảo ít nhất tính 1 ngày
+                        document.getElementById("Price").value = totalPrice.toFixed(2);
+                    } else {
+                        document.getElementById("Price").value = "0";
+                    }
                 }
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
+                document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("StartDate").addEventListener("change", calculatePrice);
             document.getElementById("EndDate").addEventListener("change", calculatePrice);
             document.getElementById("PricePerson").addEventListener("input", calculatePrice);
+
+            // Gọi tính toán giá ngay khi trang tải để cập nhật giá
+            calculatePrice();
         });
+
+
     </script>
 
 }
+<style>
+    /* Đặt background */
+    .background-container {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    /* Lớp mờ */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Hiệu ứng mờ */
+    }
+
+    /* Nội dung chính */
+    .content-container {
+        position: relative;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 10px;
+        width: 50%;
+        max-width: 700px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Tiêu đề với hiệu ứng hover */
+    .title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        transition: transform 0.3s, font-size 0.3s;
+    }
+
+        .title:hover {
+            transform: scale(1.1);
+            font-size: 32px;
+        }
+
+    /* Form */
+    .form-container {
+        margin-top: 20px;
+    }
+
+    /* Biểu tượng trong nhãn */
+    .form-group label i {
+        margin-right: 8px;
+        color: #007bff;
+    }
+
+    /* Nút bấm */
+    .btn {
+        width: 100%;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    /* Nút đóng */
+    .btn-secondary {
+        margin-top: 10px;
+    }
+
+</style>

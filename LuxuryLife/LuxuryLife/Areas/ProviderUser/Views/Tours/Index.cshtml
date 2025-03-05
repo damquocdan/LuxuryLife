@@ -4,94 +4,193 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
+<style>
+    .body {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+    }
 
-<h1>Danh sách các tour của tôi</h1>
+    h1 {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
 
-<p>
-    <a class="btn btn-warning btn-sm" asp-action="create" >Thêm mới</a>
-</p>
+        h1:hover {
+            font-size: 32px;
+            color: yellow;
+            background: rgba(0, 0, 0, 0.8);
+        }
 
-<div class="row">
-    <div class="col-md-12" id="list-section">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Image)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Createdate)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    .table-container {
+ 
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+        scroll-behavior: smooth;
+        height: 800px;
+    }
+
+    .table {
+        width: 100%;
+        text-align: center;
+    }
+
+        .table th {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            transition: all 0.3s;
+            font-size:1.6rem;
+            color: black;
+        }
+
+ 
+
+        .table td {
+            padding: 10px;
+            border-bottom: 1px solid white;
+            background: rgba(255, 255, 255, 0.3);
+            color:black;
+            font-size: 1.3rem;
+        }
+
+    .row-active {
+        background-color: rgba(40, 167, 69, 0.7);
+    }
+
+    .row-inactive {
+        background-color: rgba(220, 53, 69, 0.7);
+    }
+
+    .row-pending {
+        background-color: rgba(255, 193, 7, 0.7);
+    }
+
+    .row-unknown {
+        background-color: rgba(108, 117, 125, 0.7);
+    }
+
+    .badge {
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .btn {
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.6);
+        }
+
+    .custom-btn-group {
+        display: flex;
+        flex-direction: column;
+        width: 120px; /* Điều chỉnh kích thước theo mong muốn */
+    }
+
+        .custom-btn-group .btn {
+            width: 100%;
+            margin-bottom: 5px; /* Khoảng cách giữa các nút */
+        }
+
+</style>
+<div class="body">
+    <h1>Danh sách các tour của tôi</h1>
+    <div class="row">
+        <div class="col-md-12 table-container" id="list-section" data-bs-spy="scroll" data-bs-target="#tourList">
+            <table class="table" id="tourList">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            <img src="@item.Image" alt="@item.Name"  width="100px" height="100px" />
-                        </td>
-                        <td>
-                            @if (item.Status == "Active")
-                            {
-                                <span class="badge bg-success">Hoạt động</span>
-                            }
-                            else if (item.Status == "Inactive")
-                            {
-                                <span class="badge bg-danger">Không hoạt động</span>
-                            }
-                            else if (item.Status == "Pending")
-                            {
-                                <span class="badge bg-warning">Chờ xử lý</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">Trạng thái không xác định</span>
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Createdate)
-                        </td>
-                        <td>
-                            <a class="btn btn-warning btn-sm"asp-action="Edit" asp-route-id="@item.TourId" >Sửa</a>
-                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.TourId })">Chi tiết</button>
-                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.TourId })">Xóa</button>
-                        </td>
+                        <th><i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Image)</th>
+                        <th><i class="fas fa-info-circle"></i> Tour du lịch</th>
+  
+                        <th>
+                            <p>
+                                <a class="btn btn-success btn-sm" asp-action="create">Thêm mới</a>
+                            </p>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4 d-none" id="detail-section">
-        <div class="actionTour"></div>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+ 
+                        <tr >
+      
+                            <td>
+                                <img src="@item.Image" alt="@item.Name" width="500px" height="300px" />
+                            </td>
+                            <td>
+                                <p class="text-bold">
+ 
+                                        @Html.DisplayFor(modelItem => item.Name)
+ 
+                                </p>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </p>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.Createdate)
+                                </p>
+                                @if (item.Status == "Active")
+                                {
+                                    <span class="badge bg-success">Hoạt động</span>
+                                }
+                                else if (item.Status == "Inactive")
+                                {
+                                    <span class="badge bg-danger">Không hoạt động</span>
+                                }
+                                else if (item.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning">Chờ xử lý</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Trạng thái không xác định</span>
+                                }
+                            </td>
+ 
+                            <td>
+                                <div class="btn-group-vertical custom-btn-group">
+                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.TourId">Sửa</a>
+                                    <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.TourId })">Chi tiết</button>
+                                    <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.TourId })">Xóa</button>
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionTour"></div>
+        </div>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".ajax-action").click(function (e) {
             e.preventDefault();
-
             var url = $(this).data("url");
 
-            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
             if ($("#detail-section").hasClass("d-none")) {
                 $("#list-section").removeClass("col-md-12").addClass("col-md-8");
                 $("#detail-section").removeClass("d-none").addClass("col-md-4");
             }
 
-            // Load nội dung vào phần chi tiết
             $(".actionTour").load(url, function (response, status, xhr) {
                 if (status === "error") {
                     alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
@@ -99,8 +198,8 @@
             });
         });
     });
-        function closeDetailSection() {
-        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
-        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
     }
 </script>

@@ -4,69 +4,62 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
+<div class="body">
+    <h1 class="text-light"><i class="fas fa-home"></i> Danh sách các homestay của tôi</h1>
 
-<h1>Danh sách các homestay của tôi</h1>
 
-<p>
-    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Create")">Thêm mới</button>
-</p>
-<div class="row">
-    <div class="col-md-12" id="list-section">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Image)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PricePerNight)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+
+    <div class="row">
+        <div class="col-md-12 table-container" id="list-section" data-bs-spy="scroll" data-bs-target="#tourList">
+            <table class="table" id="tourList">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            <img src="@item.Image" alt="@item.Name" width="100px" height="100px" />
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PricePerNight)
-                        </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.HomestayId })">Sửa</button>
-                            <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.HomestayId })">Chi tiết</button>
-                            <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.HomestayId })">Xóa</button>
-                        </td>
+                        <th><i class="fas fa-signature"></i> @Html.DisplayNameFor(model => model.Name)</th>
+                        <th><i class="fas fa-align-left"></i> @Html.DisplayNameFor(model => model.Description)</th>
+                        <th><i class="fas fa-map-marker-alt"></i> @Html.DisplayNameFor(model => model.Address)</th>
+                        <th><i class="fas fa-image"></i> Ảnh</th>
+                        <th><i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.PricePerNight)</th>
+                        <th>
+  
+                                <button class="btn btn-succexx btn-sm ajax-action" data-url="@Url.Action("Create")">
+                                    <i class="fas fa-plus-circle"></i> Thêm mới
+                                </button>
+ 
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4 d-none" id="detail-section">
-        <div class="actionHomestay">
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                            <td><img src="@item.Image" alt="@item.Name" class="homestay-img"></td>
+                            <td>@Html.DisplayFor(modelItem => item.PricePerNight)</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.HomestayId })">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </button>
+                                <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.HomestayId })">
+                                    <i class="fas fa-eye"></i> Chi tiết
+                                </button>
+                                <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.HomestayId })">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
         </div>
+
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionHomestay"></div>
+        </div>
     </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -77,13 +70,11 @@
 
             var url = $(this).data("url");
 
-            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
             if ($("#detail-section").hasClass("d-none")) {
                 $("#list-section").removeClass("col-md-12").addClass("col-md-8");
                 $("#detail-section").removeClass("d-none").addClass("col-md-4");
             }
 
-            // Load nội dung vào phần chi tiết
             $(".actionHomestay").load(url, function (response, status, xhr) {
                 if (status === "error") {
                     alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
@@ -91,8 +82,82 @@
             });
         });
     });
-        function closeDetailSection() {
-        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
-        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
     }
 </script>
+
+<style>
+    .body {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        max-height: 1000px;
+    }
+
+
+
+    .table-container {
+        overflow-y: auto;
+        border-radius: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.2); /* Làm bảng sáng hơn */
+        backdrop-filter: blur(5px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        scroll-behavior: smooth;
+        height: 800px;
+    }
+
+    .table {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px; /* Tăng khoảng cách giữa các ô */
+            color: black;
+            font-size:1.3rem;
+        }
+
+        .table thead {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: bold;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+    .homestay-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .homestay-img:hover {
+            transform: scale(1.1);
+        }
+
+    /* Hiệu ứng khi mở chi tiết */
+    #detail-section {
+        transition: all 0.5s ease-in-out;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+</style>
