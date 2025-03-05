@@ -18,7 +18,6 @@ public partial class Booking
     public int? TourId { get; set; }
 
     [Display(Name = "Ngày đặt")]
-    [Required(ErrorMessage = "Ngày đặt không được để trống.")]
     [DataType(DataType.Date)]
     [CustomValidation(typeof(Booking), nameof(ValidateBookingDate))]
     public DateTime? BookingDate { get; set; }
@@ -42,7 +41,6 @@ public partial class Booking
 
 
     [Display(Name = "Trạng thái")]
-    [Required(ErrorMessage = "Trạng thái không được để trống.")]
     [RegularExpression(@"^(Pending|Confirmed|Cancelled)$", ErrorMessage = "Trạng thái chỉ có thể là Pending, Confirmed hoặc Cancelled.")]
     public string? Status { get; set; }
 
