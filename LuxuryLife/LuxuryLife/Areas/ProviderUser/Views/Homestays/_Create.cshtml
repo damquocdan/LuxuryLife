@@ -4,77 +4,92 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Thêm homestays</h1>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-            <!-- Name Field -->
-            <div class="form-group row">
-                <label asp-for="Name" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Name" class="form-control" required />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-            </div>
+    .icon-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
 
-            <!-- Description Field -->
-            <div class="form-group row">
-                <label asp-for="Description" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Description" class="form-control" required />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- Address Field -->
-            <div class="form-group row">
-                <label asp-for="Address" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Address" class="form-control" required />
-                    <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- Image Field -->
-            <div class="form-group row">
-                <label asp-for="Image" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Image" type="file" class="form-control" required />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- PricePerNight Field -->
-            <div class="form-group row">
-                <label asp-for="PricePerNight" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="PricePerNight" type="number" class="form-control" required />
-                    <span asp-validation-for="PricePerNight" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="TourId" class="col-md-4 col-form-label"></label>
-                <div class="col-md-8">
-                    <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
-                </div>
-            </div>
-            <!-- Hidden ProviderId Field -->
-            <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
-
-            <!-- Submit Button -->
-            <div class="form-group row">
-                <div class="col-md-9 offset-md-3">
-                    <input type="submit" value="Thêm" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-success">Đóng</a>
-                </div>
-            </div>
-        </form>
+<div class="card shadow-lg p-4">
+    <div class="icon-header">
+        <h3 class="text-primary">
+            <i class="fas fa-plus-circle"></i> Thêm Homestay
+        </h3>
+        <button id="closeDetailSection" class="btn btn-secondary" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
+
+    <hr />
+
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="form-label"></label>
+            <input asp-for="Description" class="form-control" required />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" required />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Image" class="form-label"></label>
+            <input asp-for="Image" type="file" class="form-control" required />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PricePerNight" class="form-label"></label>
+            <input asp-for="PricePerNight" type="number" class="form-control" required />
+            <span asp-validation-for="PricePerNight" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TourId" class="form-label"></label>
+            <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+        </div>
+
+        <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
+
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Thêm
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Đóng
+            </a>
+        </div>
+    </form>
 </div>
 
+<script>
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
+    }
+</script>
 
 @section Scripts {
     @{

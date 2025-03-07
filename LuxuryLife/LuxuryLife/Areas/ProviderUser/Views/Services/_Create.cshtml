@@ -1,64 +1,71 @@
 ﻿@model LuxuryLife.Models.Service
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Thêm Dịch Vụ";
 }
 
-<h1>Thêm dịch vụ</h1>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-            <!-- ServiceName -->
-            <div class="form-group row">
-                <label asp-for="ServiceName" class="col-md-4 col-form-label "></label>
-                <div class="col-md-8">
-                    <input asp-for="ServiceName" class="form-control" />
-                    <span asp-validation-for="ServiceName" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- Description -->
-            <div class="form-group row">
-                <label asp-for="Description" class="col-md-4 col-form-label"></label>
-                <div class="col-md-8">
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- Price -->
-            <div class="form-group row">
-                <label asp-for="Price" class="col-md-4 col-form-label"></label>
-                <div class="col-md-8">
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- TourId -->
-            <div class="form-group row">
-                <label asp-for="TourId" class="col-md-4 col-form-label"></label>
-                <div class="col-md-8">
-                    <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="form-group row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <input type="submit" value="Thêm" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-success ml-2">Đóng</a>
-                </div>
-            </div>
-        </form>
+    .icon-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+<div class="card shadow-lg p-4">
+    <div class="icon-header">
+        <h3 class="text-primary">
+            <i class="fas fa-plus-circle"></i> Thêm Dịch vụ
+        </h3>
+        <button id="closeDetailSection" class="btn btn-secondary" onclick="closeDetailSection()">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
+    <hr />
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="ServiceName" class="form-label">Tên Dịch Vụ</label>
+            <input asp-for="ServiceName" class="form-control" required />
+            <span asp-validation-for="ServiceName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="form-label">Mô Tả</label>
+            <textarea asp-for="Description" class="form-control" required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Price" class="form-label">Giá</label>
+            <input asp-for="Price" type="number" class="form-control" required />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TourId" class="form-label">Tour Liên Quan</label>
+            <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-primary">Thêm</button>
+            <a asp-action="Index" class="btn btn-secondary">Đóng</a>
+        </div>
+    </form>
 </div>
 
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

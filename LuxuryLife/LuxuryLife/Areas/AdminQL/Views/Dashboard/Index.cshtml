@@ -1,9 +1,247 @@
 ﻿
+@model LuxuryLife.Areas.AdminQL.Controllers.DashboardViewModel
 @{
-    ViewData["Title"] = "DashBoard";
-    Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
+    ViewData["Title"] = "Dashboard";
 }
 
-<h1>Dashboard</h1>
-<p>Day la noi dung trang chu admin</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        .chart-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
 
+        .stats-card {
+            padding: 20px;
+            margin: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Dashboard Thống Kê</h1>
+
+        <!-- 1. Pie Charts -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="chart-container">
+                    <h3>Tỷ lệ Tour theo Trạng thái</h3>
+                    <canvas id="tourStatusChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="chart-container">
+                    <h3>Phân bố Đánh giá</h3>
+                    <canvas id="ratingChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="chart-container">
+                    <h3>Homestay theo Nhà cung cấp</h3>
+                    <canvas id="homestayByProviderChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="chart-container">
+                    <h3>Doanh thu từ Homestay</h3>
+                    <canvas id="revenueByHomestayChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Bar Charts -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h3>Số lượng Tour theo Nhà cung cấp</h3>
+                    <canvas id="toursByProviderChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h3>Số lượng Booking theo Tháng</h3>
+                    <canvas id="bookingsByMonthChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h3>Doanh thu theo Tour</h3>
+                    <canvas id="revenueByTourChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h3>Số lượng Dịch vụ theo Tour</h3>
+                    <canvas id="servicesByTourChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Tổng hợp số liệu -->
+        <h2 class="text-center my-4">Tổng hợp Số liệu</h2>
+        <div class="row">
+            <div class="col-md-2 stats-card">
+                <h4>Tổng số Tour</h4>
+                <p>@Model.TotalTours</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Tổng số Homestay</h4>
+                <p>@Model.TotalHomestays</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Tổng số Booking</h4>
+                <p>@Model.TotalBookings</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Tổng số Khách hàng</h4>
+                <p>@Model.TotalCustomers</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Tổng số Đánh giá</h4>
+                <p>@Model.TotalReviews</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Tổng số Liên hệ</h4>
+                <p>@Model.TotalContacts</p>
+            </div>
+        </div>
+
+        <!-- 4. Doanh thu & Số liệu khác -->
+        <h2 class="text-center my-4">Doanh thu & Số liệu Nổi bật</h2>
+        <div class="row">
+            <div class="col-md-2 stats-card">
+                <h4>Tổng Doanh thu</h4>
+                <p>@Model.TotalRevenue.ToString("C")</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Tour có nhiều Đánh giá nhất</h4>
+                <p>Tour ID: @Model.TopReviewedTour.TourId - @Model.TopReviewedTour.ReviewCount đánh giá</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Nhà cung cấp có nhiều Tour nhất</h4>
+                <p>Provider ID: @Model.TopProviderByTours.ProviderId - @Model.TopProviderByTours.TourCount tour</p>
+            </div>
+            <div class="col-md-2 stats-card">
+                <h4>Khách hàng Booking nhiều nhất</h4>
+                <p>Customer ID: @Model.TopCustomerByBookings.CustomerId - @Model.TopCustomerByBookings.BookingCount booking</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Pie Charts
+        new Chart(document.getElementById('tourStatusChart'), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.TourStatusDistribution.Keys)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.TourStatusDistribution.Values)),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: { title: { display: true, text: 'Tỷ lệ Tour theo Trạng thái' } }
+        });
+
+        new Chart(document.getElementById('ratingChart'), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RatingDistribution.Keys)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.RatingDistribution.Values)),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                }]
+            },
+            options: { title: { display: true, text: 'Phân bố Đánh giá' } }
+        });
+
+        new Chart(document.getElementById('homestayByProviderChart'), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.HomestayByProvider.Keys)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.HomestayByProvider.Values)),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: { title: { display: true, text: 'Homestay theo Nhà cung cấp' } }
+        });
+
+        new Chart(document.getElementById('revenueByHomestayChart'), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RevenueByHomestay.Keys)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.RevenueByHomestay.Values)),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: { title: { display: true, text: 'Doanh thu từ Homestay' } }
+        });
+
+        // Bar Charts
+        new Chart(document.getElementById('toursByProviderChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.ToursByProvider.Keys)),
+                datasets: [{
+                    label: 'Số lượng Tour',
+                    data: @Html.Raw(Json.Serialize(Model.ToursByProvider.Values)),
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+
+        new Chart(document.getElementById('bookingsByMonthChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.BookingsByMonth.Keys)),
+                datasets: [{
+                    label: 'Số lượng Booking',
+                    data: @Html.Raw(Json.Serialize(Model.BookingsByMonth.Values)),
+                    backgroundColor: '#FF6384'
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+
+        new Chart(document.getElementById('revenueByTourChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RevenueByTour.Keys)),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @Html.Raw(Json.Serialize(Model.RevenueByTour.Values)),
+                    backgroundColor: '#FFCE56'
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+
+        new Chart(document.getElementById('servicesByTourChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.ServicesByTour.Keys)),
+                datasets: [{
+                    label: 'Số lượng Dịch vụ',
+                    data: @Html.Raw(Json.Serialize(Model.ServicesByTour.Values)),
+                    backgroundColor: '#4BC0C0'
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+    </script>
+</body>
+</html>

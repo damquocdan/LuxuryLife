@@ -4,75 +4,107 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Sửa thông tin Homestay</h1>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="HomestayId" />
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-            <!-- Name Field -->
-            <div class="form-group row">
-                <label asp-for="Name" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="card shadow-lg p-4 position-relative">
+    <button id="closeDetailSection" class="close-btn text-danger" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <h3 class="text-primary">
+        <i class="fas fa-home"></i> Sửa thông tin Homestay
+    </h3>
+    <hr />
+
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="HomestayId" />
+
+        <div class="form-group row">
+            <label asp-for="Name" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-signature"></i> @Html.DisplayNameFor(model => model.Name)
+            </label>
+            <div class="col-md-8">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Description Field -->
-            <div class="form-group row">
-                <label asp-for="Description" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+        <div class="form-group row">
+            <label asp-for="Description" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-align-left"></i> @Html.DisplayNameFor(model => model.Description)
+            </label>
+            <div class="col-md-8">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Address Field -->
-            <div class="form-group row">
-                <label asp-for="Address" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="Address" class="form-control" />
-                    <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
+        <div class="form-group row">
+            <label asp-for="Address" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-map-marker-alt"></i> @Html.DisplayNameFor(model => model.Address)
+            </label>
+            <div class="col-md-8">
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Image Field -->
-            <div class="form-group row">
-                <label asp-for="Image" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    @if (!string.IsNullOrEmpty(Model.Image))
-                    {
-                        <img src="@Model.Image" alt="Avatar" width="150px" height="150px" class="mb-2" />
-                    }
-                    <input asp-for="Image" type="file" class="form-control" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
+        <div class="form-group row">
+            <label asp-for="Image" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.Image)
+            </label>
+            <div class="col-md-8">
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <img src="@Model.Image" alt="Homestay Image" width="150px" height="150px" class="mb-2" />
+                }
+                <input asp-for="Image" type="file" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- PricePerNight Field -->
-            <div class="form-group row">
-                <label asp-for="PricePerNight" class="col-md-3 col-form-label"></label>
-                <div class="col-md-9">
-                    <input asp-for="PricePerNight" type="number" class="form-control" />
-                    <span asp-validation-for="PricePerNight" class="text-danger"></span>
-                </div>
+        <div class="form-group row">
+            <label asp-for="PricePerNight" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.PricePerNight)
+            </label>
+            <div class="col-md-8">
+                <input asp-for="PricePerNight" type="number" class="form-control" />
+                <span asp-validation-for="PricePerNight" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Hidden ProviderId -->
-            <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
+        <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
 
-            <!-- Submit Button -->
-            <div class="form-group row">
-                <div class="col-md-9 offset-md-3">
-                    <input type="submit" value="Lưu" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-success">Đóng</a>
-                </div>
-            </div>
-        </form>
-    </div>
+        <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Lưu thay đổi
+            </button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
@@ -80,3 +112,10 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
+    }
+</script>

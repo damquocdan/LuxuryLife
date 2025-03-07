@@ -4,71 +4,105 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Sửa hình ảnh của tour</h1>
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ListimagestourId" />
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
 
-            <!-- TourId -->
-            <div class="form-group row">
-                <label asp-for="TourId" class="col-md-4 col-form-label text-md-right"></label>
-                <div class="col-md-8">
-                    <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
-                    <span asp-validation-for="TourId" class="text-danger"></span>
-                </div>
+    .form-group label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="card shadow-lg p-4 position-relative">
+    <button id="closeDetailSection" class="close-btn text-danger" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <h3 class="text-primary">
+        <i class="fas fa-edit"></i> Sửa hình ảnh của tour
+    </h3>
+    <hr />
+
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ListimagestourId" />
+
+        <!-- TourId Dropdown -->
+        <div class="form-group row">
+            <label asp-for="TourId" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-map"></i> @Html.DisplayNameFor(model => model.TourId)
+            </label>
+            <div class="col-md-8">
+                <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
+                <span asp-validation-for="TourId" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- ImageUrl -->
-            <div class="form-group row">
-                <label asp-for="ImageUrl" class="col-md-4 col-form-label text-md-right"></label>
-                <div class="col-md-8">
-                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                    {
-                        <img src="@Model.ImageUrl" alt="Avatar" width="150px" height="150px" class="mb-2" />
-                    }
-                    <input asp-for="ImageUrl" type="file" class="form-control" />
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                </div>
+        <!-- ImageUrl File Input -->
+        <div class="form-group row">
+            <label asp-for="ImageUrl" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.ImageUrl)
+            </label>
+            <div class="col-md-8">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Tour Image" width="150px" height="150px" class="mb-2 rounded" />
+                }
+                <input asp-for="ImageUrl" type="file" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- ImageDescription -->
-            <div class="form-group row">
-                <label asp-for="ImageDescription" class="col-md-4 col-form-label text-md-right"></label>
-                <div class="col-md-8">
-                    <input asp-for="ImageDescription" class="form-control" />
-                    <span asp-validation-for="ImageDescription" class="text-danger"></span>
-                </div>
+        <!-- ImageDescription Input -->
+        <div class="form-group row">
+            <label asp-for="ImageDescription" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-align-left"></i> @Html.DisplayNameFor(model => model.ImageDescription)
+            </label>
+            <div class="col-md-8">
+                <input asp-for="ImageDescription" class="form-control" />
+                <span asp-validation-for="ImageDescription" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Createdate -->
-            <div class="form-group row">
-                <label asp-for="Createdate" class="col-md-4 col-form-label text-md-right"></label>
-                <div class="col-md-8">
-                    <input asp-for="Createdate" class="form-control" />
-                    <span asp-validation-for="Createdate" class="text-danger"></span>
-                </div>
+        <!-- Createdate Input -->
+        <div class="form-group row">
+            <label asp-for="Createdate" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-calendar-alt"></i> @Html.DisplayNameFor(model => model.Createdate)
+            </label>
+            <div class="col-md-8">
+                <input asp-for="Createdate" class="form-control" />
+                <span asp-validation-for="Createdate" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Submit Button -->
-            <div class="form-group row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </div>
-        </form>
-    </div>
+        <!-- Submit Button -->
+        <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Lưu thay đổi
+            </button>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-success">Đóng</a>
-</div>
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
+    }
+</script>

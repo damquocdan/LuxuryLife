@@ -2,15 +2,13 @@
 
 @{
     ViewData["Title"] = "Chỉnh sửa Nhà cung cấp";
+    Layout = "~/Areas/ProviderUser/Views/Shared/_Providers.cshtml";
 }
 
-<div class=" mt-4">
-    <h1 class="mb-4"><i class="fas fa-edit"></i> Chỉnh sửa Nhà cung cấp</h1>
-
-    <hr />
-
-    <div class="row">
-        <div class="col-12">
+<div class="body">
+    <h1 class="text-light text-center"><i class="fas fa-edit"></i> Chỉnh sửa Nhà cung cấp</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6 form-container" id="edit-section">
             <form asp-action="Edit" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ProviderId" />
@@ -45,7 +43,7 @@
                         <input asp-for="Avatar" type="file" class="form-control" />
                         @if (Model.Avatar != null)
                         {
-                            <img src="@Url.Content(Model.Avatar)" alt="Ảnh đại diện hiện tại" class="img-thumbnail mt-2" style="max-width: 150px; height: 150px;" />
+                            <img src="@Url.Content(Model.Avatar)" class="tour-img mt-2" alt="Ảnh đại diện hiện tại" />
                         }
                         <span asp-validation-for="Avatar" class="text-danger"></span>
                     </div>
@@ -79,20 +77,61 @@
                     <div class="col-sm-3"></div>
                     <div class="col-sm-9">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu</button>
+                        <a onclick="closeEditSection()" class="btn btn-secondary"><i class="fas fa-times"></i> Hủy</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
-    <div class="mt-4">
-        <a onclick="window.history.back()" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Đóng</a>
-    </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<script>
+    function closeEditSection() {
+        window.history.back();
     }
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-}
+</script>
+
+<style>
+    .body {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        height:970px;
+    }
+
+    .form-container {
+        border-radius: 10px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group label {
+        font-weight: bold;
+        color: white;
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .tour-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .tour-img:hover {
+            transform: scale(1.1);
+        }
+</style>

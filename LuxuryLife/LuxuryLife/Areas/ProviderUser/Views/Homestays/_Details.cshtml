@@ -4,45 +4,83 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Chi tiết thông tin Homestay</h1>
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
 
-<div>
-    <h4>Homestay</h4>
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #333;
+    }
+</style>
+
+<div class="card shadow-lg p-4 position-relative">
+    <button id="closeDetailSection" class="close-btn text-danger" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <h3 class="text-primary">
+        <i class="fas fa-home"></i> Chi tiết thông tin Homestay
+    </h3>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Name)
+
+    <dl class="row mt-3">
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-tag"></i> Tên Homestay:
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Description)
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-align-left"></i> Mô tả:
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Address)
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-map-marker-alt"></i> Địa chỉ:
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Address)
         </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Image)
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-image"></i> Hình ảnh:
         </dt>
         <dd class="col-sm-8">
             <img src="@Model.Image" alt="@Model.Name" width="100%" height="300px" />
- 
         </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.PricePerNight)
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-dollar-sign"></i> Giá mỗi đêm:
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.PricePerNight)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-success">Đóng</a>
-</div>
+
+<script>
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
+    }
+</script>

@@ -22,14 +22,14 @@ public partial class Booking
     [CustomValidation(typeof(Booking), nameof(ValidateBookingDate))]
     public DateTime? BookingDate { get; set; }
 
-    [Display(Name = "Ngày nhận phòng")]
-    [Required(ErrorMessage = "Ngày nhận phòng không được để trống.")]
+    [Display(Name = "Ngày bắt đầu")]
+    [Required(ErrorMessage = "Ngày bắt đầu không được để trống.")]
     [DataType(DataType.Date)]
     [CustomValidation(typeof(Booking), nameof(ValidateCheckInDate))]
     public DateTime? CheckInDate { get; set; }
 
-    [Display(Name = "Ngày trả phòng")]
-    [Required(ErrorMessage = "Ngày trả phòng không được để trống.")]
+    [Display(Name = "Ngày kết thúc")]
+    [Required(ErrorMessage = "Ngày kết thúc không được để trống.")]
     [DataType(DataType.Date)]
     [CustomValidation(typeof(Booking), nameof(ValidateCheckOutDate))]
     public DateTime? CheckOutDate { get; set; }
@@ -65,7 +65,7 @@ public partial class Booking
         var instance = (Booking)context.ObjectInstance;
         if (checkInDate.HasValue && instance.BookingDate.HasValue && checkInDate.Value < instance.BookingDate.Value)
         {
-            return new ValidationResult("Ngày nhận phòng phải sau hoặc trùng với ngày đặt.");
+            return new ValidationResult("Ngày bắt đầu phải sau hoặc trùng với ngày đặt.");
         }
         return ValidationResult.Success;
     }
@@ -75,7 +75,7 @@ public partial class Booking
         var instance = (Booking)context.ObjectInstance;
         if (checkOutDate.HasValue && instance.CheckInDate.HasValue && checkOutDate.Value <= instance.CheckInDate.Value)
         {
-            return new ValidationResult("Ngày trả phòng phải sau ngày nhận phòng.");
+            return new ValidationResult("Ngày kết thúc phải sau ngày nhận phòng.");
         }
         return ValidationResult.Success;
     }

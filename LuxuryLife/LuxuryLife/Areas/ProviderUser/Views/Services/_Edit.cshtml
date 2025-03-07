@@ -4,45 +4,104 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Sửa thông tin dịch vụ</h1>
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ServiceId" />
-            <div class="form-group">
-                <label asp-for="ServiceName" class="control-label"></label>
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="card shadow-lg p-4 position-relative">
+    <button id="closeDetailSection" class="close-btn text-danger" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <h3 class="text-primary">
+        <i class="fas fa-edit"></i> Sửa thông tin dịch vụ
+    </h3>
+    <hr />
+
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ServiceId" />
+
+        <div class="form-group row">
+            <label asp-for="ServiceName" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-concierge-bell"></i> @Html.DisplayNameFor(model => model.ServiceName)
+            </label>
+            <div class="col-md-8">
                 <input asp-for="ServiceName" class="form-control" />
                 <span asp-validation-for="ServiceName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Description" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-align-left"></i> @Html.DisplayNameFor(model => model.Description)
+            </label>
+            <div class="col-md-8">
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Price" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(model => model.Price)
+            </label>
+            <div class="col-md-8">
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TourId" class="control-label"></label>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="TourId" class="col-md-4 col-form-label text-md-right">
+                <i class="fas fa-map"></i> @Html.DisplayNameFor(model => model.TourId)
+            </label>
+            <div class="col-md-8">
                 <select asp-for="TourId" class="form-control" asp-items="ViewBag.TourId"></select>
                 <span asp-validation-for="TourId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Luư" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Lưu thay đổi
+            </button>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-success">Đóng</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+<script>
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
+    }
+</script>

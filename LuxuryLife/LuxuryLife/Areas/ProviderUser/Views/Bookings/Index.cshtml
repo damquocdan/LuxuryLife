@@ -20,9 +20,6 @@
                         <th><i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.Customer)</th>
                         <th><i class="fas fa-map"></i> @Html.DisplayNameFor(model => model.Tour)</th>
                         <th>
-                            <button class="btn btn-success btn-sm ajax-action" data-url="@Url.Action("Create")">
-                                <i class="fas fa-plus-circle"></i> Thêm mới
-                            </button>
                         </th>
                     </tr>
                 </thead>
@@ -47,15 +44,11 @@
                             <td><a asp-action="Details" asp-route-id="@item.BookingId">@Html.DisplayFor(modelItem => item.Customer.Name)</a></td>
                             <td><a asp-action="Details" asp-route-id="@item.BookingId">@Html.DisplayFor(modelItem => item.Tour.Name)</a></td>
                             <td>
-                                <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.BookingId })">
-                                    <i class="fas fa-edit"></i> Sửa
-                                </button>
+ 
                                 <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.BookingId })">
                                     <i class="fas fa-eye"></i> Chi tiết
                                 </button>
-                                <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.BookingId })">
-                                    <i class="fas fa-trash"></i> Xóa
-                                </button>
+ 
                             </td>
                         </tr>
                     }

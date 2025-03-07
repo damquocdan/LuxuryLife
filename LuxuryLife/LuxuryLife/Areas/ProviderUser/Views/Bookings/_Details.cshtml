@@ -4,65 +4,91 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Chi tiết đơn đặt</h1>
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-<div>
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #333;
+    }
+</style>
+
+<div class="card shadow-lg p-4 position-relative">
+    <button id="closeDetailSection" class="close-btn text-danger" onclick="closeDetailSection()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <h3 class="text-primary">
+        <i class="fas fa-receipt"></i> Chi tiết đơn đặt
+    </h3>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.BookingDate)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.BookingDate)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.CheckInDate)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.CheckInDate)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.CheckOutDate)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.CheckOutDate)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-8">
- 
-                @if (Model.Status == "Confirmed")
-                {
-                    <span class="text-success font-weight-bold">Đã thanh toán</span>
-                }
-                else
-                {
-                    <span class="text-danger font-weight-bold">Chưa thanh toán</span>
-                }
- 
 
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.TotalPrice)
+    <dl class="row">
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-calendar-alt"></i> Ngày đặt:
         </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Customer)
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.BookingDate)</dd>
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-calendar-check"></i> Ngày nhận phòng:
         </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Customer.Name)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Tour)
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckInDate)</dd>
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-calendar-times"></i> Ngày trả phòng:
         </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Tour.Name)
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.CheckOutDate)</dd>
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-money-check-alt"></i> Trạng thái thanh toán:
+        </dt>
+        <dd class="col-sm-8">
+            @if (Model.Status == "Confirmed")
+            {
+                <span class="text-success font-weight-bold">Đã thanh toán</span>
+            }
+            else
+            {
+                <span class="text-danger font-weight-bold">Chưa thanh toán</span>
+            }
         </dd>
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-dollar-sign"></i> Tổng tiền:
+        </dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.TotalPrice)</dd>
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-user"></i> Khách hàng:
+        </dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.Customer.Name)</dd>
+
+        <dt class="col-sm-4 info-label">
+            <i class="fas fa-map-marked-alt"></i> Tour:
+        </dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.Tour.Name)</dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-success">Đóng</a>
-</div>
+
+<script>
+    function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#detail-section").addClass("d-none");
+    }
+</script>
