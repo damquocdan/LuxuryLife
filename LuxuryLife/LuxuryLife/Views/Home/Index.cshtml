@@ -45,24 +45,20 @@
             <h2>Dịch vụ du lịch tốt nhất <br> cho tất cả những gì bạn cần </h2>
             <p>
                 Tìm kiếm những Tour du lịch, Homestays và các dịch vụ mọi thứ với chỉ một CLICK
-            </p>        <form asp-action="Index" asp-controller="Tours" method="get">
+            </p>
+            <form asp-action="Index" asp-controller="Tours" method="get">
                 <div class="welcome-hero-serch-box">
-
                     <div class="welcome-hero-form">
                         <div class="single-welcome-hero-form">
                             <h3>What?</h3>
-                            <form action="index">
-                                <input type="text" name="query" placeholder="Ex: place, restaurant, food," />
-                            </form>
+                            <input type="text" name="query" placeholder="Ex: place, restaurant, food" />
                             <div class="welcome-hero-form-icon">
                                 <i class="flaticon-list-with-dots"></i>
                             </div>
                         </div>
                         <div class="single-welcome-hero-form">
                             <h3>Location</h3>
-                            <form action="index">
-                                <input type="text" name="decription" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
-                            </form>
+                            <input type="text" name="description" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
                             <div class="welcome-hero-form-icon">
                                 <i class="flaticon-gps-fixed-indicator"></i>
                             </div>
@@ -135,7 +131,6 @@
 
 </section><!--/.list-topics-->
 <!--list-topics end-->
-
 <!--works start -->
 <section id="works" class="works">
     <div class="container">
@@ -292,7 +287,7 @@
                     <div class="testimonial-description">
                         <div class="testimonial-info">
                             <div class="testimonial-img">
-                                <img src="@review.Customer.Avatar" alt="clients">
+                                <img src="@review.Customer.Avatar" alt="clients" width="60px" height="60px">
                             </div><!--/.testimonial-img-->
                             <div class="testimonial-person">
                                 <h2>@review.Customer.Name</h2>

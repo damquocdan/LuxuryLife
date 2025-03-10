@@ -34,10 +34,42 @@ namespace LuxuryLife.Controllers
 
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.CustomerId == customerId);
+
             if (customer == null)
             {
                 return NotFound();
             }
+
+            // Lấy danh sách đánh giá
+            ViewBag.Reviews = await _context.Reviews
+                .Where(r => r.CustomerId == customerId)
+                .Include(r => r.Tour)
+                .Select(r => new
+                {
+                    r.ReviewId,
+                    r.Rating,
+                    r.Comment,
+                    r.Createdate,
+                    Tour = new
+                    {
+                        r.Tour.Name,
+                        r.Tour.Image
+                    }
+                })
+                .OrderByDescending(r => r.Createdate)
+                .ToListAsync();
+
+            // Lấy danh sách tour đã đặt
+            ViewBag.BookedTours = await _context.Bookings
+                .Where(b => b.CustomerId == customerId)
+                .Include(b => b.Tour)
+                .Select(b => new
+                {
+                    b.Tour.Name,
+                    b.Tour.Image,
+                    b.BookingDate
+                })
+                .OrderByDescending(b => b.BookingDate).Take(5).ToListAsync();
 
             return View(customer);
         }

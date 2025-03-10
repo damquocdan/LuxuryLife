@@ -1,0 +1,350 @@
+﻿/* Reset default margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container styles */
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+/* Card styles */
+.card {
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Cover photo and profile picture */
+    .card .position-relative {
+        position: relative;
+    }
+
+    .card img.rounded-top {
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .card .position-absolute {
+        z-index: 1;
+    }
+
+        .card .position-absolute.bottom--75px {
+            bottom: -75px;
+        }
+
+    .card .rounded-circle {
+        border: 4px solid #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
+
+        .card .rounded-circle:hover {
+            transform: scale(1.05);
+        }
+
+    .card .position-absolute.top-0.end-0 {
+        top: 10px;
+        right: 10px;
+    }
+
+.btn-light.rounded-pill {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-light.rounded-pill:hover {
+        background-color: #f0f2f5;
+        transform: scale(1.05);
+    }
+
+/* User info header */
+.card-body.pt-5.mt-5 {
+    padding-top: 5rem !important;
+    margin-top: 5rem !important;
+}
+
+.d-flex.justify-content-between.align-items-center {
+    flex-wrap: wrap;
+}
+
+.d-flex.flex-column h2 {
+    font-weight: 600;
+    color: #1c1e21;
+}
+
+.text-muted {
+    color: #65676b !important;
+}
+
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+}
+
+    .badge.bg-primary {
+        background-color: #1877f2 !important;
+    }
+
+    .badge.bg-success {
+        background-color: #42b72a !important;
+    }
+
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-secondary,
+.btn-outline-warning,
+.btn-outline-danger {
+    border-radius: 50rem !important;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-primary:hover,
+    .btn-outline-success:hover,
+    .btn-outline-secondary:hover,
+    .btn-outline-warning:hover,
+    .btn-outline-danger:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+.btn-outline-primary {
+    color: #1877f2;
+    border-color: #1877f2;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #1877f2;
+        color: #fff;
+    }
+
+.btn-outline-success {
+    color: #42b72a;
+    border-color: #42b72a;
+}
+
+    .btn-outline-success:hover {
+        background-color: #42b72a;
+        color: #fff;
+    }
+
+.btn-outline-secondary {
+    color: #65676b;
+    border-color: #ced0d4;
+}
+
+    .btn-outline-secondary:hover {
+        background-color: #e4e6eb;
+        color: #1c1e21;
+    }
+
+/* Personal info column */
+.col-md-2 .card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+}
+
+.col-md-2 .card-body {
+    padding: 1.5rem;
+}
+
+.col-md-2 h5.card-title {
+    font-weight: 600;
+    color: #1877f2;
+}
+
+.col-md-2 .list-unstyled li {
+    color: #1c1e21;
+}
+
+.col-md-2 .text-muted.small {
+}
+
+/* Reviews column */
+.col-md-7 .card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+}
+
+.col-md-7 .card-body {
+    padding: 1.5rem;
+}
+
+.col-md-7 h5.card-title {
+    font-weight: 600;
+    color: #1877f2;
+}
+
+.dropdown .btn-outline-secondary {
+}
+
+.dropdown-menu {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+.dropdown-item {
+    color: #1c1e21;
+}
+
+    .dropdown-item:hover {
+        background-color: #f0f2f5;
+    }
+
+.border-bottom.pb-4.mb-4 {
+    border-color: #e4e6eb !important;
+}
+
+.text-warning {
+    color: #f5c33b !important;
+}
+
+.modal-content {
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: #e4e6eb;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.btn-danger {
+    background-color: #ed4956;
+    border-color: #ed4956;
+}
+
+    .btn-danger:hover {
+        background-color: #da3b46;
+        border-color: #da3b46;
+    }
+
+/* Booked tours and quick links column */
+.col-md-3 .card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+}
+
+.col-md-3 .card-body {
+    padding: 1.5rem;
+}
+
+.col-md-3 h5.card-title {
+    font-weight: 600;
+    color: #1877f2;
+}
+
+.col-md-3 .d-flex.mb-3.border-bottom.pb-2 {
+    border-color: #e4e6eb !important;
+}
+
+.col-md-3 .text-muted.d-block {
+}
+
+.col-md-3 .badge.bg-success {
+}
+
+.col-md-3 .list-unstyled li a {
+    transition: color 0.3s ease;
+}
+
+    .col-md-3 .list-unstyled li a:hover {
+        color: #1877f2;
+    }
+
+/* Pagination */
+.pagination .page-link {
+    color: #1877f2;
+    border-color: #e4e6eb;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #1877f2;
+    border-color: #1877f2;
+    color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #65676b;
+}
+
+/* Settings modal */
+.modal-lg .modal-content {
+    padding: 1rem;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #1c1e21;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    border-color: #ced0d4;
+}
+
+    .form-control:focus {
+        border-color: #1877f2;
+        box-shadow: 0 0 0 0.2rem rgba(24, 119, 242, 0.25);
+    }
+
+.form-check-label {
+    color: #1c1e21;
+}
+
+/* Responsive design */
+@media (max-width: 767.98px) {
+    .mt-4 {
+        margin-top: 1rem;
+    }
+
+    .card-body.pt-5.mt-5 {
+        padding-top: 3rem !important;
+        margin-top: 3rem !important;
+    }
+
+    .position-absolute.bottom--75px {
+        bottom: -50px;
+    }
+
+    .card .rounded-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .d-flex.justify-content-between.align-items-center {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .d-flex.gap-2.mt-3.mt-md-0 {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .col-md-2,
+    .col-md-7,
+    .col-md-3 {
+        margin-bottom: 1rem;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+    }
+}

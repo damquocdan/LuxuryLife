@@ -20,7 +20,6 @@ var checksumKey = payOsConfig["ChecksumKey"];
 // Khởi tạo PayOS
 var payOS = new PayOS(clientId, apiKey, checksumKey);
 builder.Services.AddSingleton(payOS);
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>

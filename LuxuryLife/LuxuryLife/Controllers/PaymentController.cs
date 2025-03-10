@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace LuxuryLife.Areas.CustomerUser.Controllers
+namespace LuxuryLife.Controllers
 {
   
     public class PaymentController : Controller
