@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 
-namespace LuxuryLife.Models;
+namespace LuxuryLife.Models​;
 
 public partial class Service
 {
@@ -26,10 +26,10 @@ public partial class Service
     [Display(Name = "Tour liên kết")]
     public int? TourId { get; set; }
 
-    public virtual Tour? Tour { get; set; }
-
+    public string? Image { get; set; }
     public string GetFormattedPrice()
     {
         return Price.HasValue ? string.Format(new CultureInfo("vi-VN"), "{0:N0} VND", Price.Value) : "Chưa có giá";
     }
+    public virtual Tour? Tour { get; set; }
 }

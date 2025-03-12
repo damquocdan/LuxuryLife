@@ -1,6 +1,6 @@
 ﻿/* CSS cho section Tour */
 .tour-section {
-    padding: 60px 0;
+    padding-top: 20px;
     background-color: #f4f6f8;
     font-family: 'Arial', sans-serif;
 }
@@ -16,7 +16,6 @@
 .tour-header {
     text-align: center;
     position: relative;
-    margin-bottom: 40px;
 }
 
     .tour-header h2 {

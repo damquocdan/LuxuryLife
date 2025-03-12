@@ -287,7 +287,7 @@
                     <div class="testimonial-description">
                         <div class="testimonial-info">
                             <div class="testimonial-img">
-                                <img src="@review.Customer.Avatar" alt="clients" width="60px" height="60px">
+                                <img src="@review.Customer.Avatar" alt="clients" style="width:60px; height:60px;">
                             </div><!--/.testimonial-img-->
                             <div class="testimonial-person">
                                 <h2>@review.Customer.Name</h2>
@@ -395,13 +395,15 @@
 <!--subscription strat -->
 <section id="contact" class="subscription">
     <div class="container">
-        <div class="subscribe-title text-center">
-            <h2>
-                BẠN CÓ MUỐN THÊM DANH SÁCH DOANH NGHIỆP CỦA BẠN VỚI CHÚNG TÔI?
-            </h2>
-            <p>
-                TravelInVietNam đề nghị bạn niêm yết doanh nghiệp của mình với chúng tôi và chúng tôi rất có thể quảng bá Doanh nghiệp của bạn.
-            </p>
+        <div class="blurred-background">
+            <div class="subscribe-title text-center">
+                <h2>
+                    BẠN CÓ MUỐN THÊM DANH SÁCH DOANH NGHIỆP CỦA BẠN VỚI CHÚNG TÔI?
+                </h2>
+                <p style="color:white;">
+                    TravelInVietNam đề nghị bạn niêm yết doanh nghiệp của mình với chúng tôi và chúng tôi rất có thể quảng bá Doanh nghiệp của bạn.
+                </p>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
@@ -443,3 +445,41 @@
 
     startAutoScroll();
 </script>
+<style>
+    .works {
+        padding: 0 0 90px;
+        background-image: url('/images/TourHalong.jpg');
+    }
+
+
+    .section-header {
+        margin-top:30px;
+    }
+
+    .single-how-works:hover .welcome-hero-btn.how-work-btn {
+        background: #fff;
+        color: #6692b7;
+    }
+
+    .single-how-works:hover {
+        box-shadow: 0 0px 10px rgba(71,71,71,.4);
+        background: #6692b7;
+    }
+    .explore{
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-image: url('/images/beach1.jpg');
+    }
+    #contact{
+        background-size: cover;
+        background-position: center;
+        background-image: url('/images/city.jpg');
+    }
+
+    .blurred-background {
+        background-color: rgba(200, 200, 200, 0.7); /* Màu nền xám nhạt với độ trong suốt 0.5 */
+        padding: 20px; /* Thêm padding để tạo khoảng cách với nội dung */
+        border-radius: 10px; /* Bo tròn góc (tùy chọn) */
+    }
+</style>
