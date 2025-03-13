@@ -18,7 +18,7 @@
 
         <div class="service-content">
             <div class="service-image">
-                <img src="@Html.DisplayFor(model => model.Tour.Image)" alt="@Html.DisplayFor(model => model.ServiceName)" class="img-fluid" />
+                <img src="@Html.DisplayFor(model => model.Image)" alt="@Html.DisplayFor(model => model.ServiceName)" class="img-fluid" />
             </div>
             <div class="service-body">
                 <h3>Mô tả dịch vụ</h3>
@@ -46,7 +46,7 @@
                     {
                         <div class="related-service-item">
                             <a asp-action="Details" asp-route-id="@service.ServiceId">
-                                <img src="@service.Tour.Image" alt="@service.ServiceName" class="related-service-img" />
+                                <img src="@service.Image" alt="@service.ServiceName" class="related-service-img" />
                                 <h4 class="related-service-title">@service.ServiceName</h4>
                                 <p class="related-service-price">@service.Price VNĐ</p>
                             </a>

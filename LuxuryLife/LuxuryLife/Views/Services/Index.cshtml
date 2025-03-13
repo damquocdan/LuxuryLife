@@ -83,7 +83,7 @@
                     <div class="service-card">
                         <div class="service-image">
                             <!-- Hiển thị ảnh từ Tour.Image, nếu không có thì dùng ảnh mặc định -->
-                            <img src="@(service.Tour?.Image ?? "/images/default-service.jpg")" alt="@service.ServiceName" class="img-fluid" />
+                            <img src="@(service.Image)" alt="@service.ServiceName" class="img-fluid" />
                         </div>
                         <div class="service-content">
                             <h5 class="service-title">@Html.DisplayFor(modelItem => service.ServiceName)</h5>
