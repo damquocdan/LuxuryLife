@@ -257,7 +257,6 @@ namespace LuxuryLife.Controllers
             var relatedTours = await _context.Tours
                 .Where(t => t.TourId != id && t.Status == "Active")
                 .OrderByDescending(t => t.Createdate)
-                .Take(3)
                 .ToListAsync();
 
             ViewBag.RelatedTours = relatedTours;

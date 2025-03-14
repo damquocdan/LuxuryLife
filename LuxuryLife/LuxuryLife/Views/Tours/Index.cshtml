@@ -114,33 +114,36 @@
                                 <h2><a href="#">@tour.Name</a></h2>
                                 <p class="explore-rating-price">
                                     <span class="explore-rating">4.5</span>
-                                    <a href="#"> @tour.Reviews.Count</a>
+                                    <a href="#">Bình luận: @tour.Reviews.Count</a>
                                     <span class="explore-price-box">
                                         Giá:
-                                        <span class="explore-price">@tour.Price</span>
+                                        <span class="explore-price">@Html.DisplayFor(model => tour.Price)</span>
+
                                     </span>
-                                    <a href="#">@tour.Provider.Name</a>
+                                    <br />
+                                    <span>
+                                        Mô tả: @tour.Description
+                                    </span>
+
                                 </p>
-                                <div class="explore-person">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="explore-person-img">
-                                                <a href="#">
-                                                    <img src="@tour.Provider.Avatar" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p>
-                                                @tour.Description
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                <a class="explore-person d-flex align-items-center text-decoration-none"
+                                   asp-controller="Providers" asp-action="Details" asp-route-id="@tour.ProviderId">
+
+                                    <!-- Avatar -->
+                                    <img src="@tour.Provider.Avatar" alt="explore person"
+                                         style="width:40px; height:40px; border-radius:50%;" class="me-2">
+
+                                    <!-- Name -->
+                                    <span class="fw-bold text-dark">@tour.Provider.Name</span>
+
+                                </a>
+
+
                                 <div class="explore-open-close-part">
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <a class="close-btn open-btn" asp-action="Details" asp-route-id="@tour?.TourId">Xem chi tiết</a>
+                                            <a class="close-btn open-btn" asp-controller="Tours" asp-action="Details" asp-route-id="@tour?.TourId">Xem chi tiết</a>
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="explore-map-icon">
@@ -155,7 +158,6 @@
                         </div>
                     </div>
                 }
-
             </div>
         </div>
     </div> 

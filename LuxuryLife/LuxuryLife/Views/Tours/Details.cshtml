@@ -5,14 +5,382 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/TourDetails.css">
+<style>
+    .container {
+        width: 1370px;
+    }
+    /* Tour Detail Section */
+    .tour-detail-section {
+        padding: 40px 0;
+        background: linear-gradient(to bottom, #e6f3ff, #ffffff);
+    }
 
+    /* Tour Header */
+    .tour-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .tour-title {
+        font-size: 8.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .tour-price {
+        font-size: 3.8rem;
+        color: #e74c3c;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .divider {
+        width: 380px;
+        height: 6px;
+        background-color: #3498db;
+        margin: 20px auto;
+        border: none;
+    }
+
+    /* Tour Content */
+    .tour-content {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 40px;
+        align-items: flex-start;
+    }
+
+    .tour-image {
+        width: 70%;
+    }
+
+        .tour-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .tour-image img:hover {
+                transform: scale(1.02);
+            }
+
+    .tour-body {
+        height: 500px;
+        flex: 1;
+        font-size: 1.1rem;
+        color: #34495e;
+        line-height: 1.8;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+        .tour-body h2 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .tour-body p {
+            font-size: 2rem;
+            color: #555;
+        }
+
+    /* Section Container */
+    .section-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 2.8rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        border-bottom: 5px solid #3498db;
+        padding-bottom: 10px;
+        font-weight: 600;
+        position: relative;
+    }
+
+        .section-title::after {
+            content: '';
+            width: 150px;
+            height: 9px;
+            background-color: #e74c3c;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+
+    /* Row and Column Layout */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+    }
+
+    .col-md-6 {
+        padding: 15px;
+    }
+
+    .col-md-4 {
+        padding: 15px;
+    }
+
+        .col-md-6 img, .col-md-4 img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease;
+        }
+
+            .col-md-6 img:hover, .col-md-4 img:hover {
+                opacity: 0.9;
+            }
+
+    /* Additional Images */
+    .section-container .col-md-6 p {
+        font-size: 1.5rem;
+        color: #666;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Services */
+    .section-container .col-md-4 {
+        background-color: #f9f9f9;
+        border-radius: 50px;
+        padding: 20px;
+        transition: transform 0.3s ease;
+    }
+
+        .section-container .col-md-4:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-container .col-md-4 strong {
+            font-size: 2.2rem;
+            color: #000;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .section-container .col-md-4 p {
+            font-size: 1.8rem;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .section-container .col-md-4 span {
+            font-size: 2.1rem;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+    /* Homestays */
+    .section-container .col-md-6 ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+    }
+
+        .section-container .col-md-6 ul li {
+            font-size: 1.6rem;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+            .section-container .col-md-6 ul li strong {
+                color: #2c3e50;
+                font-weight: 600;
+            }
+
+    .section-container .col-md-6 img {
+        height: 300px;
+    }
+
+    /* Reviews */
+    .section-container ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .section-container ul li {
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+            .section-container ul li:last-child {
+                border-bottom: none;
+            }
+
+            .section-container ul li strong {
+                font-size: 2.2rem;
+                color: #3498db;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .section-container ul li p {
+                font-size: 1.8rem;
+                color: #555;
+                margin: 5px 0;
+            }
+
+            .section-container ul li em {
+                font-size: 0.9rem;
+                color: #999;
+            }
+
+    /* Action Buttons */
+    .tour-actions {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .booking {
+        display: inline-block;
+        padding: 12px 40px;
+        font-size: 1.6rem;
+        text-decoration: none;
+        background-color: green;
+        color: #fff;
+        border-radius: 25px;
+        font-weight: 500;
+    }
+
+    /* Related Tours */
+    .related-tours {
+        background: #f9f9f9;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .related-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .related-tours-list {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .related-tour-item {
+        width: 30%;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .related-tour-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .related-tour-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+    .related-tour-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .related-tour-title {
+        font-size: 1.6rem;
+        margin: 15px 10px 5px;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .related-tour-price {
+        font-size: 1.5rem;
+        color: #e74c3c;
+        margin: 0 10px 15px;
+        font-weight: bold;
+    }
+
+    /* Additional Styling for Consistency */
+    .section-container p {
+        font-size: 1.6rem;
+        color: #666;
+        text-align: center;
+    }
+
+    /* Typography Enhancements */
+    h1, h2, h3, h4 {
+        line-height: 1.6;
+    }
+
+    .tour-title, .section-title, .related-title {
+        text-transform: capitalize;
+    }
+
+    /* Image Consistency */
+    img {
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Animation Effects */
+
+    .tour-header, .tour-content, .section-container, .related-tours {
+        animation: fadeIn 0.6s ease-in;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #3498db;
+        border-radius: 5px;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2c3e50;
+        }
+</style>
 <section class="tour-detail-section">
     <div class="container">
         <!-- Tour Header -->
         <div class="tour-header">
             <h1 class="tour-title">@Html.DisplayFor(model => model.Name)</h1>
-            <p class="tour-price">Giá: @string.Format("{0:C}", Model.Price)</p>
+            <p class="tour-price">Giá:@Html.DisplayFor(model => model.Price)</p>
             <hr class="divider" />
         </div>
 
@@ -22,8 +390,10 @@
                 <img src="@Model.Image" alt="@Model.Name" class="img-fluid" />
             </div>
             <div class="tour-body">
-                <h3>Giới thiệu</h3>
-                <p>@Html.Raw(Model.Description)</p>
+                <h2 class="text-center text-bold">Giới thiệu</h2>
+                <p>Tour: @Html.DisplayFor(model => model.Name)</p>
+                <p>Mô tả: @Html.DisplayFor(model => model.Description)</p>
+                <p>Nhà cung cấp: @Html.DisplayFor(model => model.Provider.Name)</p>
             </div>
         </div>
 
@@ -36,7 +406,7 @@
                     @foreach (var image in Model.Listimagestours)
                     {
                         <div class="col-md-6">
-                            <img src="@image.ImageUrl" alt="@image.ImageDescription" class="img-fluid" />
+                            <img src="@image.ImageUrl" alt="@image.ImageDescription" class="img-fluid" height="300px;" />
                             <p>@image.ImageDescription</p>
                         </div>
                     }
@@ -56,10 +426,14 @@
                 <div class="row">
                     @foreach (var service in Model.Services)
                     {
-                        <div class="col-md-4">
-                            <strong>@service.ServiceName</strong>
-                            <p>@service.Description</p>
-                            <span>@string.Format("{0:C}", service.Price)</span>
+                        <div class="col-md-4" style="background-image: url('@service.Image');background-size: cover;
+                     background-position: center;border: 5px solid white;">
+                            <div style="background-color: rgba(200, 200, 200, 0.7);padding: 20px;border-radius: 40px; height: 100%;">
+                                <strong>@service.ServiceName</strong>
+                                <p>@service.Description</p>
+                                <span>@string.Format("{0:C}", service.Price)</span>
+                            </div>
+
                         </div>
                     }
                 </div>
@@ -87,7 +461,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <img src="@homestay.Image" alt="@homestay.Name" class="img-fluid" />
+                            <img src="@homestay.Image" alt="@homestay.Name" class="img-fluid" height="400px;"/>
                         </div>
                     }
                 </div>
@@ -103,17 +477,25 @@
             <h3 class="section-title">Đánh giá khách hàng</h3>
             @if (Model.Reviews != null && Model.Reviews.Any())
             {
-                <ul>
+                <div class="row">
                     @foreach (var review in Model.Reviews)
                     {
-                        <li>
-                            <strong>@(review.Customer?.Name ?? "Khách ẩn danh")</strong>
-                            <p>@review.Comment</p>
-                            <p><em>Đánh giá vào: @review.Createdate</em></p>
-                        </li>
+                        <div class="col-md-3 col-lg-4 mb-3">
+                            <!-- Chia thành các cột nhỏ -->
+                            <div class="card shadow-sm p-3">
+                                <div class="d-flex align-items-center">
+                                    <img src="@review.Customer.Avatar" class="rounded-circle me-2" style="width: 50%; height: 150px; object-fit: cover;" />
+                                </div>
+                                <div class="card-body" style="height:100%;">
+                                    <strong>@(review.Customer?.Name ?? "Khách ẩn danh"):@review.Comment </strong>
+                                    <p class="text-muted mb-1"><em>@review.Createdate </em></p>
+                                </div>
+                            </div>
+                        </div>
                     }
-                </ul>
+                </div>
             }
+
             else
             {
                 <p>Chưa có đánh giá nào.</p>
@@ -122,7 +504,9 @@
 
         <!-- Action Button -->
         <div class="tour-actions">
-            <a href="@Url.Action("Index", "Tours")" class="btn btn-back">Quay lại danh sách</a>
+            <a asp-controller="Bookings" asp-action="Create" class="booking" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@Model.TourId">
+                Đặt
+            </a>
         </div>
 
         <!-- Related Tours -->
