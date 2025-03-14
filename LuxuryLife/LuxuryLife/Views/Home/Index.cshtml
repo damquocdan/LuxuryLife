@@ -50,14 +50,14 @@
                 <div class="welcome-hero-serch-box">
                     <div class="welcome-hero-form">
                         <div class="single-welcome-hero-form">
-                            <h3>What?</h3>
-                            <input type="text" name="query" placeholder="Ex: place, restaurant, food" />
+                            <h3>Gì?</h3>
+                            <input type="text" name="query" placeholder="Ex: tours, homestays, serices" />
                             <div class="welcome-hero-form-icon">
                                 <i class="flaticon-list-with-dots"></i>
                             </div>
                         </div>
                         <div class="single-welcome-hero-form">
-                            <h3>Location</h3>
+                            <h3>Vị trí</h3>
                             <input type="text" name="description" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
                             <div class="welcome-hero-form-icon">
                                 <i class="flaticon-gps-fixed-indicator"></i>
@@ -76,54 +76,64 @@
 </section><!--/.welcome-hero-->
 <!--welcome-hero end -->
 <!--list-topics start -->
-<section id="list-topics" class="list-topics">
+<section id="list-topics" class="list-topics" style="height:0px;">
     <div class="container">
         <div class="list-topics-content">
             <ul>
                 <li>
-                    <div class="single-list-topics-content">
-                        <div class="single-list-topics-icon">
-                            <i class="flaticon-restaurant"></i>
+                    <a asp-controller="Services" asp-action="Index" asp-route-category="Bữa">
+                        <div class="single-list-topics-content">
+                            <div class="single-list-topics-icon">
+                                <i class="flaticon-restaurant"></i>
+                            </div>
+                            <h2>Nhà hàng</h2>
+                            <p>150 </p>
                         </div>
-                        <h2><a asp-controller="Services" asp-action="Index" asp-route-category="Bữa">Nhà hàng</a></h2>
-                        <p>150 listings</p>
-                    </div>
+                    </a>
                 </li>
                 <li>
-                    <div class="single-list-topics-content">
-                        <div class="single-list-topics-icon">
-                            <i class="flaticon-travel"></i>
+                    <a asp-controller="Services" asp-action="Index" asp-route-category="Đi">
+                        <div class="single-list-topics-content">
+                            <div class="single-list-topics-icon">
+                                <i class="flaticon-travel"></i>
+                            </div>
+                            <h2>Hành trang</h2>
+                            <p>214 </p>
                         </div>
-                        <h2><a asp-controller="Services" asp-action="Index" asp-route-category="Đi">Hành trang</a></h2>
-                        <p>214 listings</p>
-                    </div>
+                    </a>
                 </li>
                 <li>
-                    <div class="single-list-topics-content">
-                        <div class="single-list-topics-icon">
-                            <i class="flaticon-building"></i>
+                    <a asp-controller="Homestays" asp-action="Index" asp-route-category="Homestays">
+                        <div class="single-list-topics-content">
+                            <div class="single-list-topics-icon">
+                                <i class="flaticon-building"></i>
+                            </div>
+                            <h2>Homestays</h2>
+                            <p>185 </p>
                         </div>
-                        <h2><a asp-controller="Homestays" asp-action="Index" asp-route-category="Homestays">Homestays</a></h2>
-                        <p>185 listings</p>
-                    </div>
+                    </a>
                 </li>
                 <li>
-                    <div class="single-list-topics-content">
-                        <div class="single-list-topics-icon">
-                            <i class="flaticon-pills"></i>
+                    <a asp-controller="Services" asp-action="Index" asp-route-category="massage">
+                        <div class="single-list-topics-content">
+                            <div class="single-list-topics-icon">
+                                <i class="flaticon-pills"></i>
+                            </div>
+                            <h2>Chăm sóc sức khoẻ</h2>
+                            <p>200 </p>
                         </div>
-                        <h2><a asp-controller="Services" asp-action="Index" asp-route-category="massage">Chăm sóc sức khoẻ</a></h2>
-                        <p>200 listings</p>
-                    </div>
+                    </a>
                 </li>
                 <li>
-                    <div class="single-list-topics-content">
-                        <div class="single-list-topics-icon">
-                            <i class="flaticon-transport"></i>
+                    <a asp-controller="Services" asp-action="Index" asp-route-category="Xe">
+                        <div class="single-list-topics-content">
+                            <div class="single-list-topics-icon">
+                                <i class="flaticon-transport"></i>
+                            </div>
+                            <h2>Đưa đón</h2>
+                            <p>120</p>
                         </div>
-                        <h2><a asp-controller="Services" asp-action="Index" asp-route-category="Xe">Đưa đón</a></h2>
-                        <p>120 listings</p>
-                    </div>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -135,7 +145,7 @@
 <section id="works" class="works">
     <div class="container">
         <div class="section-header">
-            <h2>Về chúng tôi</h2>
+            <h2 style="font-size:4rem;">Về chúng tôi</h2>
             <p>Tìm hiểu thêm về chúng tôi</p>
         </div><!--/.section-header-->
         <div class="works-content">
@@ -149,9 +159,9 @@
                         <p>
                             Nhận ngay những gợi ý du lịch cá nhân hóa dựa trên sở thích của bạn, từ điểm đến đẹp nhất đến dịch vụ phù hợp.
                         </p>
-                        <button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
+                        <a class="welcome-hero-btn how-work-btn" asp-action="AboutUs"  style="font-size:16px; padding-top:6px;">
                             Đọc thêm
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
@@ -163,9 +173,9 @@
                         <p>
                             Dễ dàng tìm kiếm và so sánh các tour du lịch, homestay, dịch vụ theo nhu cầu riêng của bạn chỉ trong vài cú nhấp.
                         </p>
-                        <button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
+                        <a class="welcome-hero-btn how-work-btn" asp-action="AboutUs" style="font-size:16px; padding-top:6px;">
                             Đọc thêm
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
@@ -177,9 +187,9 @@
                         <p>
                             Khám phá những địa điểm du lịch độc đáo, từ bãi biển trong xanh đến những ngôi làng yên bình đầy sức hút.
                         </p>
-                        <button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
+                        <a class="welcome-hero-btn how-work-btn" asp-action="AboutUs" style="font-size:16px; padding-top:6px;">
                             Đọc thêm
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -192,7 +202,7 @@
 <section id="explore" class="explore">
     <div class="container">
         <div class="section-header">
-            <h2>Tour du lịch</h2>
+            <h2 style="font-size:4rem;">Tour du lịch</h2>
             <p>Khám phá tour du lịch, địa điểm mới, đồ ăn ,văn hoá và nhiều hơn nữa</p>
         </div><!--/.section-header-->
         <div class="explore-content">
@@ -225,29 +235,32 @@
                                 <h2><a href="#">@tour.Name</a></h2>
                                 <p class="explore-rating-price">
                                     <span class="explore-rating">4.5</span>
-                                    <a href="#"> @tour.Reviews.Count</a>
+                                    <a href="#">Bình luận: @tour.Reviews.Count</a>
                                     <span class="explore-price-box">
                                         Giá:
-                                        <span class="explore-price">@tour.Price</span>
+                                        <span class="explore-price">@Html.DisplayFor(model => tour.Price)</span>
+
                                     </span>
-                                    <a href="#">@tour.Provider.Name</a>
+                                    <br />
+                                    <span>
+                                        Mô tả: @tour.Description
+                                    </span>
+
                                 </p>
-                                <div class="explore-person">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="explore-person-img">
-                                                <a href="#">
-                                                    <img src="@tour.Provider.Avatar" alt="explore person" style="width:40px; height:40px; border-radius:50%;">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p>
-                                                @tour.Description
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                <a class="explore-person d-flex align-items-center text-decoration-none"
+                                   asp-controller="Providers" asp-action="Details" asp-route-id="@tour.ProviderId">
+
+                                    <!-- Avatar -->
+                                    <img src="@tour.Provider.Avatar" alt="explore person"
+                                         style="width:40px; height:40px; border-radius:50%;" class="me-2">
+
+                                    <!-- Name -->
+                                    <span class="fw-bold text-dark">@tour.Provider.Name</span>
+
+                                </a>
+
+
                                 <div class="explore-open-close-part">
                                     <div class="row">
                                         <div class="col-sm-5">
@@ -276,22 +289,23 @@
 <!--reviews start -->
 <section id="reviews" class="reviews">
     <div class="section-header">
-        <h2>Đánh giá của khách hàng</h2>
+        <h2 style="font-size:4rem;">Đánh giá của khách hàng</h2>
         <p>Khách hàng đánh giá gì về các tour du lịch</p>
     </div>
     <div class="reviews-content">
         <div class="testimonial-carousel">
             @foreach (var review in reviews)
             {
-                <div class="single-testimonial-box">
-                    <div class="testimonial-description">
+                <div class="single-testimonial-box" style="background-image: url('@review.Tour.Image');background-size: cover;
+        background-position: center; height:186px; ">
+                    <div class="testimonial-description" style="background-color: rgba(200, 200, 200, 0.7); ">
                         <div class="testimonial-info">
                             <div class="testimonial-img">
                                 <img src="@review.Customer.Avatar" alt="clients" style="width:60px; height:60px;">
                             </div><!--/.testimonial-img-->
                             <div class="testimonial-person">
-                                <h2>@review.Customer.Name</h2>
-                                <h4>@review.Customer.Address</h4>
+                                <h2 style="color:black;">@review.Customer.Name</h2>
+                                <h4 style="color:black;">@review.Customer.Address</h4>
                                 <div class="testimonial-person-star">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -302,10 +316,10 @@
                             </div><!--/.testimonial-person-->
                         </div><!--/.testimonial-info-->
                         <div class="testimonial-comment">
-                            <p class="text-truncate">
+                            <p class="text-truncate" style="color:black;">
                                 @review.Comment
                             </p>
-                            <p class="">
+                            <p class="" style="color:black;">
                                 <b>Tour du lịch: @review.Tour.Name</b>
 
                             </p>
@@ -363,7 +377,7 @@
 <section id="blog" class="blog">
     <div class="container">
         <div class="section-header">
-            <h2>Tin tức và bài viết</h2>
+            <h2 style="font-size:4rem;">Tin tức và bài viết</h2>
             <p>Luôn luôn cập nhật các tin tức và bài viết mới nhất liên quan đến du lịch</p>
         </div><!--/.section-header-->
         <div class="blog-content">
@@ -408,10 +422,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="subscription-input-group">
-                    <form method="post">
-
+                    <form asp-controller="Contacts" asp-action="Create">
                         <input asp-for="Email" class="subscription-input-form" placeholder="Nhập email của bạn tại đây" />
-
+                        <span asp-validation-for="Email" class="text-danger"></span>
                         <button class="appsLand-btn subscribe-btn" type="submit">
                             Gửi
                         </button>
@@ -453,7 +466,7 @@
 
 
     .section-header {
-        margin-top:30px;
+        margin-top: 30px;
     }
 
     .single-how-works:hover .welcome-hero-btn.how-work-btn {
@@ -465,13 +478,15 @@
         box-shadow: 0 0px 10px rgba(71,71,71,.4);
         background: #6692b7;
     }
-    .explore{
+
+    .explore {
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         background-image: url('/images/beach1.jpg');
     }
-    #contact{
+
+    #contact {
         background-size: cover;
         background-position: center;
         background-image: url('/images/city.jpg');
