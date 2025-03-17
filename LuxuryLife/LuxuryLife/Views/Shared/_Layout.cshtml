@@ -65,10 +65,17 @@
                 <div class="header-top-left">
                     <ul>
                         <li class="select-opt">
-                            <select name="language" id="language">
-                                <option value="default">EN</option>
-                                <option value="Bangla">BN</option>
-                                <option value="Arabic">AB</option>
+                            <select name="language" id="language" onchange="redirectToPage()">
+                                <option value="#">Khách hàng</option>
+                                <option value="/AdminQL/Dashboard/Index">Nhà cung cấp</option>
+                                <option value="/ProviderUser/Dashboard/Index">Admin</option>
+                            </select>
+                        </li>
+                        <li class="select-opt">
+                            <select name="currency" id="currency">
+                                <option value="usd">VN</option>
+                                <option value="euro">ES</option>
+                                <option value="bdt">CN</option>
                             </select>
                         </li>
                         <li class="select-opt">
@@ -241,3 +248,11 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    function redirectToPage() {
+        let url = document.getElementById("language").value;
+        if (url !== "#") {
+            window.location.href = url;
+        }
+    }
+</script>

@@ -6,125 +6,134 @@
 }
 <style>
     body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #f8f9fa;
-}
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #f8f9fa;
+    }
 
-.main {
-    padding: 20px 0;
-}
+    .main {
+        padding: 20px 0;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
 
-h3.heading {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-}
+    h3.heading {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+    }
 
-/* Bảng yêu thích */
-.cart-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-}
+    /* Bảng yêu thích */
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
 
-.cart-thead th {
+    .cart-thead th {
         background-color: #ff545a;
-    color: #fff;
-    font-weight: bold;
-    padding: 10px;
-    text-align: left;
-}
+        color: #fff;
+        font-weight: bold;
+        padding: 10px;
+        text-align: left;
+    }
 
-.cart-tbody td {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-}
+    .cart-tbody td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
 
-.cart-tbody tr:last-child td {
-    border-bottom: none;
-}
+    .cart-tbody tr:last-child td {
+        border-bottom: none;
+    }
 
-.cart-name span {
-    font-size: 20px;
-    font-weight: 500;
+    .cart-name span {
+        font-size: 20px;
+        font-weight: 500;
         color: #ff545a;
-}
+    }
 
-.cart-img img {
-    display: block;
-    max-height: 150px;
-    height: auto;
-    border-radius: 4px;
-}
+    .cart-img img {
+        display: block;
+        max-height: 150px;
+        height: auto;
+        border-radius: 4px;
+    }
 
-.cart-description {
-    color: #666;
-    font-size: 14px;
-}
+    .cart-description {
+        color: #666;
+        font-size: 14px;
+    }
 
-.cart-details a {
-    font-size:12px;
-    font-weight: bold;
-    text-decoration: none;
-    margin-left:5px;
+    .cart-details a {
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        margin-left: 5px;
+    }
 
-}
+        .cart-details a:hover {
+            text-decoration: underline;
+        }
 
-.cart-details a:hover {
-    text-decoration: underline;
-}
+    .cart-remove a {
+        color: #dc3545;
+        font-size: 18px;
+        text-decoration: none;
+    }
 
-.cart-remove a {
-    color: #dc3545;
-    font-size: 18px;
-    text-decoration: none;
-}
+        .cart-remove a:hover {
+            color: #c82333;
+        }
 
-.cart-remove a:hover {
-    color: #c82333;
-}
+    .text-center {
+        text-align: center;
+        color: #555;
+        font-size: 16px;
+        font-weight: 500;
+    }
 
-.text-center {
-    text-align: center;
-    color: #555;
-    font-size: 16px;
-    font-weight: 500;
-}
+    /* Checkout container */
+    .cart-checkout {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
-/* Checkout container */
-.cart-checkout {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+    #details-container {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
 
-#details-container {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
-
+    .booking {
+        display: inline-block;
+        padding: 12px 40px;
+        font-size: 1.6rem;
+        text-decoration: none;
+        background-color: green;
+        color: #fff;
+        border-radius: 25px;
+        font-weight: 500;
+    }
 </style>
 <main class="main">
     <section class="cart">
@@ -132,12 +141,13 @@ h3.heading {
             <h3 class="cart-title heading">Danh sách yêu thích của bạn</h3>
             <div class="cart-container">
                 <div class="row">
-                    <div class="col-md-8">
-                        <form action="" class="cart-table-form">
+                    <div class="col-md-12">
                             <table class="cart-table">
                                 <thead class="cart-thead">
                                     <tr>
                                         <th>Tên tour</th>
+                                        <th>Nhà cung cấp</th>
+                                        <th>Giá</th>
                                         <th>Hình ảnh</th>
                                         <th>Hành động</th>
                                         <th></th>
@@ -158,17 +168,31 @@ h3.heading {
                                         foreach (var item in Model)
                                         {
                                             <tr>
+
                                                 <td class="cart-name" width="120px">
-                                                    <span>@item.Tour.Name</span>
+                                                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
+                                                        <span>@item.Tour.Name</span>
+                                                    </a>
+                                                </td>
+                                                <td class="cart-name" width="120px">
+                                                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
+                                                        <span>@item.Tour.Provider.Name</span>
+                                                    </a>
+                                                </td>
+                                                <td class="cart-name" width="120px">
+                                                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
+                                                        <span>@item.Tour.Price</span>
+                                                    </a>
                                                 </td>
                                                 <td class="cart-img" width="180px">
-                                                    <img src="@item.Tour.Image" alt="@item.Tour.Name" width="100%" />
+                                                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
+                                                        <img src="@item.Tour.Image" alt="@item.Tour.Name" width="100%" />
+                                                    </a>
                                                 </td>
                                                 <td class="cart-details" width="70px">
-                                                    <a asp-action="Details" asp-route-id="@item.FavoriteId">
-                                                        Xem chi tiết
+                                                    <a asp-controller="Bookings" asp-action="Create" class="booking" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@item.TourId">
+                                                        Đặt
                                                     </a>
-                                                    
                                                 </td>
                                                 <td width="10px" style="color:#ff545a;">
                                                     <a href="#" class="remove-item" data-id="@item.FavoriteId">
@@ -180,13 +204,6 @@ h3.heading {
                                     }
                                 </tbody>
                             </table>
-                        </form>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="cart-checkout" style="display: none;">
-                            <div id="details-container">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -197,30 +214,6 @@ h3.heading {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Xem chi tiết
-        $(document).on("click", ".cart-details a", function (e) {
-            e.preventDefault(); // Ngăn không cho liên kết tải lại trang
-            const url = $(this).attr("href"); // Lấy URL từ nút "Xem chi tiết"
-
-            if (!url) {
-                alert("Đường dẫn không hợp lệ!");
-                return;
-            }
-
-            // Gửi AJAX request
-            $.ajax({
-                url: url,
-                method: "GET",
-                success: function (response) {
-                    $("#details-container").html(response); // Chèn nội dung vào details-container
-                    $(".cart-checkout").show(); // Hiển thị phần chi tiết
-                },
-                error: function () {
-                    alert("Không thể tải chi tiết. Vui lòng thử lại!");
-                }
-            });
-        });
-
         // Xóa mục yêu thích
         $(document).on("click", ".remove-item", function (e) {
             e.preventDefault(); // Prevent default link action

@@ -34,7 +34,7 @@ namespace LuxuryLife.Controllers
 
             // Lọc danh sách yêu thích theo CustomerId
             var luxuryLifeContext = _context.Favourites
-                .Include(f => f.Customer)
+                .Include(f => f.Customer).Include(f => f.Tour.Provider)
                 .Include(f => f.Tour)
                 .Where(f => f.CustomerId == customerId); // Lọc theo CustomerId
 

@@ -44,36 +44,78 @@ namespace LuxuryLife.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(int id, int customerId)
+        public IActionResult Create(int? id, int? customerId)
         {
-            var tour = _context.Tours.FirstOrDefault(t => t.TourId == id);
-            if (tour == null) return NotFound("Tour không tồn tại");
+            // Check if id or customerId is null
+            if (!id.HasValue || !customerId.HasValue)
+            {
+                TempData["Error"] = "Bạn cần đăng nhập để sử dụng chức năng này.";
+                return RedirectToAction("Index", "Login");
+            }
 
+            // Find the tour by id
+            var tour = _context.Tours.FirstOrDefault(t => t.TourId == id.Value);
+            if (tour == null)
+            {
+                return NotFound("Tour không tồn tại.");
+            }
+
+            // Find the customer by customerId
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId.Value);
+            if (customer == null)
+            {
+                return NotFound("Khách hàng không tồn tại.");
+            }
+
+            // Create the booking object
             var booking = new Booking
             {
-                TourId = id,
-                CustomerId = customerId,
-                CheckInDate = tour.StartDate,
-                CheckOutDate = tour.EndDate,
-                Status = "Pending",
-                TotalPrice = tour.Price
+                TourId = id.Value,
+                CustomerId = customerId.Value
             };
 
+            // Populate ViewBag with tour and customer information
             ViewBag.TourName = tour.Name;
-            ViewBag.CustomerName = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId)?.Name;
-            ViewBag.TotalPrice = tour.Price;
-            ViewBag.CheckInDate = tour.StartDate;
-            ViewBag.CheckOutDate = tour.EndDate;
+            ViewBag.CustomerName = customer.Name;
+            ViewBag.PriceTour = tour.Price;
+            ViewBag.PricePerson = tour.PricePerson;
+            ViewBag.StartDate = tour.StartDate;
+            ViewBag.EndDate = tour.EndDate;
+            ViewBag.Day = tour.Day;
+            ViewBag.Image = tour.Image;
 
             return View(booking);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,CustomerId,TourId,BookingDate,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingId,CustomerId,TourId,BookingDate,NumberOfGuests,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
         {
-            var existingBooking = _context.Bookings
-                .FirstOrDefault(b => b.TourId == booking.TourId && b.CustomerId == booking.CustomerId);
+            // Validate required parameters
+            if (booking == null)
+            {
+                return BadRequest("Thông tin đặt tour không hợp lệ.");
+            }
+
+            // Validate Tour existence
+            var tour = await _context.Tours.FindAsync(booking.TourId);
+            if (tour == null)
+            {
+                ModelState.AddModelError("", "Tour không tồn tại.");
+                return View(booking);
+            }
+
+            // Validate Customer existence
+            var customer = await _context.Customers.FindAsync(booking.CustomerId);
+            if (customer == null)
+            {
+                ModelState.AddModelError("", "Khách hàng không tồn tại.");
+                return View(booking);
+            }
+
+            // Check for existing booking
+            var existingBooking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.TourId == booking.TourId && b.CustomerId == booking.CustomerId);
 
             if (existingBooking != null)
             {
@@ -81,22 +123,51 @@ namespace LuxuryLife.Controllers
                 return View(booking);
             }
 
+            // Validate model state
             if (ModelState.IsValid)
             {
-                booking.BookingDate = DateTime.Now; // Gán ngày đặt tour
-                booking.Status = "Pending";
-                HttpContext.Session.SetString("PendingBooking", System.Text.Json.JsonSerializer.Serialize(booking));
-                var paymentUrl = await CreatePayOSPayment(booking);
-                if (!string.IsNullOrEmpty(paymentUrl))
+                try
                 {
-                    return Redirect(paymentUrl); // Chuyển hướng đến trang thanh toán PayOS
+                    // Set booking details
+                    booking.BookingDate = DateTime.UtcNow; // Use UTC for consistency
+                    booking.Status = "Pending";
+
+                    // Serialize and store booking in session for payment processing
+                    HttpContext.Session.SetString("PendingBooking", System.Text.Json.JsonSerializer.Serialize(booking));
+
+                    // Attempt to create payment URL
+                    var paymentUrl = await CreatePayOSPayment(booking);
+                    if (!string.IsNullOrEmpty(paymentUrl))
+                    {
+                        return Redirect(paymentUrl); // Redirect to PayOS payment page
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
+                        return View(booking);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
+                    ModelState.AddModelError("", "Đã xảy ra lỗi khi xử lý đặt tour. Vui lòng thử lại sau.");
                     return View(booking);
                 }
             }
+            else
+            {
+                // Log validation errors for debugging
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            }
+
+            // Populate ViewBag for the view (similar to GET method)
+            ViewBag.TourName = tour.Name;
+            ViewBag.CustomerName = customer.Name;
+            ViewBag.PriceTour = tour.Price;
+            ViewBag.PricePerson = tour.PricePerson;
+            ViewBag.StartDate = tour.StartDate;
+            ViewBag.EndDate = tour.EndDate;
+            ViewBag.Day = tour.Day;
+            ViewBag.Image = tour.Image;
 
             return View(booking);
         }
@@ -246,10 +317,12 @@ namespace LuxuryLife.Controllers
                     var tour = _context.Tours.FirstOrDefault(t => t.TourId == booking.TourId);
                     ViewBag.TourName = tour?.Name;
                     ViewBag.CustomerName = _context.Customers.FirstOrDefault(c => c.CustomerId == booking.CustomerId)?.Name;
-                    ViewBag.TotalPrice = tour?.Price;
-                    ViewBag.CheckInDate = tour?.StartDate;
-                    ViewBag.CheckOutDate = tour?.EndDate;
-
+                    ViewBag.PriceTour = tour.Price;
+                    ViewBag.PricePerson = tour.PricePerson;
+                    ViewBag.StartDate = tour.StartDate;
+                    ViewBag.EndDate = tour.EndDate;
+                    ViewBag.Day = tour.Day;
+                    ViewBag.Image = tour.Image;
                     return View("Create", booking);
                 }
             }

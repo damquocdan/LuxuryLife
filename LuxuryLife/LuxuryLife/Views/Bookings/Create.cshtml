@@ -1,10 +1,11 @@
-﻿
-@model LuxuryLife.Models.Booking
+﻿@model LuxuryLife.Models.Booking
 @using System.Globalization
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<!-- Error and Success Messages -->
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger">
@@ -22,66 +23,168 @@
         @TempData["Message"]
     </div>
 }
-<h1>Đặt Tour</h1>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label>Tên khách hàng:</label>
-                <p>@ViewBag.CustomerName</p>
-                <input type="hidden" asp-for="CustomerId" />
+<!-- Main Header -->
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Đặt Tour Du Lịch</h1>
+    <p class="text-center text-muted">Hoàn tất 3 bước đơn giản để đặt tour của bạn!</p>
+    <hr />
+
+    <!-- Booking Form with 3 Columns -->
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row position-relative" style="padding: 20px; border-radius: 10px;">
+            <div class="position-absolute top-0 start-0 w-100 h-100"></div>
+
+            <!-- Step 1: Customer Information -->
+            <div class="col-md-4 bg-light p-3 rounded shadow">
+                <h3 class="mb-3 text-center">Bước 1: Thông Tin Khách Hàng</h3>
+                <div class="form-group">
+                    <label class="font-weight-bold">Tên khách hàng:</label>
+                    <p class="form-control-static">@ViewBag.CustomerName</p>
+                    <input type="hidden" asp-for="CustomerId" />
+                    <small class="form-text text-muted">Thông tin đã được xác nhận.</small>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Tên Tour:</label>
-                <p>@ViewBag.TourName</p>
-                <input type="hidden" asp-for="TourId" />
+            <!-- Step 2: Tour Information -->
+            <div class="col-md-4 bg-light p-3 rounded shadow">
+                <h3 class="mb-3 text-center">Bước 2: Thông Tin Tour</h3>
+                <div class="form-group">
+                    <label class="font-weight-bold">Tên Tour:</label>
+                    <p class="form-control-static">@ViewBag.TourName</p>
+                    <input type="hidden" asp-for="TourId" />
+                    <small class="form-text text-muted">Tour đã chọn.</small>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Thời gian diễn ra:</label>
+                    <p class="form-control-static">
+                        @(((DateTime?)ViewBag.StartDate)?.ToString("dd/MM/yyyy")) - @(((DateTime?)ViewBag.EndDate)?.ToString("dd/MM/yyyy"))
+                    </p>
+                    <small class="form-text text-muted">Khoảng thời gian khả dụng.</small>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Giá Tour:</label>
+                    <p class="form-control-static">@String.Format(new CultureInfo("vi-VN"), "{0:N0} ₫", ViewBag.PriceTour) / @ViewBag.Day Ngày</p>
+                    <small class="form-text text-muted">Giá cơ bản cho @ViewBag.Day ngày.</small>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Ngày bắt đầu</label>
-                <input asp-for="CheckInDate"
-                       value="@(((DateTime?)ViewBag.CheckInDate)?.ToString("yyyy-MM-dd"))"
-                       class="form-control"
-                       type="date"
-                       readonly />
-                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+            <!-- Step 3: Booking Details -->
+            <div class="col-md-4 bg-light p-3 rounded shadow">
+                <h3 class="mb-3 text-center">Bước 3: Chi Tiết Đặt Tour</h3>
+                <div class="form-group">
+                    <label class="font-weight-bold" data-toggle="tooltip" title="Chọn ngày bắt đầu chuyến đi">Ngày bắt đầu:</label>
+                    <input asp-for="CheckInDate" class="form-control" type="date" />
+                    <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold" data-toggle="tooltip" title="Chọn ngày kết thúc chuyến đi">Ngày kết thúc:</label>
+                    <input asp-for="CheckOutDate" class="form-control" type="date" />
+                    <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Tổng cộng:</label>
+                    <p>Tổng ngày: <span id="totalday" class="font-weight-bold"></span> ngày => Tổng giá: <span id="totalpricetourday" class="font-weight-bold"></span></p>
+                    <small class="form-text text-muted">Tự động tính dựa trên ngày chọn.</small>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold" data-toggle="tooltip" title="Số lượng người tham gia">Số khách:</label>
+                    <input asp-for="NumberOfGuests" class="form-control" type="number" value="1" min="1" />
+                    <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                    <p>Giá 1 người: @String.Format(new CultureInfo("vi-VN"), "{0:N0} ₫", ViewBag.PricePerson) => Tổng: <span id="totalpriceperson" class="font-weight-bold"></span></p>
+                    <small class="form-text text-muted">Nhập số người tham gia.</small>
+                </div>
+                <!-- Trong phần form, thay đổi phần TotalPrice -->
+                <div class="form-group">
+                    <label class="font-weight-bold">Tổng chi phí: <span id="TotalPrice"></span></label>
+                    <input asp-for="TotalPrice" id="TotalPriceInput" class="form-control" />
+                    <span asp-validation-for="TotalPrice" class="text-danger"></span>
+                    <small class="form-text text-muted">Tổng giá tour + giá theo số khách.</small>
+                </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Ngày kết thúc</label>
-                <input asp-for="CheckOutDate"
-                       value="@(((DateTime?)ViewBag.CheckOutDate)?.ToString("yyyy-MM-dd"))"
-                       class="form-control"
-                       type="date"
-                       readonly />
-                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
-            </div>
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+            <input type="submit" value="Xác Nhận Đặt Tour" class="btn btn-primary btn-lg" />
+        </div>
+    </form>
 
-
-            <div class="form-group">
-                <label>Giá Tour:</label>
-                <p>@ViewBag.TotalPrice</p>
-                <input asp-for="TotalPrice" class="form-control" type="hidden" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Đặt Tour" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Back Link -->
+    <div class="text-center mt-3">
+        <a asp-controller="Tours" asp-action="Index" class="btn btn-outline-secondary">Quay lại danh sách tour</a>
     </div>
-</div>
-
-<div>
-    <a onclick="window.history.back();">Quay lại danh sách</a>
 </div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Enable tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+            function formatNumber(number) {
+                return Math.round(number).toLocaleString('vi-VN') + ' ₫'; // Làm tròn số và định dạng
+            }
+
+            function calculateTotal() {
+                let checkInDate = new Date($('#CheckInDate').val());
+                let checkOutDate = new Date($('#CheckOutDate').val());
+                let priceTour = parseFloat('@ViewBag.PriceTour');
+                let dayLimit = parseInt('@ViewBag.Day');
+                let pricePerson = parseFloat('@ViewBag.PricePerson');
+                let numGuests = parseInt($('#NumberOfGuests').val()) || 1;
+
+                if (isNaN(checkInDate) || isNaN(checkOutDate) || checkOutDate <= checkInDate) {
+                    $('#totalday').text('');
+                    $('#totalpricetourday').text('');
+                    $('#totalpriceperson').text('');
+                    $('#TotalPrice').text(''); // Hiển thị rỗng cho span
+                    $('#TotalPriceInput').val(''); // Xóa giá trị input hidden
+                    return;
+                }
+
+                let totalDays = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+                let tourTotalPrice;
+
+                if (totalDays <= dayLimit) {
+                    $('#totalday').text(dayLimit);
+                    tourTotalPrice = priceTour;
+                    $('#totalpricetourday').text(formatNumber(tourTotalPrice));
+                } else {
+                    $('#totalday').text(totalDays);
+                    tourTotalPrice = (priceTour / dayLimit) * totalDays;
+                    $('#totalpricetourday').text(formatNumber(tourTotalPrice));
+                }
+
+                let personTotalPrice = numGuests * pricePerson;
+                $('#totalpriceperson').text(formatNumber(personTotalPrice));
+
+                let finalTotal = Math.round(tourTotalPrice + personTotalPrice); // Làm tròn thành số nguyên
+                $('#TotalPrice').text(formatNumber(finalTotal)); // Hiển thị giá trị định dạng trong span
+                $('#TotalPriceInput').val(finalTotal); // Gán giá trị số nguyên cho input hidden
+            }
+
+            $('#CheckInDate, #CheckOutDate, #NumberOfGuests').on('change input', function () {
+                calculateTotal();
+            });
+
+            // Initial calculation
+            calculateTotal();
+
+            // Thêm sự kiện submit form để đảm bảo giá trị TotalPrice được cập nhật trước khi gửi
+            $('form').on('submit', function (e) {
+                calculateTotal(); // Cập nhật lại giá trị trước khi submit
+                let totalPriceValue = $('#TotalPriceInput').val();
+                if (!totalPriceValue || totalPriceValue <= 0) {
+                    e.preventDefault(); // Ngăn submit nếu giá trị không hợp lệ
+                    alert('Vui lòng kiểm tra lại thông tin đặt tour. Tổng chi phí không hợp lệ.');
+                }
+            });
+        });
+    </script>
 }
