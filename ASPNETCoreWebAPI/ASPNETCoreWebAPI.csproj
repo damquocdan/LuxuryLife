@@ -22,4 +22,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\AdminQL\Data\" />
+    <Folder Include="Areas\AdminQL\Models\" />
+    <Folder Include="Areas\AdminQL\Views\" />
+    <Folder Include="Areas\ProviderUser\Data\" />
+    <Folder Include="Areas\ProviderUser\Models\" />
+    <Folder Include="Areas\ProviderUser\Views\" />
+  </ItemGroup>
+
 </Project>

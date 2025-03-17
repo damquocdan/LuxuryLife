@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.AdminQL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToursController : ControllerBase
+    public class CustomersController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public ToursController(TourBookingContext context)
+        public CustomersController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Tours
+        // GET: api/Customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tour>>> GetTours()
+        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
-            return await _context.Tours.ToListAsync();
+            return await _context.Customers.ToListAsync();
         }
 
-        // GET: api/Tours/5
+        // GET: api/Customers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
+            var customer = await _context.Customers.FindAsync(id);
 
-            if (tour == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return tour;
+            return customer;
         }
 
-        // PUT: api/Tours/5
+        // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
-            if (id != tour.TourId)
+            if (id != customer.CustomerId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tour).State = EntityState.Modified;
+            _context.Entry(customer).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TourExists(id))
+                if (!CustomerExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tours
+        // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-            _context.Tours.Add(tour);
+            _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTour", new { id = tour.TourId }, tour);
+            return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
         }
 
-        // DELETE: api/Tours/5
+        // DELETE: api/Customers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
-            if (tour == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.Tours.Remove(tour);
+            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TourExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.Tours.Any(e => e.TourId == id);
+            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }

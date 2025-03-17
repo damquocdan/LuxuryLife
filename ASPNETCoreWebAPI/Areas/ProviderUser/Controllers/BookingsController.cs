@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.ProviderUser.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToursController : ControllerBase
+    public class BookingsController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public ToursController(TourBookingContext context)
+        public BookingsController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Tours
+        // GET: api/Bookings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tour>>> GetTours()
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
-            return await _context.Tours.ToListAsync();
+            return await _context.Bookings.ToListAsync();
         }
 
-        // GET: api/Tours/5
+        // GET: api/Bookings/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<ActionResult<Booking>> GetBooking(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
+            var booking = await _context.Bookings.FindAsync(id);
 
-            if (tour == null)
+            if (booking == null)
             {
                 return NotFound();
             }
 
-            return tour;
+            return booking;
         }
 
-        // PUT: api/Tours/5
+        // PUT: api/Bookings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
+        public async Task<IActionResult> PutBooking(int id, Booking booking)
         {
-            if (id != tour.TourId)
+            if (id != booking.BookingId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tour).State = EntityState.Modified;
+            _context.Entry(booking).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TourExists(id))
+                if (!BookingExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tours
+        // POST: api/Bookings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
+        public async Task<ActionResult<Booking>> PostBooking(Booking booking)
         {
-            _context.Tours.Add(tour);
+            _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTour", new { id = tour.TourId }, tour);
+            return CreatedAtAction("GetBooking", new { id = booking.BookingId }, booking);
         }
 
-        // DELETE: api/Tours/5
+        // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        public async Task<IActionResult> DeleteBooking(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
-            if (tour == null)
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking == null)
             {
                 return NotFound();
             }
 
-            _context.Tours.Remove(tour);
+            _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TourExists(int id)
+        private bool BookingExists(int id)
         {
-            return _context.Tours.Any(e => e.TourId == id);
+            return _context.Bookings.Any(e => e.BookingId == id);
         }
     }
 }

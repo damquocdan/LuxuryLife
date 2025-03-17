@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.ProviderUser.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReviewsController : ControllerBase
+    public class ProvidersController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public ReviewsController(TourBookingContext context)
+        public ProvidersController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Reviews
+        // GET: api/Providers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
+        public async Task<ActionResult<IEnumerable<Provider>>> GetProviders()
         {
-            return await _context.Reviews.ToListAsync();
+            return await _context.Providers.ToListAsync();
         }
 
-        // GET: api/Reviews/5
+        // GET: api/Providers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> GetReview(int id)
+        public async Task<ActionResult<Provider>> GetProvider(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
+            var provider = await _context.Providers.FindAsync(id);
 
-            if (review == null)
+            if (provider == null)
             {
                 return NotFound();
             }
 
-            return review;
+            return provider;
         }
 
-        // PUT: api/Reviews/5
+        // PUT: api/Providers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> PutProvider(int id, Provider provider)
         {
-            if (id != review.ReviewId)
+            if (id != provider.ProviderId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(review).State = EntityState.Modified;
+            _context.Entry(provider).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReviewExists(id))
+                if (!ProviderExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Reviews
+        // POST: api/Providers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<ActionResult<Provider>> PostProvider(Provider provider)
         {
-            _context.Reviews.Add(review);
+            _context.Providers.Add(provider);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReview", new { id = review.ReviewId }, review);
+            return CreatedAtAction("GetProvider", new { id = provider.ProviderId }, provider);
         }
 
-        // DELETE: api/Reviews/5
+        // DELETE: api/Providers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReview(int id)
+        public async Task<IActionResult> DeleteProvider(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
+            var provider = await _context.Providers.FindAsync(id);
+            if (provider == null)
             {
                 return NotFound();
             }
 
-            _context.Reviews.Remove(review);
+            _context.Providers.Remove(provider);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ReviewExists(int id)
+        private bool ProviderExists(int id)
         {
-            return _context.Reviews.Any(e => e.ReviewId == id);
+            return _context.Providers.Any(e => e.ProviderId == id);
         }
     }
 }

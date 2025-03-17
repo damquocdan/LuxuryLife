@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.AdminQL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToursController : ControllerBase
+    public class ServicesController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public ToursController(TourBookingContext context)
+        public ServicesController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Tours
+        // GET: api/Services
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tour>>> GetTours()
+        public async Task<ActionResult<IEnumerable<Service>>> GetServices()
         {
-            return await _context.Tours.ToListAsync();
+            return await _context.Services.ToListAsync();
         }
 
-        // GET: api/Tours/5
+        // GET: api/Services/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<ActionResult<Service>> GetService(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
+            var service = await _context.Services.FindAsync(id);
 
-            if (tour == null)
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return tour;
+            return service;
         }
 
-        // PUT: api/Tours/5
+        // PUT: api/Services/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
+        public async Task<IActionResult> PutService(int id, Service service)
         {
-            if (id != tour.TourId)
+            if (id != service.ServiceId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tour).State = EntityState.Modified;
+            _context.Entry(service).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TourExists(id))
+                if (!ServiceExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tours
+        // POST: api/Services
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
+        public async Task<ActionResult<Service>> PostService(Service service)
         {
-            _context.Tours.Add(tour);
+            _context.Services.Add(service);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTour", new { id = tour.TourId }, tour);
+            return CreatedAtAction("GetService", new { id = service.ServiceId }, service);
         }
 
-        // DELETE: api/Tours/5
+        // DELETE: api/Services/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        public async Task<IActionResult> DeleteService(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
-            if (tour == null)
+            var service = await _context.Services.FindAsync(id);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            _context.Tours.Remove(tour);
+            _context.Services.Remove(service);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TourExists(int id)
+        private bool ServiceExists(int id)
         {
-            return _context.Tours.Any(e => e.TourId == id);
+            return _context.Services.Any(e => e.ServiceId == id);
         }
     }
 }

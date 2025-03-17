@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.AdminQL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminsController : ControllerBase
+    public class HomestaysController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public AdminsController(TourBookingContext context)
+        public HomestaysController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Admins
+        // GET: api/Homestays
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
+        public async Task<ActionResult<IEnumerable<Homestay>>> GetHomestays()
         {
-            return await _context.Admins.ToListAsync();
+            return await _context.Homestays.ToListAsync();
         }
 
-        // GET: api/Admins/5
+        // GET: api/Homestays/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Homestay>> GetHomestay(int id)
         {
-            var admin = await _context.Admins.FindAsync(id);
+            var homestay = await _context.Homestays.FindAsync(id);
 
-            if (admin == null)
+            if (homestay == null)
             {
                 return NotFound();
             }
 
-            return admin;
+            return homestay;
         }
 
-        // PUT: api/Admins/5
+        // PUT: api/Homestays/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutHomestay(int id, Homestay homestay)
         {
-            if (id != admin.AdminId)
+            if (id != homestay.HomestayId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            _context.Entry(homestay).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminExists(id))
+                if (!HomestayExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Admins
+        // POST: api/Homestays
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Homestay>> PostHomestay(Homestay homestay)
         {
-            _context.Admins.Add(admin);
+            _context.Homestays.Add(homestay);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.AdminId }, admin);
+            return CreatedAtAction("GetHomestay", new { id = homestay.HomestayId }, homestay);
         }
 
-        // DELETE: api/Admins/5
+        // DELETE: api/Homestays/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAdmin(int id)
+        public async Task<IActionResult> DeleteHomestay(int id)
         {
-            var admin = await _context.Admins.FindAsync(id);
-            if (admin == null)
+            var homestay = await _context.Homestays.FindAsync(id);
+            if (homestay == null)
             {
                 return NotFound();
             }
 
-            _context.Admins.Remove(admin);
+            _context.Homestays.Remove(homestay);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AdminExists(int id)
+        private bool HomestayExists(int id)
         {
-            return _context.Admins.Any(e => e.AdminId == id);
+            return _context.Homestays.Any(e => e.HomestayId == id);
         }
     }
 }

@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.AdminQL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToursController : ControllerBase
+    public class AdminsController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public ToursController(TourBookingContext context)
+        public AdminsController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Tours
+        // GET: api/Admins
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tour>>> GetTours()
+        public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
         {
-            return await _context.Tours.ToListAsync();
+            return await _context.Admins.ToListAsync();
         }
 
-        // GET: api/Tours/5
+        // GET: api/Admins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<ActionResult<Admin>> GetAdmin(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
+            var admin = await _context.Admins.FindAsync(id);
 
-            if (tour == null)
+            if (admin == null)
             {
                 return NotFound();
             }
 
-            return tour;
+            return admin;
         }
 
-        // PUT: api/Tours/5
+        // PUT: api/Admins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
+        public async Task<IActionResult> PutAdmin(int id, Admin admin)
         {
-            if (id != tour.TourId)
+            if (id != admin.AdminId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tour).State = EntityState.Modified;
+            _context.Entry(admin).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TourExists(id))
+                if (!AdminExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tours
+        // POST: api/Admins
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
+        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
         {
-            _context.Tours.Add(tour);
+            _context.Admins.Add(admin);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTour", new { id = tour.TourId }, tour);
+            return CreatedAtAction("GetAdmin", new { id = admin.AdminId }, admin);
         }
 
-        // DELETE: api/Tours/5
+        // DELETE: api/Admins/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        public async Task<IActionResult> DeleteAdmin(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
-            if (tour == null)
+            var admin = await _context.Admins.FindAsync(id);
+            if (admin == null)
             {
                 return NotFound();
             }
 
-            _context.Tours.Remove(tour);
+            _context.Admins.Remove(admin);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TourExists(int id)
+        private bool AdminExists(int id)
         {
-            return _context.Tours.Any(e => e.TourId == id);
+            return _context.Admins.Any(e => e.AdminId == id);
         }
     }
 }

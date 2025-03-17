@@ -31,6 +31,8 @@ public partial class Tour
 
     public int? ProviderId { get; set; }
 
+    public int? Day { get; set; }
+
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
     public virtual ICollection<CustomerInteraction> CustomerInteractions { get; set; } = new List<CustomerInteraction>();

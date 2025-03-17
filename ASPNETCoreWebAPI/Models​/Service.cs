@@ -15,5 +15,7 @@ public partial class Service
 
     public int? TourId { get; set; }
 
+    public string? Image { get; set; }
+
     public virtual Tour? Tour { get; set; }
 }

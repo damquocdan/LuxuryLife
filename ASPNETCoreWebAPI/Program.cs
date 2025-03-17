@@ -1,10 +1,9 @@
-﻿using ASPNETCoreWebAPI.Controllers;
-using ASPNETCoreWebAPI.Models;
+﻿
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("LuxuryLifeConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<TourBookingContext>(options =>
-    options.UseSqlServer(connectionString));
+//var connectionString = builder.Configuration.GetConnectionString("LuxuryLifeConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<TourBookingContext>(options =>
+//    options.UseSqlServer(connectionString));
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers()

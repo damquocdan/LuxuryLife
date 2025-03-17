@@ -7,51 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPNETCoreWebAPI.Models;
 
-namespace ASPNETCoreWebAPI.Controllers
+namespace ASPNETCoreWebAPI.Areas.ProviderUser.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToursController : ControllerBase
+    public class HomestaysController : ControllerBase
     {
         private readonly TourBookingContext _context;
 
-        public ToursController(TourBookingContext context)
+        public HomestaysController(TourBookingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Tours
+        // GET: api/Homestays
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tour>>> GetTours()
+        public async Task<ActionResult<IEnumerable<Homestay>>> GetHomestays()
         {
-            return await _context.Tours.ToListAsync();
+            return await _context.Homestays.ToListAsync();
         }
 
-        // GET: api/Tours/5
+        // GET: api/Homestays/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<ActionResult<Homestay>> GetHomestay(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
+            var homestay = await _context.Homestays.FindAsync(id);
 
-            if (tour == null)
+            if (homestay == null)
             {
                 return NotFound();
             }
 
-            return tour;
+            return homestay;
         }
 
-        // PUT: api/Tours/5
+        // PUT: api/Homestays/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
+        public async Task<IActionResult> PutHomestay(int id, Homestay homestay)
         {
-            if (id != tour.TourId)
+            if (id != homestay.HomestayId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tour).State = EntityState.Modified;
+            _context.Entry(homestay).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace ASPNETCoreWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TourExists(id))
+                if (!HomestayExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace ASPNETCoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tours
+        // POST: api/Homestays
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
+        public async Task<ActionResult<Homestay>> PostHomestay(Homestay homestay)
         {
-            _context.Tours.Add(tour);
+            _context.Homestays.Add(homestay);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTour", new { id = tour.TourId }, tour);
+            return CreatedAtAction("GetHomestay", new { id = homestay.HomestayId }, homestay);
         }
 
-        // DELETE: api/Tours/5
+        // DELETE: api/Homestays/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        public async Task<IActionResult> DeleteHomestay(int id)
         {
-            var tour = await _context.Tours.FindAsync(id);
-            if (tour == null)
+            var homestay = await _context.Homestays.FindAsync(id);
+            if (homestay == null)
             {
                 return NotFound();
             }
 
-            _context.Tours.Remove(tour);
+            _context.Homestays.Remove(homestay);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TourExists(int id)
+        private bool HomestayExists(int id)
         {
-            return _context.Tours.Any(e => e.TourId == id);
+            return _context.Homestays.Any(e => e.HomestayId == id);
         }
     }
 }
