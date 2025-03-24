@@ -39,6 +39,8 @@ public partial class TourBookingContext : DbContext
 
     public virtual DbSet<Review> Reviews { get; set; }
 
+    public virtual DbSet<ReviewOn> ReviewOns { get; set; }
+
     public virtual DbSet<Service> Services { get; set; }
 
     public virtual DbSet<Tour> Tours { get; set; }
@@ -290,6 +292,27 @@ public partial class TourBookingContext : DbContext
             entity.HasOne(d => d.Tour).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.TourId)
                 .HasConstraintName("FK__Review__TourId__5441852A");
+        });
+
+        modelBuilder.Entity<ReviewOn>(entity =>
+        {
+            entity.HasKey(e => e.ReviewOnId).HasName("PK__ReviewOn__2D882DB1A71368C3");
+
+            entity.ToTable("ReviewOn");
+
+            entity.Property(e => e.Createdate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.ReviewOns)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ReviewOn__Custom__51300E55");
+
+            entity.HasOne(d => d.Review).WithMany(p => p.ReviewOns)
+                .HasForeignKey(d => d.ReviewId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ReviewOn__Review__503BEA1C");
         });
 
         modelBuilder.Entity<Service>(entity =>

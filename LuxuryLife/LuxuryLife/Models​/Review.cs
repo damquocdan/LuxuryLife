@@ -27,5 +27,8 @@ public partial class Review
     public DateTime? Createdate { get; set; }
 
     public virtual Customer? Customer { get; set; }
+
+    public virtual ICollection<ReviewOn> ReviewOns { get; set; } = new List<ReviewOn>();
+
     public virtual Tour? Tour { get; set; }
 }

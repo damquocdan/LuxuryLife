@@ -59,7 +59,7 @@
 }
 
 .form-control {
-    width: 100% !important; /* 80% width as required */
+    width: 76% !important; /* 80% width as required */
     padding: 25px !important; /* Increased padding */
     border: 1px solid #ddd !important;
     border-radius: 15px !important;

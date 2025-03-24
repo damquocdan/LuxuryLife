@@ -1,6 +1,5 @@
 ﻿/* CSS cho Login Section */
 .login-section {
-    min-height: 100vh;
     background-image:url('../images/welcome-hero/banner.jpg') no-repeat center;
     background-size: cover;
     display: flex;

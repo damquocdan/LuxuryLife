@@ -241,7 +241,10 @@ namespace LuxuryLife.Controllers
                 .Include(t => t.Services)
                 .Include(t => t.Homestays)
                 .Include(t => t.Reviews)
-                    .ThenInclude(r => r.Customer) // Include Customer for Reviews
+                    .ThenInclude(r => r.Customer)
+                .Include(t => t.Reviews)
+                    .ThenInclude(r => r.ReviewOns)
+                    .ThenInclude(ro => ro.Customer)
                 .FirstOrDefaultAsync(m => m.TourId == id);
 
             if (tour == null)
@@ -249,11 +252,16 @@ namespace LuxuryLife.Controllers
                 return NotFound();
             }
 
-            // Optional: Fetch related tours for a "Related Tours" section
             var relatedTours = await _context.Tours
                 .Where(t => t.TourId != id && t.Status == "Active")
                 .OrderByDescending(t => t.Createdate)
                 .ToListAsync();
+
+            // Load CurrentUser (có thể null nếu chưa đăng nhập)
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            ViewBag.CurrentUser = customerId.HasValue
+                ? await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == customerId.Value)
+                : null;
 
             ViewBag.RelatedTours = relatedTours;
 

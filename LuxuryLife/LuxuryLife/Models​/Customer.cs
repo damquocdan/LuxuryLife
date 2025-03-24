@@ -61,6 +61,7 @@ public partial class Customer
     public virtual ICollection<Favourite> Favourites { get; set; } = new List<Favourite>();
     public virtual ICollection<MomoPayment> MomoPayments { get; set; } = new List<MomoPayment>();
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public virtual ICollection<ReviewOn> ReviewOns { get; set; } = new List<ReviewOn>();
 
     // Kiểm tra ngày sinh (Dob) không được lớn hơn ngày hiện tại
     public static ValidationResult? ValidateDob(DateOnly? dob, ValidationContext context)
