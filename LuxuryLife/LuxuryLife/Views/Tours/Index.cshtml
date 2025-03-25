@@ -117,7 +117,7 @@
                                     <a href="#">Bình luận: @tour.Reviews.Count</a>
                                     <span class="explore-price-box">
                                         Giá:
-                                        <span class="explore-price">@Html.DisplayFor(model => tour.Price)</span>
+                                        <span class="explore-price">@String.Format("{0:N0} VND", tour.Price)</span>
 
                                     </span>
                                     <br />

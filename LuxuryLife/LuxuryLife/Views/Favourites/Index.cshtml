@@ -77,6 +77,7 @@
     }
 
     .cart-details a {
+        width:100px;
         font-size: 12px;
         font-weight: bold;
         text-decoration: none;
@@ -126,7 +127,7 @@
 
     .booking {
         display: inline-block;
-        padding: 12px 40px;
+        padding: 12px 10px;
         font-size: 1.6rem;
         text-decoration: none;
         background-color: green;
@@ -176,21 +177,23 @@
                                                 </td>
                                                 <td class="cart-name" width="120px">
                                                     <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
-                                                        <span>@item.Tour.Provider.Name</span>
+                                                        <img src="@item.Tour.Provider.Avatar" style="border-radius:50%; width:70px; height:70px;" />
+                                                        <p style="font-size:12px">@item.Tour.Provider.Name</p>
                                                     </a>
                                                 </td>
-                                                <td class="cart-name" width="120px">
+                                                <td class="cart-name" width="60px">
                                                     <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
-                                                        <span>@item.Tour.Price</span>
+                                                    <p style="font-size:12px">@item.Tour.Price?.ToString("N0") VND</p>
+
                                                     </a>
                                                 </td>
-                                                <td class="cart-img" width="180px">
+                                                <td class="cart-img" width="280px">
                                                     <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId">
                                                         <img src="@item.Tour.Image" alt="@item.Tour.Name" width="100%" />
                                                     </a>
                                                 </td>
-                                                <td class="cart-details" width="70px">
-                                                    <a asp-controller="Bookings" asp-action="Create" class="booking" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@item.TourId">
+                                                <td class="cart-details" width="40px">
+                                                    <a asp-controller="Bookings" asp-action="Create" class="booking" asp-route-customerId="@Context.Session.GetInt32("CustomerId")" asp-route-id="@item.TourId" style="text-align:center;">
                                                         Đặt
                                                     </a>
                                                 </td>

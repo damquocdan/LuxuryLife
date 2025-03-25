@@ -380,7 +380,8 @@
         <!-- Tour Header -->
         <div class="tour-header">
             <h1 class="tour-title">@Html.DisplayFor(model => model.Name)</h1>
-            <p class="tour-price">Giá:@Html.DisplayFor(model => model.Price)</p>
+            <p class="tour-price">Giá: @Model.Price?.ToString("N0") VND</p>
+
             <hr class="divider" />
         </div>
 
@@ -394,6 +395,10 @@
                 <p>Tour: @Html.DisplayFor(model => model.Name)</p>
                 <p>Mô tả: @Html.DisplayFor(model => model.Description)</p>
                 <p>Nhà cung cấp: @Html.DisplayFor(model => model.Provider.Name)</p>
+                <p>Giá trên 1 người: @string.Format("{0:N0} VND", Model.PricePerson)</p>
+
+                <p>Thời gian diễn ra: <br />@Model.StartDate?.ToString("dd/MM/yyyy") - @Model.EndDate?.ToString("dd/MM/yyyy")</p>
+
             </div>
         </div>
 
@@ -431,7 +436,8 @@
                             <div style="background-color: rgba(200, 200, 200, 0.7);padding: 20px;border-radius: 40px; height: 100%;">
                                 <strong>@service.ServiceName</strong>
                                 <p>@service.Description</p>
-                                <span>@string.Format("{0:C}", service.Price)</span>
+                                <span>@string.Format("{0:N0} VND", service.Price)</span>
+
                             </div>
 
                         </div>
@@ -452,15 +458,15 @@
                 <div class="row">
                     @foreach (var homestay in Model.Homestays)
                     {
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <ul>
                                 <li><strong>@homestay.Name</strong></li>
                                 <li>Địa chỉ: @homestay.Address</li>
-                                <li>Giá 1 đêm: @string.Format("{0:C}", homestay.PricePerNight)</li>
+                                <li>Giá 1 đêm: @string.Format("{0:N0} VND", homestay.PricePerNight)</li>
                                 <li>Mô tả: @homestay.Description</li>
                             </ul>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <img src="@homestay.Image" alt="@homestay.Name" class="img-fluid" height="400px;" />
                         </div>
                     }
@@ -617,7 +623,7 @@
                             <a asp-action="Details" asp-route-id="@tour.TourId">
                                 <img src="@tour.Image" alt="@tour.Name" class="related-tour-img" />
                                 <h4 class="related-tour-title">@tour.Name</h4>
-                                <p class="related-tour-price">@string.Format("{0:C}", tour.Price)</p>
+                                <p class="related-tour-price">@string.Format("{0:N0} VND", tour.Price)</p>
                             </a>
                         </div>
                     }

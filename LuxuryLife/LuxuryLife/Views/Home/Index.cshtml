@@ -238,7 +238,8 @@
                                     <a href="#">Bình luận: @tour.Reviews.Count</a>
                                     <span class="explore-price-box">
                                         Giá:
-                                        <span class="explore-price">@Html.DisplayFor(model => tour.Price)</span>
+                                        <span class="explore-price">@String.Format("{0:N0} VND", tour.Price)</span>
+
 
                                     </span>
                                     <br />
@@ -391,7 +392,7 @@
                             </div>
                             <div class="single-blog-item-txt">
                                 <h2><a asp-controller="News" asp-action="Details" asp-route-id="@n.NewId">@n.Title</a></h2>
-                                <h4>Đăng bởi  <a href="#">admin</a> @n.Createdate</h4>
+                                <h4>Đăng bởi <a href="#">admin</a> @n.Createdate?.ToString("dd/MM/yyyy")</h4>
                                 <p>
                                     @Html.Raw(n.Content.Length > 100 ? n.Content.Substring(0, 100) + "..." : n.Content)
                                 </p>
