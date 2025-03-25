@@ -67,7 +67,28 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
 
             return View(tour);
         }
+        public async Task<IActionResult> ListCustomers(int id)
+        {
+            var bookings = await _context.Bookings
+                .Where(b => b.TourId == id)
+                .Include(b => b.Customer)
+                .Include(b => b.Tour)
+                .ToListAsync();
 
+            if (bookings == null || !bookings.Any())
+            {
+                ViewBag.Message = "Chưa có khách hàng nào đặt tour này.";
+            }
+
+            var tour = await _context.Tours.FindAsync(id);
+            ViewBag.TourName = tour?.Name ?? "Không xác định";
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_ListCustomers", bookings);
+            }
+            return View(bookings);
+        }
         // GET: ProviderUser/Tours/Create
 
         public IActionResult Create()
@@ -79,6 +100,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             }
 
             ViewData["ProviderId"] = providerId.Value;
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Create");
+            }
             return View();
         }
 
@@ -172,7 +197,10 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                 return NotFound();
             }
             ViewData["ProviderId"] = new SelectList(_context.Providers, "ProviderId", "ProviderId", tour.ProviderId);
-
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Edit", tour);
+            }
             return View(tour);
         }
 
@@ -223,13 +251,6 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
                     if (tour.ProviderId == null)
                     {
                         tour.ProviderId = existingTour.ProviderId;
-                    }
-
-                    // Tính toán giá dựa trên ngày bắt đầu, ngày kết thúc và giá mỗi người
-                    if (tour.StartDate.HasValue && tour.EndDate.HasValue)
-                    {
-                        TimeSpan duration = tour.EndDate.Value - tour.StartDate.Value;
-                        tour.Price = duration.Days * tour.PricePerson;
                     }
 
                     else

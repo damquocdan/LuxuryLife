@@ -104,6 +104,13 @@
             margin-bottom: 5px; /* Khoảng cách giữa các nút */
         }
 
+    .image-column {
+        transition: all 0.3s ease;
+    }
+
+    .hidden-column {
+        display: none;
+    }
 </style>
 <div class="body">
     <h1>Danh sách các tour của tôi</h1>
@@ -117,7 +124,7 @@
   
                         <th>
                             <p>
-                                <a class="btn btn-success btn-sm" asp-action="create">Thêm mới</a>
+                                <a class="btn btn-success btn-sm ajax-action" data-url="@Url.Action("Create")">Thêm mới</a>
                             </p>
                         </th>
                     </tr>
@@ -127,8 +134,8 @@
                     {
  
                         <tr >
-      
-                            <td>
+
+                            <td class="image-column">
                                 <img src="@item.Image" alt="@item.Name" width="500px" height="300px" />
                             </td>
                             <td>
@@ -140,7 +147,7 @@
                                 <p>
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </p>
-                                <p>@item.Createdate?.ToString("dd/MM/yyyy")</p>
+                                <p>(@item.StartDate?.ToString("dd/MM/yyyy") - @item.EndDate?.ToString("dd/MM/yyyy"))</p>
 
                                 @if (item.Status == "Active")
                                 {
@@ -162,8 +169,9 @@
  
                             <td>
                                 <div class="btn-group-vertical custom-btn-group">
-                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.TourId">Sửa</a>
+                                    <button class="btn btn-warning btn-sm ajax-action" data-url="@Url.Action("Edit", new { id = item.TourId })">Sửa</button>
                                     <button class="btn btn-info btn-sm ajax-action" data-url="@Url.Action("Details", new { id = item.TourId })">Chi tiết</button>
+                                    <button class="btn btn-success btn-sm ajax-action" data-url="@Url.Action("ListCustomers", new { id = item.TourId })">Danh sách khách hàng</button>
                                     <button class="btn btn-danger btn-sm ajax-action" data-url="@Url.Action("Delete", new { id = item.TourId })">Xóa</button>
                                 </div>
 
@@ -173,7 +181,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-4 d-none" id="detail-section">
+        <div class="col-md-10 d-none" id="detail-section">
             <div class="actionTour"></div>
         </div>
     </div>
@@ -186,8 +194,9 @@
             var url = $(this).data("url");
 
             if ($("#detail-section").hasClass("d-none")) {
-                $("#list-section").removeClass("col-md-12").addClass("col-md-8");
-                $("#detail-section").removeClass("d-none").addClass("col-md-4");
+                $("#list-section").removeClass("col-md-12").addClass("col-md-2");
+                $("#detail-section").removeClass("d-none").addClass("col-md-10");
+                $(".image-column").addClass("hidden-column");
             }
 
             $(".actionTour").load(url, function (response, status, xhr) {
@@ -198,7 +207,8 @@
         });
     });
     function closeDetailSection() {
-        $("#list-section").removeClass("col-md-8").addClass("col-md-12");
+        $("#list-section").removeClass("col-md-2").addClass("col-md-12");
         $("#detail-section").addClass("d-none");
+        $(".image-column").removeClass("hidden-column");
     }
 </script>

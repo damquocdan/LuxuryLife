@@ -1,266 +1,101 @@
-﻿@model LuxuryLife.Areas.ProviderUser.Controllers.DashboardViewModel
-@{
-    ViewData["Title"] = "Bảng điều khiển";
-}
-
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Bảng điều khiển</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <title>Thống kê Nhà Cung Cấp</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .card {
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
+        .chart-container {
+            width: 45%; /* Giảm kích thước chart */
+            display: inline-block;
+            margin: 10px;
         }
 
-            .card:hover {
-                transform: translateY(-5px);
-            }
-
-        .stats-section {
-            padding: 20px;
-        }
-
-        .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            padding: 15px;
-            font-weight: 600;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-            .card-header i {
-                margin-right: 5px;
-                color: #007bff; /* Màu biểu tượng */
-            }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        /* Màu sắc thống kê */
-        .card-header[class*="fa-chart-pie"] {
-            background-color: #e8f5e9;
-        }
-
-        .card-header[class*="fa-chart-bar"] {
-            background-color: #e3f2fd;
-        }
-
-        .card-header[class*="fa-calendar-alt"] {
-            background-color: #fff3e0;
-        }
-
-        .card-header[class*="fa-chart-line"] {
-            background-color: #fce4ec;
-        }
-
-        .card-header[class*="fa-route"] {
-            background-color: #ede7f6;
-        }
-
-        .card-header[class*="fa-home"] {
-            background-color: #e0f7fa;
-        }
-
-        .card-header[class*="fa-money-bill-alt"] {
-            background-color: #fff8e1;
-        }
-
-        .card-header[class*="fa-users"] {
-            background-color: #f0f4c3;
-        }
-
-        .card-header[class*="fa-user-check"] {
-            background-color: #e0e0e0;
-        }
-
-        /* Màu sắc chữ trong card-body */
-        .card-body p, .card-body li {
-            color: #333;
-        }
-
-        /* Định dạng danh sách */
-        .card-body ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .card-body li {
-            margin-bottom: 8px;
+        .stats-container {
+            margin: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <h1 class="mt-4">Bảng điều khiển nhà cung cấp</h1>
-        <div class="row stats-section">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-chart-pie"></i> Tổng doanh thu</div>
-                    <div class="card-body">
-                        <p>Doanh thu tour: @Model.TotalTourRevenue.ToString("N0") VND</p>
-                        <p>Doanh thu homestay: @Model.TotalHomestayRevenue.ToString("N0") VND</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-chart-bar"></i> Biểu đồ doanh thu hàng tháng</div>
-                    <div class="card-body">
-                        <canvas id="revenueChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row stats-section">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-calendar-alt"></i> Đặt tour theo thời gian</div>
-                    <div class="card-body">
-                        @foreach (var item in Model.TourBookingsByTime)
-                        {
-                            <p>@item.Key: @item.Value lượt đặt</p>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-chart-line"></i> Doanh thu tour theo thời gian</div>
-                    <div class="card-body">
-                        @foreach (var item in Model.TourRevenueByTime)
-                        {
-                            <p>@item.Key: @item.Value.ToString("N0") VND</p>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-route"></i> Tour được đặt nhiều nhất</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach (var item in Model.MostBookedTours)
-                            {
-                                if (item.Tour != null)
-                                {
-                                    <li>@item.Tour.Name - @item.BookingCount lượt đặt</li>
-                                }
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <h2>Thống kê nhà cung cấp</h2>
+    <label for="yearSelect">Chọn năm:</label>
+    <select id="yearSelect">
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+    </select>
 
-        <div class="row stats-section">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-calendar-alt"></i> Đặt homestay theo thời gian</div>
-                    <div class="card-body">
-                        @foreach (var item in Model.HomestayBookingsByTime)
-                        {
-                            <p>@item.Key: @item.Value lượt đặt</p>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-home"></i> Homestay được đặt nhiều nhất</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach (var item in Model.MostBookedHomestays)
-                            {
-                                <li>@item.Homestay.Name - @item.BookingCount lượt đặt</li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-money-bill-alt"></i> Doanh thu homestay</div>
-                    <div class="card-body">
-                        <p>Tổng: @Model.HomestayRevenue.ToString("N0") VND</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="stats-container">
+        <h3>Thông tin tổng quan</h3>
+        <p id="totalTours"></p>
+        <p id="totalBookings"></p>
+        <p id="averageRating"></p>
+    </div>
 
-        <div class="row stats-section">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-users"></i> Tổng số khách hàng</div>
-                    <div class="card-body">
-                        <p>@Model.TotalCustomers khách hàng</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-user-check"></i> Khách hàng đặt tour nhiều nhất</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach (var item in Model.TopTourBookingCustomers)
-                            {
-                                <li>@item.Customer.Name - @item.BookingCount lượt đặt</li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header"><i class="fas fa-user-check"></i> Khách hàng đặt homestay nhiều nhất</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach (var item in Model.TopHomestayBookingCustomers)
-                            {
-                                <li>@item.Customer.Name - @item.BookingCount lượt đặt</li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-       
+    <div class="chart-container">
+        <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="bookingsChart"></canvas>
     </div>
 
     <script>
-        var ctx = document.getElementById('revenueChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.MonthlyRevenueChart.Keys)),
-                datasets: [{
-                    label: 'Doanh thu hàng tháng (VND)',
-                    data: @Html.Raw(Json.Serialize(Model.MonthlyRevenueChart.Values)),
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString() + ' VND';
-                            }
-                        }
+        let revenueChart, bookingsChart;
+
+        document.getElementById("yearSelect").addEventListener("change", function () {
+            loadDashboardData();
+        });
+
+        function loadDashboardData() {
+            var year = document.getElementById("yearSelect").value;
+            var providerId = 1; // Thay bằng ProviderId của bạn
+
+            fetch(`/ProviderUser/Dashboard/GetDashboardData?providerId=${providerId}&year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Tổng quan
+                    document.getElementById("totalTours").innerText = `Tổng số tour: ${data.totalTours}`;
+                    document.getElementById("totalBookings").innerText = `Tổng số đặt chỗ: ${data.totalBookings}`;
+                    document.getElementById("averageRating").innerText = `Đánh giá trung bình: ${data.averageRating.toFixed(2)}`;
+
+                    // Chart Doanh thu
+                    var revenueLabels = data.revenueData.map(d => `Tháng ${d.month}`);
+                    var revenues = data.revenueData.map(d => d.revenue);
+                    updateChart(revenueChart, 'revenueChart', 'bar', revenueLabels, revenues, 'Doanh thu (VNĐ)');
+
+                    // Chart Số lượng đặt chỗ
+                    var bookingLabels = data.bookingData.map(d => `Tháng ${d.month}`);
+                    var bookings = data.bookingData.map(d => d.count);
+                    updateChart(bookingsChart, 'bookingsChart', 'line', bookingLabels, bookings, 'Số lượng đặt chỗ');
+                });
+        }
+
+        function updateChart(chartInstance, chartId, type, labels, data, label) {
+            var ctx = document.getElementById(chartId).getContext("2d");
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: type === 'bar' ? "rgba(75, 192, 192, 0.2)" : "rgba(255, 99, 132, 0.2)",
+                        borderColor: type === 'bar' ? "rgba(75, 192, 192, 1)" : "rgba(255, 99, 132, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
                     }
                 }
-            }
-        });
+            });
+            return chartInstance;
+        }
+
+        // Load data khi trang load
+        loadDashboardData();
     </script>
 </body>
 </html>

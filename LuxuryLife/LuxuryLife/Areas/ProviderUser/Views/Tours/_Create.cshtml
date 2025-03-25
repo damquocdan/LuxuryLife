@@ -1,0 +1,111 @@
+﻿@model LuxuryLife.Models.Tour
+
+@{
+    ViewData["Title"] = "Thêm mới tour du lịch";
+    var providerId = ViewData["ProviderId"] as int?;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="card shadow-lg tour-card">
+            <div class="card-header text-white d-flex justify-content-between align-items-center">
+                <h2 class="card-title display-5 text-center w-100">🚀 Thêm mới tour du lịch</h2>
+                <button type="button" class="btn-close btn-close-white" aria-label="Đóng" onclick="closeDetailSection()"></button>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <dl class="row tour-details">
+                        <dt class="col-sm-5 text-lg font-weight-bold">🌍 Tên tour</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </dd>
+
+                        <dt class="col-sm-5 text-lg font-weight-bold">📜 Mô tả</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="Description" class="form-control" required />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </dd>
+
+                        <dt class="col-sm-5 text-lg font-weight-bold">📸 Hình ảnh</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="Image" type="file" class="form-control" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </dd>
+
+                        <dt class="col-sm-5 text-lg font-weight-bold">💰 Giá mỗi người</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="PricePerson" type="number" step="0.01" class="form-control" required />
+                            <span asp-validation-for="PricePerson" class="text-danger"></span>
+                        </dd>
+
+                        <dt class="col-sm-5 text-lg font-weight-bold">📅 Ngày bắt đầu</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="StartDate" type="date" class="form-control" required />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </dd>
+
+                        <dt class="col-sm-5 text-lg font-weight-bold">📅 Ngày kết thúc</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="EndDate" type="date" class="form-control" required />
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </dd>
+
+                        <dt class="col-sm-5 text-lg font-weight-bold">💲 Tổng giá</dt>
+                        <dd class="col-sm-7 text-lg">
+                            <input asp-for="Price" type="number" step="0.01" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </dd>
+                    </dl>
+
+                    <!-- Hidden fields -->
+                    <input asp-for="ProviderId" type="hidden" value="@ViewData["ProviderId"]" />
+                    <input asp-for="Status" type="hidden" value="Active" />
+                    <input asp-for="Createdate" type="hidden" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" />
+
+                    <div class="text-center mt-4">
+                        <input type="submit" value="Thêm" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tour-card {
+        height: 800px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 15px;
+    }
+
+    .card-header {
+        background: linear-gradient(90deg, #007bff, #00d4ff);
+    }
+
+    .tour-details dt {
+        transition: all 0.3s ease-in-out;
+        font-size: 1.1rem;
+        color: #000;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+    }
+
+        .tour-details dt:hover {
+            font-size: 1.2rem;
+            color: #ff5733;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+    .tour-details dd {
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
+</style>
