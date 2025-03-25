@@ -43,7 +43,7 @@ public partial class Booking
     [Display(Name = "Trạng thái")]
     [RegularExpression(@"^(Pending|Confirmed|Cancelled)$", ErrorMessage = "Trạng thái chỉ có thể là Pending, Confirmed hoặc Cancelled.")]
     public string? Status { get; set; }
-
+    public string? Code { get; set; }
     public virtual Customer? Customer { get; set; }
     public int? NumberOfGuests { get; set; }
     public virtual ICollection<MomoPayment> MomoPayments { get; set; } = new List<MomoPayment>();
