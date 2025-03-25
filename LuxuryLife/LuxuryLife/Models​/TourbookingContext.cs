@@ -80,6 +80,7 @@ public partial class TourBookingContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.CheckInDate).HasColumnType("datetime");
             entity.Property(e => e.CheckOutDate).HasColumnType("datetime");
+            entity.Property(e => e.Code).HasMaxLength(255);
             entity.Property(e => e.Status).HasMaxLength(50);
             entity.Property(e => e.TotalPrice).HasColumnType("decimal(18, 2)");
 
