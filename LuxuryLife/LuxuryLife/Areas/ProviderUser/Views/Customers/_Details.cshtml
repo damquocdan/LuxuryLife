@@ -60,7 +60,8 @@
             <i class="fas fa-birthday-cake"></i> @Html.DisplayNameFor(model => model.Dob)
         </dt>
         <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Dob)
+            <p>Ngày sinh: @(Model.Dob?.ToString("dd/MM/yyyy"))</p>
+
         </dd>
     </dl>
 </div>

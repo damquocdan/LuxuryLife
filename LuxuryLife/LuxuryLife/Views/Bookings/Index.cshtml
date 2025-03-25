@@ -1,13 +1,19 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách đặt tour";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <style>
-    .table {
-        width: 70%;
+    .container-custom {
+        max-width: 90%;
         margin: auto;
+        padding-top: 20px;
+    }
+
+    .table {
+        width: 100%;
         border-collapse: collapse;
         font-family: Arial, sans-serif;
     }
@@ -16,91 +22,109 @@
             padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
+            vertical-align: middle;
         }
 
         .table th {
-            background-color: #4CAF50;
+            background-color: #007BFF;
             color: white;
+            text-transform: uppercase;
         }
 
         .table td {
             background-color: #f9f9f9;
         }
 
-        /* Hover effect for rows */
         .table tr:hover {
             background-color: #f1f1f1;
         }
 
-        /* Styling for the action link */
-        .table a {
-            color: #4CAF50;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .status-confirmed {
+        color: green;
+        font-weight: bold;
+    }
 
-            .table a:hover {
-                text-decoration: underline;
-                color: #45a049;
-            }
+    .status-pending {
+        color: red;
+        font-weight: bold;
+    }
 
+    .tour-thumbnail {
+        width: 70px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .qr-code img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+    }
 </style>
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="text-center m-auto">Danh sách các tour du lịch đã đặt</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BookingDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CheckInDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CheckOutDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TotalPrice)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Tour)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BookingDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CheckInDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CheckOutDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalPrice)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Tour.Name)
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.BookingId">Details</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
 
-    </div>
+<div class="container-custom">
+    <h1 class="text-center">Danh Sách Tour Đã Đặt</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ngày Đặt</th>
+                <th>Bắt đầu - Kết thúc</th>
+                <th>Tổng Giá</th>
+                <th>Tour</th>
+                <th>Mã QR</th>
+                <th>Chi Tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BookingDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@item.CheckInDate?.ToString("dd/MM/yyyy") - @item.CheckOutDate?.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @string.Format("{0:N0} VND", item.TotalPrice)
+                        @if (item.Status == "Confirmed")
+                        {
+                            <span class="status-confirmed">✔ Đã Thanh Toán</span>
+                        }
+                        else if (item.Status == "Pending")
+                        {
+                            <span class="status-pending">❌ Chưa Thanh Toán</span>
+                        }
+                        else
+                        {
+                            <span>@item.Status</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Tour.Name)
+                        <br />
+
+                        @if (!string.IsNullOrEmpty(item.Tour.Image))
+                        {
+                            <img src="@item.Tour.Image" alt="Tour Image" width="360px" height="200px" />
+                        }
+                        else
+                        {
+                            <span>Không có ảnh</span>
+                        }
+                    </td>
+                    <td class="qr-code">
+                        @if (!string.IsNullOrEmpty(item.Code))
+                        {
+                            <img src="@item.Code" alt="QR Code" width="120px" height="120px" />
+                        }
+                        else
+                        {
+                            <span>Chưa có QR</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId" class="btn btn-primary btn-sm">Xem chi tiết tour</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

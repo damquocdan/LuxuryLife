@@ -76,7 +76,7 @@
                                 <div class="post-content">
                                     <h4>@tour.Name</h4>
                                     <p>@tour.Description</p>
-                                    <p class="post-price">Giá: @tour.Price</p>
+                                    <p class="post-price">Giá:@string.Format("{0:N0} VND", tour.Price)</p>
                                     <p class="post-date">Đăng ngày: @tour.Createdate?.ToString("dd/MM/yyyy")</p>
                                 </div>
                             </div>
@@ -98,11 +98,11 @@
                         @foreach (var service in (IEnumerable<LuxuryLife.Models.Service>)ViewBag.Services)
                         {
                             <div class="post-item">
-                                <img src="@service.Tour?.Image" alt="@service.ServiceName" class="post-img" />
+                                <img src="@service.Image" alt="@service.ServiceName" class="post-img" />
                                 <div class="post-content">
                                     <h4>@service.ServiceName</h4>
                                     <p>@service.Description</p>
-                                    <p class="post-price">Giá: @service.Price</p>
+                                    <p class="post-price">Giá:@string.Format("{0:N0} VND", service.Price)</p>
                                 </div>
                             </div>
                         }
@@ -130,7 +130,8 @@
                                 <p>Email: @customer.CustomerEmail</p>
                                 <p>Tour: @customer.TourName</p>
                                 <p>Ngày đặt: @customer.BookingDate.ToString("dd/MM/yyyy")</p>
-                                <p>Tổng giá: @customer.TotalPrice</p>
+                                <p>Tổng giá: @string.Format("{0:N0} VND", customer.TotalPrice)</p>
+
                             </div>
                         </div>
                     }

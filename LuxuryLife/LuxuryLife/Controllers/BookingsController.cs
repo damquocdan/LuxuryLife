@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
-using LuxuryLife.Controllers;
+using Microsoft.AspNetCore.Http;
 using Net.payOS.Types;
 using Net.payOS;
-using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using System.IO;
+using System.Net.Http;
 
 namespace LuxuryLife.Controllers
 {
@@ -46,35 +48,30 @@ namespace LuxuryLife.Controllers
         [HttpGet]
         public IActionResult Create(int? id, int? customerId)
         {
-            // Check if id or customerId is null
             if (!id.HasValue || !customerId.HasValue)
             {
                 TempData["Error"] = "Bạn cần đăng nhập để sử dụng chức năng này.";
                 return RedirectToAction("Index", "Login");
             }
 
-            // Find the tour by id
             var tour = _context.Tours.FirstOrDefault(t => t.TourId == id.Value);
             if (tour == null)
             {
                 return NotFound("Tour không tồn tại.");
             }
 
-            // Find the customer by customerId
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId.Value);
             if (customer == null)
             {
                 return NotFound("Khách hàng không tồn tại.");
             }
 
-            // Create the booking object
             var booking = new Booking
             {
                 TourId = id.Value,
                 CustomerId = customerId.Value
             };
 
-            // Populate ViewBag with tour and customer information
             ViewBag.TourName = tour.Name;
             ViewBag.CustomerName = customer.Name;
             ViewBag.PriceTour = tour.Price;
@@ -91,13 +88,11 @@ namespace LuxuryLife.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingId,CustomerId,TourId,BookingDate,NumberOfGuests,CheckInDate,CheckOutDate,Status,TotalPrice")] Booking booking)
         {
-            // Validate required parameters
             if (booking == null)
             {
                 return BadRequest("Thông tin đặt tour không hợp lệ.");
             }
 
-            // Validate Tour existence
             var tour = await _context.Tours.FindAsync(booking.TourId);
             if (tour == null)
             {
@@ -105,7 +100,6 @@ namespace LuxuryLife.Controllers
                 return View(booking);
             }
 
-            // Validate Customer existence
             var customer = await _context.Customers.FindAsync(booking.CustomerId);
             if (customer == null)
             {
@@ -113,7 +107,6 @@ namespace LuxuryLife.Controllers
                 return View(booking);
             }
 
-            // Check for existing booking
             var existingBooking = await _context.Bookings
                 .FirstOrDefaultAsync(b => b.TourId == booking.TourId && b.CustomerId == booking.CustomerId);
 
@@ -123,23 +116,20 @@ namespace LuxuryLife.Controllers
                 return View(booking);
             }
 
-            // Validate model state
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Set booking details
-                    booking.BookingDate = DateTime.UtcNow; // Use UTC for consistency
-                    booking.Status = "Pending";
+                    // Không thêm booking vào DB ở đây, chỉ lưu vào session
+                    booking.BookingDate = DateTime.UtcNow;
+                    booking.Status = "Pending"; // Trạng thái tạm thời, sẽ cập nhật sau khi thanh toán
 
-                    // Serialize and store booking in session for payment processing
-                    HttpContext.Session.SetString("PendingBooking", System.Text.Json.JsonSerializer.Serialize(booking));
+                    HttpContext.Session.SetString("PendingBooking", JsonSerializer.Serialize(booking));
 
-                    // Attempt to create payment URL
                     var paymentUrl = await CreatePayOSPayment(booking);
                     if (!string.IsNullOrEmpty(paymentUrl))
                     {
-                        return Redirect(paymentUrl); // Redirect to PayOS payment page
+                        return Redirect(paymentUrl); // Chuyển hướng đến trang thanh toán
                     }
                     else
                     {
@@ -153,13 +143,7 @@ namespace LuxuryLife.Controllers
                     return View(booking);
                 }
             }
-            else
-            {
-                // Log validation errors for debugging
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-            }
 
-            // Populate ViewBag for the view (similar to GET method)
             ViewBag.TourName = tour.Name;
             ViewBag.CustomerName = customer.Name;
             ViewBag.PriceTour = tour.Price;
@@ -170,6 +154,31 @@ namespace LuxuryLife.Controllers
             ViewBag.Image = tour.Image;
 
             return View(booking);
+        }
+
+        private async Task<string> GenerateQRCode(string content, string fileName)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                string qrApiUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={Uri.EscapeDataString(content)}";
+                var response = await httpClient.GetAsync(qrApiUrl);
+                response.EnsureSuccessStatusCode();
+
+                string qrFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "bookings");
+                if (!Directory.Exists(qrFolder))
+                {
+                    Directory.CreateDirectory(qrFolder);
+                }
+
+                string qrFilePath = Path.Combine(qrFolder, $"code_{fileName}.png");
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                using (var fileStream = new FileStream(qrFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
+                return $"/images/bookings/code_{fileName}.png";
+            }
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -243,7 +252,7 @@ namespace LuxuryLife.Controllers
                 _configuration["PayOS:ChecksumKey"]
             );
 
-            long orderCode = DateTimeOffset.Now.ToUnixTimeSeconds(); // Tạo mã đơn hàng tạm thời từ timestamp
+            long orderCode = DateTimeOffset.Now.ToUnixTimeSeconds();
             int amount = Convert.ToInt32(booking.TotalPrice ?? 0);
             string description = $"Tour {booking.TourId} KH {booking.CustomerId}";
             string returnUrl = "https://localhost:7266/Bookings/PaymentSuccess";
@@ -261,26 +270,47 @@ namespace LuxuryLife.Controllers
             );
 
             var response = await payOS.createPaymentLink(paymentData);
-            HttpContext.Session.SetString("OrderCode", orderCode.ToString()); // Lưu orderCode dưới dạng chuỗi
+            HttpContext.Session.SetString("OrderCode", orderCode.ToString());
             return response.checkoutUrl;
         }
 
         public async Task<IActionResult> PaymentSuccess()
         {
             var orderCode = long.Parse(Request.Query["orderCode"]);
-            var storedOrderCode = long.Parse(HttpContext.Session.GetString("OrderCode") ?? "0"); // Lấy và chuyển chuỗi thành long
+            var storedOrderCode = long.Parse(HttpContext.Session.GetString("OrderCode") ?? "0");
 
             if (orderCode == storedOrderCode)
             {
                 var bookingJson = HttpContext.Session.GetString("PendingBooking");
                 if (!string.IsNullOrEmpty(bookingJson))
                 {
-                    var booking = System.Text.Json.JsonSerializer.Deserialize<Booking>(bookingJson);
-                    booking.Status = "Confirmed";
+                    var booking = JsonSerializer.Deserialize<Booking>(bookingJson);
+                    booking.Status = "Confirmed"; // Đặt trạng thái là Confirmed
+                    booking.BookingDate = DateTime.UtcNow; // Cập nhật lại ngày đặt tại thời điểm xác nhận
 
-                    _context.Add(booking);
+                    // Thêm booking vào DB
+                    _context.Bookings.Add(booking);
                     await _context.SaveChangesAsync();
 
+                    // Lấy thông tin tour và customer
+                    var tour = await _context.Tours.FindAsync(booking.TourId);
+                    var customer = await _context.Customers.FindAsync(booking.CustomerId);
+
+                    // Tạo nội dung cho mã QR với CheckInDate và CheckOutDate
+                    string qrContent = $"Mã đơn đặt: {booking.BookingId}\n" +
+                                      $"Tên người đặt: {customer.Name}\n" +
+                                      $"Tour du lịch: {tour.Name}\n" +
+                                      $"Số người: {booking.NumberOfGuests}\n" +
+                                      $"Tổng giá: {booking.TotalPrice:N0} VND\n" +
+                                      $"Ngày bắt đầu: {booking.CheckInDate:yyyy-MM-dd}\n" +
+                                      $"Ngày kết thúc: {booking.CheckOutDate:yyyy-MM-dd}";
+
+                    // Tạo mã QR và lưu
+                    string qrFilePath = await GenerateQRCode(qrContent, booking.BookingId.ToString());
+                    booking.Code = qrFilePath;
+                    await _context.SaveChangesAsync();
+
+                    // Xóa favourite nếu có
                     var favourite = _context.Favourites
                         .FirstOrDefault(f => f.TourId == booking.TourId && f.CustomerId == booking.CustomerId);
                     if (favourite != null)
@@ -301,14 +331,14 @@ namespace LuxuryLife.Controllers
         public IActionResult PaymentCancelled()
         {
             var orderCode = long.Parse(Request.Query["orderCode"]);
-            var storedOrderCode = long.Parse(HttpContext.Session.GetString("OrderCode") ?? "0"); // Lấy và chuyển chuỗi thành long
+            var storedOrderCode = long.Parse(HttpContext.Session.GetString("OrderCode") ?? "0");
 
             if (orderCode == storedOrderCode)
             {
                 var bookingJson = HttpContext.Session.GetString("PendingBooking");
                 if (!string.IsNullOrEmpty(bookingJson))
                 {
-                    var booking = System.Text.Json.JsonSerializer.Deserialize<Booking>(bookingJson);
+                    var booking = JsonSerializer.Deserialize<Booking>(bookingJson);
                     TempData["Message"] = "Thanh toán đã bị hủy. Vui lòng thử lại nếu cần.";
 
                     HttpContext.Session.Remove("PendingBooking");

@@ -34,48 +34,37 @@
                                 </details>
                             </dd>
 
-
-                            <dt class="col-sm-5 text-lg font-weight-bold">
-                                🛎️ Dịch vụ
-                            </dt>
-                            <dd class="col-sm-7 text-lg text-black">
-                                @ViewBag.ServiceName
-                            </dd>
-
-                            <dt class="col-sm-5 text-lg font-weight-bold">
-                                🏡 Homestay
-                            </dt>
-                            <dd class="col-sm-7 text-lg text-black">
-                                @ViewBag.HomestayName
-                            </dd>
-
                             <dt class="col-sm-5 text-lg font-weight-bold">
                                 💰 Giá per người
                             </dt>
                             <dd class="col-sm-7 text-lg text-black">
-                                @Html.DisplayFor(model => model.PricePerson)
+                                @string.Format("{0:N0} VND", Model.PricePerson)
                             </dd>
+
 
                             <dt class="col-sm-5 text-lg font-weight-bold">
                                 📅 Ngày bắt đầu
                             </dt>
                             <dd class="col-sm-7 text-lg text-black">
-                                @Html.DisplayFor(model => model.StartDate)
+                                @Model.StartDate?.ToString("dd/MM/yyyy")
                             </dd>
+
 
                             <dt class="col-sm-5 text-lg font-weight-bold">
                                 📅 Ngày kết thúc
                             </dt>
                             <dd class="col-sm-7 text-lg text-black h5">
-                                @Html.DisplayFor(model => model.EndDate)
+                                @Model.EndDate?.ToString("dd/MM/yyyy")
                             </dd>
+
 
                             <dt class="col-sm-5 text-lg  font-weight-bold">
                                 💲 Giá
                             </dt>
                             <dd class="col-sm-7 text-success text-lg h5">
-                                @Html.DisplayFor(model => model.Price)
+                                @string.Format("{0:N0} VND", Model.Price)
                             </dd>
+
 
                             <dt class="col-sm-5 text-lg font-weight-bold">
                                 🔥 Trạng thái
@@ -103,7 +92,7 @@
                                 🕒 Ngày tạo
                             </dt>
                             <dd class="col-sm-7 text-lg">
-                                @Html.DisplayFor(model => model.Createdate)
+                                @Model.Createdate?.ToString("dd/MM/yyyy")
                             </dd>
 
                             <dt class="col-sm-5 text-lg font-weight-bold">

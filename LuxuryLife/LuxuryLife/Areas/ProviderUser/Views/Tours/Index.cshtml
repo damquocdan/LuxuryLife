@@ -140,9 +140,8 @@
                                 <p>
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </p>
-                                <p>
-                                    @Html.DisplayFor(modelItem => item.Createdate)
-                                </p>
+                                <p>@item.Createdate?.ToString("dd/MM/yyyy")</p>
+
                                 @if (item.Status == "Active")
                                 {
                                     <span class="badge bg-success">Hoạt động</span>

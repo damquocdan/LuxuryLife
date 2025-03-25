@@ -27,8 +27,9 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.CheckInDate)</td>
-                            <td>@Html.DisplayFor(modelItem => item.CheckOutDate)</td>
+                            <td>@item.CheckInDate?.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CheckOutDate?.ToString("dd/MM/yyyy")</td>
+
                             <td>
                                 @if (item.Status == "Confirmed")
                                 {
