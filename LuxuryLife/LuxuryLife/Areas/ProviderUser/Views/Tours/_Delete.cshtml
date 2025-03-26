@@ -3,15 +3,16 @@
 @{
     ViewData["Title"] = "Delete";
 }
-<div class=" ">
-    <div class="row justify-content-center" style= "background: rgba(255, 255, 255, 0.4);">
+<div class="position-relative border rounded p-3 bg-dark text-white">
+    <!-- Nút đóng -->
+    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" aria-label="Đóng" onclick="closeDetailSection()"></button>
+    <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card shadow-lg position-relative">
                 <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
                     <h2 class="card-title display-5 text-center w-100">
                         <i class="fas fa-exclamation-triangle me-2"></i>Xác nhận xóa Tour
                     </h2>
-                    <button type="button" class="btn-close btn-close-white" aria-label="Đóng" onclick="closeDetailSection()"></button>
                 </div>
                 <div class="card-body">
                     <div class="text-center">
@@ -39,12 +40,6 @@
 </div>
 
 <style>
-
-    .card {
-         background: rgba(255, 255, 255, 0.4);
-        position: relative;
-        z-index: 3;
-    }
 
     .tour-image {
         max-height: 300px;

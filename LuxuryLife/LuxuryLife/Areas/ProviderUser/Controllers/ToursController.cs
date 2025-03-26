@@ -89,6 +89,28 @@ namespace LuxuryLife.Areas.ProviderUser.Controllers
             }
             return View(bookings);
         }
+        public async Task<IActionResult> Reviews(int id)
+        {
+            var reviews = await _context.Reviews
+                .Where(b => b.TourId == id)
+                .Include(b => b.Customer)
+                .Include(b => b.Tour).Include(b => b.ReviewOns)
+                .ToListAsync();
+
+            if (reviews == null || !reviews.Any())
+            {
+                ViewBag.Message = "Chưa có khách hàng nào dánh giá tour này.";
+            }
+
+            var tour = await _context.Tours.FindAsync(id);
+            ViewBag.TourName = tour?.Name ?? "Không xác định";
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_Reviews", reviews);
+            }
+            return View(reviews);
+        }
         // GET: ProviderUser/Tours/Create
 
         public IActionResult Create()

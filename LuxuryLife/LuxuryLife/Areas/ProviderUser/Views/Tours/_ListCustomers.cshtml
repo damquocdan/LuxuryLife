@@ -3,67 +3,67 @@
 @{
     ViewData["Title"] = "Danh sách khách hàng đặt tour";
 }
+<div class="position-relative border rounded p-3 bg-dark text-white">
+    <!-- Nút đóng -->
+    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" aria-label="Đóng" onclick="closeDetailSection()"></button>
+    <div class="body">
+        <h1 class="text-light">
+            <i class="fas fa-users"></i> Danh sách khách hàng đặt tour: @ViewBag.TourName
+        </h1>
 
-<div class="body">
-    <h1 class="text-light"><i class="fas fa-users"></i> Danh sách khách hàng đặt tour: @ViewBag.TourName
-        <button id="closeDetailSection" class="btn btn-danger" onclick="closeDetailSection()">
-            <i class="fas fa-times"></i>
-        </button>
-    </h1>
-
-    <div class="row">
-        <div class="col-md-12 table-container" id="list-section">
-            @if (ViewBag.Message != null)
-            {
-                <p class="text-center text-danger">@ViewBag.Message</p>
-            }
-            else
-            {
-                <table class="table" id="bookingList">
-                    <thead>
-                        <tr>
-                            <th><i class="fas fa-user"></i> Khách hàng</th>
-                            <th><i class="fas fa-calendar-alt"></i> Ngày đặt</th>
-                            <th><i class="fas fa-calendar-check"></i> Thời gian</th>
-                            <th><i class="fas fa-users"></i> Số lượng khách</th>
-                            <th><i class="fas fa-money-bill-wave"></i> Tổng giá</th>
-                            <th><i class="fas fa-info-circle"></i> Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+        <div class="row">
+            <div class="col-md-12 table-container" id="list-section">
+                @if (ViewBag.Message != null)
+                {
+                    <p class="text-center text-danger">@ViewBag.Message</p>
+                }
+                else
+                {
+                    <table class="table" id="bookingList">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Customer.Name)
-                                    <br />
-                                    @Html.DisplayFor(modelItem => item.Customer.Email)
-                                    <br />
-                                    @Html.DisplayFor(modelItem => item.Customer.Phone)
-                                </td>
-                                <td>@item.BookingDate?.ToString("dd/MM/yyyy")</td>
-                                <td> Từ @item.CheckInDate?.ToString("dd/MM/yyyy") <hr /> Đến @item.CheckOutDate?.ToString("dd/MM/yyyy")</td>
-                                <td>@Html.DisplayFor(modelItem => item.NumberOfGuests)</td>
-                                <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
-                                <td>
-                                    @if (item.Status == "Confirmed")
-                                    {
-                                        <span class="text-success font-weight-bold">Đã thanh toán</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-danger font-weight-bold">Chưa thanh toán</span>
-                                    }
-                                </td>
+                                <th><i class="fas fa-user"></i> Khách hàng</th>
+                                <th><i class="fas fa-calendar-alt"></i> Ngày đặt</th>
+                                <th><i class="fas fa-calendar-check"></i> Thời gian</th>
+                                <th><i class="fas fa-users"></i> Số lượng khách</th>
+                                <th><i class="fas fa-money-bill-wave"></i> Tổng giá</th>
+                                <th><i class="fas fa-info-circle"></i> Trạng thái</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            }
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Customer.Name)
+                                        <br />
+                                        @Html.DisplayFor(modelItem => item.Customer.Email)
+                                        <br />
+                                        @Html.DisplayFor(modelItem => item.Customer.Phone)
+                                    </td>
+                                    <td>@item.BookingDate?.ToString("dd/MM/yyyy")</td>
+                                    <td> Từ @item.CheckInDate?.ToString("dd/MM/yyyy") <hr /> Đến @item.CheckOutDate?.ToString("dd/MM/yyyy")</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NumberOfGuests)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
+                                    <td>
+                                        @if (item.Status == "Confirmed")
+                                        {
+                                            <span class="text-success font-weight-bold">Đã thanh toán</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger font-weight-bold">Chưa thanh toán</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
     </div>
 </div>
-
 
 <style>
 
@@ -72,7 +72,6 @@
         overflow-y: auto;
         border-radius: 10px;
         padding: 10px;
-        background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(5px);
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         scroll-behavior: smooth;
