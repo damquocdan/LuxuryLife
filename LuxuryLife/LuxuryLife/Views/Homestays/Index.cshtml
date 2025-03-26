@@ -1,72 +1,198 @@
 ﻿@model IEnumerable<LuxuryLife.Models.Homestay>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Homestays";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .welcome-hero {
+        height: 400px;
+    }
 
-<h1>Index</h1>
+    .welcome-hero-txt {
+        padding-top: 50px;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PricePerNight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProviderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tour)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePerNight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProviderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tour.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.HomestayId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.HomestayId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.HomestayId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .explore {
+        padding: 10px 0 95px;
+        background: #f8fafb;
+    }
+
+    .section-header h2 {
+        font-size: 50px;
+        color: #ff545a;
+    }
+</style>
+<section id="home" class="welcome-hero">
+    <div class="container">
+        <div class="welcome-hero-txt">
+            <h2>Dịch vụ du lịch tốt nhất <br> cho tất cả những gì bạn cần </h2>
+            <p>
+                Tìm kiếm những Tour du lịch, Homestays và các dịch vụ mọi thứ với chỉ một CLICK
+            </p>
+        </div>
+        <form asp-action="Index" asp-controller="Tours" method="get">
+            <div class="welcome-hero-serch-box">
+                <div class="welcome-hero-form">
+                    <div class="single-welcome-hero-form">
+                        <h3>What?</h3>
+                        <input type="text" name="query" placeholder="Ex: place, restaurant, food" />
+                        <div class="welcome-hero-form-icon">
+                            <i class="flaticon-list-with-dots"></i>
+                        </div>
+                    </div>
+                    <div class="single-welcome-hero-form">
+                        <h3>Location</h3>
+                        <input type="text" name="description" placeholder="Ex: Hà Nội, Đà Nẵng, Đà Lạt" />
+                        <div class="welcome-hero-form-icon">
+                            <i class="flaticon-gps-fixed-indicator"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="welcome-hero-serch">
+                    <button type="submit" class="welcome-hero-btn">
+                        Tìm kiếm <i data-feather="search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+<div class="social-feed-container">
+    <div class="header-section">
+        <h1>Khám phá Homestays</h1>
+    </div>
+
+    <div class="homestay-feed">
+        @foreach (var item in Model)
+        {
+            <div class="homestay-card">
+                <div class="card-image">
+                    <img src="@item.Image" alt="@item.Name" onerror="this.src='/images/default-homestay.jpg'" />
+                </div>
+
+                <div class="card-content">
+                    <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+                    <p class="description">@Html.DisplayFor(modelItem => item.Description)</p>
+
+                    <div class="details">
+                        <span class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </span>
+                        <span class="price">
+                            @Html.DisplayFor(modelItem => item.PricePerNight)/Đêm
+                        </span>
+                    </div>
+
+                    <div class="tour-info">
+                        <span>Tour: @Html.DisplayFor(modelItem => item.Tour.Name)</span>
+                    </div>
+
+                    <div class="provider">
+                        <img src="@Html.DisplayFor(modelItem => item.Tour.Provider.Avatar)" style="border-radius:50%;width:50px; height:50px;"/>
+                        <span>@Html.DisplayFor(modelItem => item.Tour.Provider.Name)</span>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@item.TourId" class="action-btn details">Xem chi tiết</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .social-feed-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .create-btn {
+        padding: 8px 15px;
+        background-color: #3897f0;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .homestay-feed {
+        display: grid;
+        gap: 20px;
+    }
+
+    .homestay-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .card-content {
+        padding: 15px;
+    }
+
+        .card-content h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+    .description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .tour-info, .provider {
+        font-size: 13px;
+        color: #888;
+        margin: 5px 0;
+    }
+
+    .card-actions {
+        padding: 10px 15px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-btn {
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .edit {
+        background-color: #3897f0;
+        color: white;
+    }
+
+
+    .delete {
+        background-color: #f44336;
+        color: white;
+    }
+</style>

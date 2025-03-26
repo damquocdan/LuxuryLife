@@ -21,7 +21,7 @@ namespace LuxuryLife.Controllers
         // GET: Homestays
         public async Task<IActionResult> Index()
         {
-            var tourBookingContext = _context.Homestays.Include(h => h.Tour);
+            var tourBookingContext = _context.Homestays.Include(h => h.Tour).Include(h => h.Tour.Provider);
             return View(await tourBookingContext.ToListAsync());
         }
 

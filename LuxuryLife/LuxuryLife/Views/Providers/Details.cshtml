@@ -1,75 +1,425 @@
 ﻿@model LuxuryLife.Models.Provider
+@using LuxuryLife.Models
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Provider Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Assuming these are available from your controller
+    var homestays = ViewBag.Homestays as IEnumerable<Homestay>;
+    var tours = ViewBag.Tours as IEnumerable<Tour>;
+    var services = ViewBag.Services as IEnumerable<Service>;
+    var tourImages = ViewBag.TourImages as IEnumerable<Listimagestour>;
+    var reviews = ViewBag.Reviews as IEnumerable<Review>;
 }
 
-<!DOCTYPE html>
+<div class="profile-container">
+    <!-- Cover and Profile Picture -->
+    <div class="cover-section">
+        <div class="profile-picture">
+            <img src="@Model.Avatar" alt="@Model.Name" onerror="this.src='/images/default-avatar.jpg'" />
+        </div>
+    </div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
+    <!-- Main Content -->
+    <div class="row profile-content">
+        <!-- Left Column: Provider Info -->
+        <div class="col-md-2 provider-info">
+            <h3>@Model.Name</h3>
+            <div class="info-section">
+                <p><i class="fas fa-envelope"></i> @Model.Email</p>
+                <p><i class="fas fa-phone"></i> @Model.Phone</p>
+                <p><i class="fas fa-map-marker-alt"></i> @Model.Address</p>
+                <p><i class="fas fa-star"></i> Đánh giá: @Model.Rating</p>
+                <p><i class="fas fa-calendar"></i> Tham gia ngày: @Model.Createdate?.ToString("dd/MM/yyyy")</p>
+            </div>
+            <a asp-action="Edit" asp-route-id="@Model.ProviderId" class="btn btn-primary">Edit Profile</a>
+        </div>
 
-<div>
-    <h4>Provider</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avatar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Avatar)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Createdate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Createdate)
-        </dd>
-    </dl>
+        <!-- Middle Column: Posts (Tours, Homestays, Services) -->
+        <div class="col-md-7 posts-section">
+            <!-- Tours -->
+            @foreach (var tour in tours.Where(t => t.ProviderId == Model.ProviderId))
+            {
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="@Model.Avatar" class="post-avatar" />
+                        <div>
+                            <h4>@tour.Name</h4>
+                            <small>@tour.Createdate?.ToString("dd/MM/yyyy")</small>
+                        </div>
+                    </div>
+                    <img src="@tour.Image" class="post-image" />
+                    <p>@tour.Description</p>
+                    <div class="post-details">
+                        <span>Giá: @tour.Price?.ToString("#,##0") VND</span>
+
+                        <span>Thời gian: Từ @tour.StartDate?.ToString("dd/MM/yyyy") Đến @tour.EndDate?.ToString("dd/MM/yyyy")</span>
+                    </div>
+                    <!-- Comments -->
+                    <div class="comments-section chat-container">
+                        <!-- Comment Form -->
+                        @if (ViewBag.CurrentUser != null)
+                        {
+                            <div class="comment-form mb-4">
+                                <form asp-controller="Reviews" asp-action="CreateReview" method="post">
+                                    <input type="hidden" name="TourId" value="@tour.TourId" />
+                                    <div class="d-flex align-items-start">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <img src="@(ViewBag.CurrentUser.Avatar ?? "/default-avatar.png")" class="rounded-circle me-2" style="width: 70px; height: 70px; object-fit: cover;" />
+                                            </div>
+                                            <div class="col-md-11">
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex flex-column">
+                                                        <textarea name="Comment" class="form-control chat-input mb-2" placeholder="Viết bình luận của bạn..." required></textarea>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="rating">
+                                                                <label>Đánh giá:</label>
+                                                                <select name="Rating" class="form-select d-inline-block w-auto">
+                                                                    <option value="1">1 sao</option>
+                                                                    <option value="2">2 sao</option>
+                                                                    <option value="3">3 sao</option>
+                                                                    <option value="4">4 sao</option>
+                                                                    <option value="5" selected>5 sao</option>
+                                                                </select>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary btn-sm">Đăng bình luận</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <p><a href="@Url.Action("Index", "Login")">Đăng nhập</a> để thêm bình luận.</p>
+                        }
+
+                        <!-- Display Reviews and Replies -->
+                        @{
+                            var tourReviews = ViewBag.Reviews as IEnumerable<Review>;
+                            var tourReviewOns = ViewBag.ReviewOns as IEnumerable<ReviewOn>;
+                        }
+                        @if (tourReviews != null && tourReviews.Any(r => r.TourId == tour.TourId))
+                        {
+                            @foreach (var review in tourReviews.Where(r => r.TourId == tour.TourId))
+                            {
+                                var customer = (ViewBag.Customers as IEnumerable<Customer>)
+                                .FirstOrDefault(c => c.CustomerId == review.CustomerId);
+                                <div class="chat-message">
+                                    <div class="d-flex align-items-start">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <img src="@(customer?.Avatar ?? "/default-avatar.png")" class="rounded-circle me-2" style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;" />
+                                            </div>
+                                            <div class="col-md-11">
+                                                <div class="message-content">
+                                                    <strong>@(customer?.Name ?? "Khách ẩn danh")</strong>
+                                                    <div class="message-bubble">
+                                                        <p class="mb-0">@review.Comment</p>
+                                                    </div>
+                                                    <div class="message-meta">
+                                                        <small class="text-muted me-2">@(review.Createdate.HasValue ? review.Createdate.Value.ToString("HH:mm, dd/MM/yyyy") : "N/A")</small>
+                                                        <button class="btn btn-link p-0 me-2 reply-btn text-muted" data-review-id="@review.ReviewId">Trả lời</button>
+                                                        <span class="text-muted">• @review.Rating sao</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Replies -->
+                                    @if (tourReviewOns != null && tourReviewOns.Any(ro => ro.ReviewId == review.ReviewId))
+                                    {
+                                        <div class="replies ms-5">
+                                            @foreach (var reply in tourReviewOns.Where(ro => ro.ReviewId == review.ReviewId))
+                                            {
+                                                var replyCustomer = (ViewBag.Customers as IEnumerable<Customer>)
+                                                .FirstOrDefault(c => c.CustomerId == reply.CustomerId);
+                                                <div class="chat-message reply">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="row" style="margin-left:50px;">
+                                                            <div class="col-md-1">
+                                                                <img src="@(replyCustomer?.Avatar ?? "/default-avatar.png")" class="rounded-circle me-2" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;" />
+                                                            </div>
+                                                            <div class="col-md-11">
+                                                                <div class="message-content">
+                                                                    <strong>@(replyCustomer?.Name ?? "Khách ẩn danh")</strong>
+                                                                    <div class="message-bubble">
+                                                                        <p class="mb-0">@reply.Comment</p>
+                                                                    </div>
+                                                                    <div class="message-meta">
+                                                                        <small class="text-muted">@(reply.Createdate.HasValue ? reply.Createdate.Value.ToString("HH:mm, dd/MM/yyyy") : "N/A")</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+
+                                    <!-- Reply Form -->
+                                    <div class="reply-form mt-2 ms-5" style="display: none;" data-review-id="@review.ReviewId">
+                                        @if (ViewBag.CurrentUser != null)
+                                        {
+                                            <form asp-controller="Reviews" asp-action="CreateReply" method="post">
+                                                <input type="hidden" name="ReviewId" value="@review.ReviewId" />
+                                                <div class="d-flex align-items-start">
+                                                    <img src="@(ViewBag.CurrentUser.Avatar ?? "/default-avatar.png")" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" />
+                                                    <div class="flex-grow-1">
+                                                        <input type="text" name="Comment" class="form-control chat-input rounded-pill" placeholder="Viết câu trả lời..." required />
+                                                        <button type="submit" class="btn btn-primary btn-sm mt-2">Gửi</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <p><a href="@Url.Action("Index", "Login")">Đăng nhập</a> để trả lời bình luận.</p>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>Chưa có đánh giá nào.</p>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Homestays -->
+            @foreach (var homestay in homestays.Where(h => h.ProviderId == Model.ProviderId))
+            {
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="@Model.Avatar" class="post-avatar" />
+                        <h4>@homestay.Name</h4>
+                    </div>
+                    <img src="@homestay.Image" class="post-image" />
+                    <p>@homestay.Description</p>
+                    <div class="post-details">
+                        <span>Price: $@homestay.PricePerNight/night</span>
+                        <span>Location: @homestay.Address</span>
+                    </div>
+                </div>
+            }
+
+            <!-- Services -->
+            @foreach (var service in services.Where(s => s.TourId.HasValue && tours.Any(t => t.TourId == s.TourId && t.ProviderId == Model.ProviderId)))
+            {
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="@Model.Avatar" class="post-avatar" />
+                        <h4>@service.ServiceName</h4>
+                    </div>
+                    <img src="@service.Image" class="post-image" />
+                    <p>@service.Description</p>
+                    <div class="post-details">
+                        <span>Price: $@service.Price</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Right Column: Tour Images -->
+        <div class="col-md-3 photos-section">
+            <h4>Photos</h4>
+            <div class="photo-grid">
+                @foreach (var image in tourImages.Where(ti => tours.Any(t => t.TourId == ti.TourId && t.ProviderId == Model.ProviderId)))
+                {
+                    <div class="photo-item">
+                        <img src="@image.ImageUrl" alt="@image.ImageDescription" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProviderId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
-</body>
-</html>
+
+<style>
+    .profile-container {
+        background-image: url('/images/TourHalong.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0 auto;
+    }
+
+    .cover-section {
+        position: relative;
+        height:150px;
+    }
+
+    .cover-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-picture {
+        position: absolute;
+        bottom: -50px;
+        left: 20px;
+    }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+    .profile-content {
+        padding: 20px;
+    }
+
+    .provider-info {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 60px;
+    }
+
+    .info-section p {
+        margin: 10px 0;
+    }
+
+    .posts-section {
+        padding: 0 10px;
+    }
+
+    .post-card {
+        background: white;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    .post-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .post-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .post-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .post-details {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        margin: 10px 0;
+    }
+
+    .comments-section {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+    }
+
+    .comment {
+        display: flex;
+        margin: 10px 0;
+    }
+
+    .comment-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .photos-section {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
+    }
+
+    .photo-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .comment-form {
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+
+    .chat-container {
+        padding: 15px 0;
+    }
+
+    .chat-message {
+        margin-bottom: 15px;
+    }
+
+    .message-content {
+        width: 100%;
+    }
+
+    .message-bubble {
+        background: #f1f0f0;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 5px 0;
+    }
+
+    .message-meta {
+        font-size: 12px;
+    }
+
+    .reply-btn {
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .replies {
+        border-left: 2px solid #eee;
+        padding-left: 15px;
+    }
+
+    .chat-input {
+        resize: vertical;
+        min-height: 60px;
+    }
+
+        .chat-input.rounded-pill {
+            height: 38px;
+        }
+</style>
+<script>
+    document.querySelectorAll('.reply-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const reviewId = this.getAttribute('data-review-id');
+            const replyForm = document.querySelector(`.reply-form[data-review-id="${reviewId}"]`);
+            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+        });
+    });
+</script>
