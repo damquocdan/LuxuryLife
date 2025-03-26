@@ -81,7 +81,7 @@
     }
 </style>
 <div class="delete-admin-container">
-    <button class="close-btn" onclick="window.location.href='@Url.Action("Index")'">
+    <button class="close-btn" onclick="closeDetailSection()">
         <i class="fas fa-times"></i>
     </button>
     <h3><i class="fas fa-trash-alt"></i> Bạn có muốn xóa tài khoản @Html.DisplayFor(model => model.Email) này?</h3>

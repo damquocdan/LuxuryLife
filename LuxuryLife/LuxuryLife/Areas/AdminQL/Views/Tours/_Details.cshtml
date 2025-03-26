@@ -26,23 +26,15 @@
                     <dt class="col-sm-4"><i class="fas fa-file-alt me-2"></i> Mô tả</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
 
-                    <dt class="col-sm-4"><i class="fas fa-concierge-bell me-2"></i> Dịch vụ</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ServiceId)</dd>
-
-                    <dt class="col-sm-4"><i class="fas fa-home me-2"></i> Homestay</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.HomestayId)</dd>
-
                     <dt class="col-sm-4"><i class="fas fa-user-friends me-2"></i> Giá per người</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PricePerson)</dd>
+                    <dd class="col-sm-8">@string.Format("{0:N0} VND", Model.PricePerson)</dd>
 
-                    <dt class="col-sm-4"><i class="fas fa-calendar-check me-2"></i> Ngày bắt đầu</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.StartDate)</dd>
-
-                    <dt class="col-sm-4"><i class="fas fa-calendar-times me-2"></i> Ngày kết thúc</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EndDate)</dd>
+                    <dt class="col-sm-4"><i class="fas fa-calendar-check me-2"></i> Thời gian hoạt động</dt>
+                    <dd class="col-sm-8">@Model.StartDate?.ToString("dd/MM/yyyy") - @Model.EndDate?.ToString("dd/MM/yyyy")</dd>
 
                     <dt class="col-sm-4"><i class="fas fa-dollar-sign me-2"></i> Giá</dt>
-                    <dd class="col-sm-8 text-success h5">@Html.DisplayFor(model => model.Price)</dd>
+                    <dd class="col-sm-8 text-success h5">@string.Format("{0:N0} VND", Model.Price)</dd>
+
 
                     <dt class="col-sm-4"><i class="fas fa-check-circle me-2"></i> Trạng thái</dt>
                     <dd class="col-sm-8 h5">
@@ -65,7 +57,7 @@
                     </dd>
 
                     <dt class="col-sm-4"><i class="fas fa-calendar-alt me-2"></i> Ngày tạo</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Createdate)</dd>
+                    <dd class="col-sm-8">@Model.Createdate?.ToString("dd/MM/yyyy")</dd>
 
                     <dt class="col-sm-4"><i class="fas fa-user-tie me-2"></i> Nhà cung cấp</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.Provider.Name)</dd>
@@ -164,10 +156,3 @@
             margin-right: 5px;
         }
     </style>
-    @section Scripts {
-        <script>
-            function closeDetailSection() {
-                window.location.href = "@Url.Action("Index", "Tour")";
-            }
-        </script>
-    }
