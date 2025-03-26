@@ -37,6 +37,10 @@ public partial class TourBookingContext : DbContext
 
     public virtual DbSet<Provider> Providers { get; set; }
 
+    public virtual DbSet<ProviderBankInfo> ProviderBankInfos { get; set; }
+
+    public virtual DbSet<ProviderRevenue> ProviderRevenues { get; set; }
+
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<ReviewOn> ReviewOns { get; set; }
@@ -269,6 +273,43 @@ public partial class TourBookingContext : DbContext
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Phone).HasMaxLength(15);
             entity.Property(e => e.Rating).HasColumnType("decimal(3, 2)");
+        });
+
+        modelBuilder.Entity<ProviderBankInfo>(entity =>
+        {
+            entity.HasKey(e => e.BankInfoId).HasName("PK__Provider__6E556906E78AC512");
+
+            entity.ToTable("ProviderBankInfo");
+
+            entity.Property(e => e.BankAccountNumber).HasMaxLength(50);
+            entity.Property(e => e.BankName).HasMaxLength(100);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.FullName).HasMaxLength(100);
+            entity.Property(e => e.Qrcode).HasColumnName("QRCode");
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.ProviderBankInfos)
+                .HasForeignKey(d => d.ProviderId)
+                .HasConstraintName("FK_ProviderBank");
+        });
+
+        modelBuilder.Entity<ProviderRevenue>(entity =>
+        {
+            entity.HasKey(e => e.RevenueId).HasName("PK__Provider__275F16DDBB6CE1DE");
+
+            entity.ToTable("ProviderRevenue");
+
+            entity.HasIndex(e => new { e.ProviderId, e.RevenueMonth, e.RevenueYear }, "UQ_ProviderRevenue").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.RevenueAmount).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.ProviderRevenues)
+                .HasForeignKey(d => d.ProviderId)
+                .HasConstraintName("FK_ProviderRevenue");
         });
 
         modelBuilder.Entity<Review>(entity =>
