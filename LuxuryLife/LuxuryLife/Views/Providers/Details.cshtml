@@ -206,8 +206,8 @@
                     <img src="@homestay.Image" class="post-image" />
                     <p>@homestay.Description</p>
                     <div class="post-details">
-                        <span>Price: $@homestay.PricePerNight/night</span>
-                        <span>Location: @homestay.Address</span>
+                        <span>Giá: $@homestay.PricePerNight?.ToString("#,##0") VND/Đêm</span>
+                        <span>Vị trí: @homestay.Address</span>
                     </div>
                 </div>
             }
@@ -223,7 +223,7 @@
                     <img src="@service.Image" class="post-image" />
                     <p>@service.Description</p>
                     <div class="post-details">
-                        <span>Price: $@service.Price</span>
+                        <span>Giá: $@service.Price?.ToString("#,##0") VND</span>
                     </div>
                 </div>
             }

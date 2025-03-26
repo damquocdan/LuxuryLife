@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using LuxuryLife.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuxuryLife.Areas.AdminQL.Controllers
 {
@@ -15,153 +16,189 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var dashboardViewModel = new DashboardViewModel
             {
-                // 1. Pie Chart Data
-                TourStatusDistribution = GetTourStatusDistribution(),
-                RatingDistribution = GetRatingDistribution(),
-                HomestayByProvider = GetHomestayByProvider(),
-                RevenueByHomestay = GetRevenueByHomestay(),
+                // Pie Chart Data
+                TourStatusDistribution = await GetTourStatusDistribution(),
+                RatingDistribution = await GetRatingDistribution(),
+                HomestayByProvider = await GetHomestayByProvider(),
+                RevenueByHomestay = await GetRevenueByHomestay(),
 
-                // 2. Bar Chart Data
-                ToursByProvider = GetToursByProvider(),
-                BookingsByMonth = GetBookingsByMonth(),
-                RevenueByTour = GetRevenueByTour(),
-                ServicesByTour = GetServicesByTour(),
+                // Bar Chart Data
+                ToursByProvider = await GetToursByProvider(),
+                BookingsByMonth = await GetBookingsByMonth(),
+                RevenueByProviderByMonth = await GetRevenueByProviderByMonth(), // Updated method
+                ServicesByTour = await GetServicesByTour(),
 
-                // 3. Tổng hợp số liệu
-                TotalTours = _context.Tours.Count(),
-                TotalHomestays = _context.Homestays.Count(),
-                TotalBookings = _context.Bookings.Count(),
-                TotalCustomers = _context.Bookings.Select(b => b.CustomerId).Distinct().Count(),
-                TotalReviews = _context.Reviews.Count(),
-                TotalContacts = _context.Contacts.Count(),
+                // Tổng hợp số liệu
+                TotalTours = await _context.Tours.CountAsync(),
+                TotalHomestays = await _context.Homestays.CountAsync(),
+                TotalBookings = await _context.Bookings.CountAsync(),
+                TotalCustomers = await _context.Bookings.Select(b => b.CustomerId).Distinct().CountAsync(),
+                TotalReviews = await _context.Reviews.CountAsync(),
+                TotalContacts = await _context.Contacts.CountAsync(),
 
-                // 4. Doanh thu & số liệu khác
-                TotalRevenue = GetTotalRevenue(),
-                TopReviewedTour = GetTopReviewedTour(),
-                TopProviderByTours = GetTopProviderByTours(),
-                TopCustomerByBookings = GetTopCustomerByBookings()
+                // Doanh thu & số liệu khác
+                TotalRevenue = await GetTotalRevenue(),
+                TopReviewedTour = await GetTopReviewedTour(),
+                TopProviderByTours = await GetTopProviderByTours(),
+                TopCustomerByBookings = await GetTopCustomerByBookings()
             };
 
             return View(dashboardViewModel);
         }
 
         #region Pie Chart Methods
-        private Dictionary<string, int> GetTourStatusDistribution()
+        private async Task<Dictionary<string, int>> GetTourStatusDistribution()
         {
-            return _context.Tours
+            return await _context.Tours
                 .GroupBy(t => t.Status ?? "Unknown")
-                .ToDictionary(g => g.Key, g => g.Count());
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
         }
 
-        private Dictionary<int, int> GetRatingDistribution()
+        private async Task<Dictionary<int, int>> GetRatingDistribution()
         {
-            return _context.Reviews
-                .GroupBy(r => (int)r.Rating) // Ép kiểu decimal sang int nếu Rating là decimal
-                .ToDictionary(g => g.Key, g => g.Count());
+            return await _context.Reviews
+                .GroupBy(r => (int)r.Rating)
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
         }
 
-        private Dictionary<int, int> GetHomestayByProvider()
+        private async Task<Dictionary<string, int>> GetHomestayByProvider()
         {
-            return _context.Homestays
-                .Where(h => h.ProviderId.HasValue) // Loại bỏ null
-                .GroupBy(h => h.ProviderId.Value) // Sử dụng .Value
-                .ToDictionary(g => g.Key, g => g.Count());
+            return await _context.Homestays
+                .Include(h => h.Tour.Provider) // Load dữ liệu từ bảng Provider
+                .Where(h => h.ProviderId != null && h.Tour.Provider != null) // Kiểm tra Provider tồn tại
+                .GroupBy(h => h.Tour.Provider.Name) // Nhóm theo tên nhà cung cấp
+                .ToDictionaryAsync(g => g.Key, g => g.Count()); // Trả về Dictionary<string, int>
         }
 
-        private Dictionary<int, decimal> GetRevenueByHomestay()
+
+        private async Task<Dictionary<int, decimal>> GetRevenueByHomestay()
         {
-            return _context.Bookings
+            return await _context.Bookings
                 .Where(b => b.Status == "Completed" && b.TourId.HasValue)
                 .Join(_context.Tours.Where(t => t.HomestayId.HasValue),
                     b => b.TourId,
                     t => t.TourId,
-                    (b, t) => new { b.TotalPrice, HomestayId = t.HomestayId.Value }) // Sử dụng .Value
+                    (b, t) => new { b.TotalPrice, HomestayId = t.HomestayId.Value })
                 .GroupBy(x => x.HomestayId)
-                .ToDictionary(g => g.Key, g => g.Sum(x => x.TotalPrice ?? 0m));
+                .ToDictionaryAsync(g => g.Key, g => g.Sum(x => x.TotalPrice ?? 0m));
         }
         #endregion
 
         #region Bar Chart Methods
-        private Dictionary<int, int> GetToursByProvider()
+        private async Task<Dictionary<int, int>> GetToursByProvider()
         {
-            return _context.Tours
-                .Where(t => t.ProviderId.HasValue) // Loại bỏ null
-                .GroupBy(t => t.ProviderId.Value) // Sử dụng .Value
-                .ToDictionary(g => g.Key, g => g.Count());
+            return await _context.Tours
+                .Where(t => t.ProviderId.HasValue)
+                .GroupBy(t => t.ProviderId.Value)
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
         }
 
-        private Dictionary<int, int> GetBookingsByMonth()
+        private async Task<Dictionary<int, int>> GetBookingsByMonth()
         {
-            return _context.Bookings
-                .Where(b => b.BookingDate.HasValue) // Loại bỏ null
-                .GroupBy(b => b.BookingDate.Value.Month) // Sử dụng .Value
-                .ToDictionary(g => g.Key, g => g.Count());
+            return await _context.Bookings
+                .Where(b => b.BookingDate.HasValue)
+                .GroupBy(b => b.BookingDate.Value.Month)
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
         }
 
-        private Dictionary<int, decimal> GetRevenueByTour()
+        private async Task<Dictionary<string, decimal>> GetRevenueByProviderByMonth()
         {
-            return _context.Bookings
-                .Where(b => b.Status == "Completed" && b.TourId.HasValue) // Loại bỏ null
-                .GroupBy(b => b.TourId.Value) // Sử dụng .Value
-                .ToDictionary(g => g.Key, g => g.Sum(b => b.TotalPrice ?? 0m));
+            var revenueData = await _context.Bookings
+                .Where(b => b.Status == "Confirmed" && b.TourId.HasValue && b.BookingDate.HasValue)
+                .Join(_context.Tours.Where(t => t.ProviderId.HasValue),
+                    b => b.TourId,
+                    t => t.TourId,
+                    (b, t) => new { b.TotalPrice, t.Provider.Name, b.BookingDate })
+                .GroupBy(x => new { x.Name, Month = x.BookingDate.Value.Month })
+                .Select(g => new
+                {
+                    Key = $"Provider {g.Key.Name} - Tháng {g.Key.Month}",
+                    Revenue = g.Sum(x => x.TotalPrice ?? 0m)
+                })
+                .ToListAsync();
+
+            return revenueData.ToDictionary(
+                x => x.Key,
+                x => x.Revenue
+            );
         }
 
-        private Dictionary<int, int> GetServicesByTour()
+        private async Task<Dictionary<int, int>> GetServicesByTour()
         {
-            return _context.Services
-                .Where(s => s.TourId.HasValue) // Loại bỏ null
-                .GroupBy(s => s.TourId.Value) // Sử dụng .Value
-                .ToDictionary(g => g.Key, g => g.Count());
+            return await _context.Services
+                .Where(s => s.TourId.HasValue)
+                .GroupBy(s => s.TourId.Value)
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
         }
         #endregion
 
         #region Revenue Methods
-        private decimal GetTotalRevenue()
+        private async Task<decimal> GetTotalRevenue()
         {
-            return _context.Bookings
-                .Where(b => b.Status == "Completed")
-                .Sum(b => b.TotalPrice ?? 0m);
+            return await _context.Bookings
+                .Where(b => b.Status == "Confirmed")
+                .SumAsync(b => (b.TotalPrice ?? 0m) * 0.3m);
         }
 
-        private (int TourId, int ReviewCount) GetTopReviewedTour()
+        private async Task<(string TourName, int TourId, int ReviewCount)> GetTopReviewedTour()
         {
-            var topTour = _context.Reviews
-                .Where(r => r.TourId.HasValue) // Loại bỏ null
-                .GroupBy(r => r.TourId.Value) // Sử dụng .Value
-                .Select(g => new { TourId = g.Key, Count = g.Count() })
+            var topTour = await _context.Reviews
+                .Where(r => r.TourId.HasValue)
+                .GroupBy(r => new { r.TourId, r.Tour.Name }) // Nhóm theo ID và tên tour
+                .Select(g => new
+                {
+                    TourId = g.Key.TourId.Value, // ID của tour
+                    TourName = g.Key.Name, // Tên của tour
+                    Count = g.Count() // Số lượt đánh giá
+                })
                 .OrderByDescending(x => x.Count)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
-            return topTour != null ? (topTour.TourId, topTour.Count) : (0, 0);
+            return topTour != null ? (topTour.TourName, topTour.TourId, topTour.Count) : ("Không có dữ liệu", 0, 0);
         }
 
-        private (int ProviderId, int TourCount) GetTopProviderByTours()
+
+        private async Task<(string ProviderName, int ProviderId, int TourCount)> GetTopProviderByTours()
         {
-            var topProvider = _context.Tours
-                .Where(t => t.ProviderId.HasValue) // Loại bỏ null
-                .GroupBy(t => t.ProviderId.Value) // Sử dụng .Value
-                .Select(g => new { ProviderId = g.Key, Count = g.Count() })
+            var topProvider = await _context.Tours
+                .Where(t => t.ProviderId.HasValue)
+                .GroupBy(t => new { t.ProviderId, t.Provider.Name }) // Nhóm theo ID và tên nhà cung cấp
+                .Select(g => new
+                {
+                    ProviderId = g.Key.ProviderId.Value, // ID nhà cung cấp
+                    ProviderName = g.Key.Name, // Tên nhà cung cấp
+                    Count = g.Count() // Số tour cung cấp
+                })
                 .OrderByDescending(x => x.Count)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
-            return topProvider != null ? (topProvider.ProviderId, topProvider.Count) : (0, 0);
+            return topProvider != null ? (topProvider.ProviderName, topProvider.ProviderId, topProvider.Count) : ("Không có dữ liệu", 0, 0);
         }
 
-        private (int CustomerId, int BookingCount) GetTopCustomerByBookings()
+
+        private async Task<(string CustomerName, int CustomerId, int BookingCount)> GetTopCustomerByBookings()
         {
-            var topCustomer = _context.Bookings
-                .Where(b => b.CustomerId.HasValue) // Loại bỏ null
-                .GroupBy(b => b.CustomerId.Value) // Sử dụng .Value
-                .Select(g => new { CustomerId = g.Key, Count = g.Count() })
+            var topCustomer = await _context.Bookings
+                .Where(b => b.CustomerId.HasValue)
+                .GroupBy(b => new { b.CustomerId, b.Customer.Name }) // Nhóm theo ID và tên khách hàng
+                .Select(g => new
+                {
+                    CustomerId = g.Key.CustomerId.Value, // Lấy ID khách hàng
+                    CustomerName = g.Key.Name, // Lấy tên khách hàng
+                    Count = g.Count() // Số lần đặt
+                })
                 .OrderByDescending(x => x.Count)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
-            return topCustomer != null ? (topCustomer.CustomerId, topCustomer.Count) : (0, 0);
+            return topCustomer != null ? (topCustomer.CustomerName, topCustomer.CustomerId, topCustomer.Count) : ("Không có dữ liệu", 0, 0);
         }
+
+
+
         #endregion
     }
 
@@ -170,13 +207,14 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
         // Pie Chart Data
         public Dictionary<string, int> TourStatusDistribution { get; set; }
         public Dictionary<int, int> RatingDistribution { get; set; }
-        public Dictionary<int, int> HomestayByProvider { get; set; }
+        public Dictionary<string, int> HomestayByProvider { get; set; }
+
         public Dictionary<int, decimal> RevenueByHomestay { get; set; }
 
         // Bar Chart Data
         public Dictionary<int, int> ToursByProvider { get; set; }
         public Dictionary<int, int> BookingsByMonth { get; set; }
-        public Dictionary<int, decimal> RevenueByTour { get; set; }
+        public Dictionary<string, decimal> RevenueByProviderByMonth { get; set; } // Changed to string key
         public Dictionary<int, int> ServicesByTour { get; set; }
 
         // Tổng hợp số liệu
@@ -189,8 +227,10 @@ namespace LuxuryLife.Areas.AdminQL.Controllers
 
         // Doanh thu & số liệu khác
         public decimal TotalRevenue { get; set; }
-        public (int TourId, int ReviewCount) TopReviewedTour { get; set; }
-        public (int ProviderId, int TourCount) TopProviderByTours { get; set; }
-        public (int CustomerId, int BookingCount) TopCustomerByBookings { get; set; }
+        public (string TourName, int TourId, int ReviewCount) TopReviewedTour { get; set; }
+
+        public (string ProviderName, int ProviderId, int TourCount) TopProviderByTours { get; set; }
+
+        public (string CustomerName, int CustomerId, int BookingCount) TopCustomerByBookings { get; set; }
     }
 }
