@@ -16,6 +16,6 @@ public partial class ProviderRevenue
     public int RevenueYear { get; set; }
 
     public DateTime? CreatedAt { get; set; }
-
+    public string? Status { get; set; }
     public virtual Provider Provider { get; set; } = null!;
 }
