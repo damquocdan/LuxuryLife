@@ -120,30 +120,32 @@ namespace LuxuryLife.Controllers
             {
                 try
                 {
-                    // Không thêm booking vào DB ở đây, chỉ lưu vào session
+                    // Set booking details (chưa lưu vào database)
                     booking.BookingDate = DateTime.UtcNow;
-                    booking.Status = "Pending"; // Trạng thái tạm thời, sẽ cập nhật sau khi thanh toán
+                    booking.Status = "Pending";
 
+                    // Lưu thông tin đặt tour tạm thời vào session
                     HttpContext.Session.SetString("PendingBooking", JsonSerializer.Serialize(booking));
 
+                    // Tạo liên kết thanh toán
                     var paymentUrl = await CreatePayOSPayment(booking);
                     if (!string.IsNullOrEmpty(paymentUrl))
                     {
-                        return Redirect(paymentUrl); // Chuyển hướng đến trang thanh toán
+                        // Không lưu booking vào database ở đây, chờ PaymentSuccess
+                        return Redirect(paymentUrl);
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
-                        return View(booking);
-                    }
+
+                    ModelState.AddModelError("", "Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
+                    return View(booking);
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Đã xảy ra lỗi khi xử lý đặt tour. Vui lòng thử lại sau.");
+                    ModelState.AddModelError("", $"Đã xảy ra lỗi: {ex.Message}");
                     return View(booking);
                 }
             }
 
+            // Populate ViewBag for the view
             ViewBag.TourName = tour.Name;
             ViewBag.CustomerName = customer.Name;
             ViewBag.PriceTour = tour.Price;
@@ -276,7 +278,7 @@ namespace LuxuryLife.Controllers
 
         public async Task<IActionResult> PaymentSuccess()
         {
-            var orderCode = long.Parse(Request.Query["orderCode"]);
+            var orderCode = long.Parse(Request.Query["orderCode"].ToString());
             var storedOrderCode = long.Parse(HttpContext.Session.GetString("OrderCode") ?? "0");
 
             if (orderCode == storedOrderCode)
@@ -287,6 +289,17 @@ namespace LuxuryLife.Controllers
                     var booking = JsonSerializer.Deserialize<Booking>(bookingJson);
                     booking.Status = "Confirmed"; // Đặt trạng thái là Confirmed
                     booking.BookingDate = DateTime.UtcNow; // Cập nhật lại ngày đặt tại thời điểm xác nhận
+
+                    // Kiểm tra lại để chắc chắn không có booking trùng
+                    var existingBooking = await _context.Bookings
+                        .FirstOrDefaultAsync(b => b.TourId == booking.TourId && b.CustomerId == booking.CustomerId);
+                    if (existingBooking != null)
+                    {
+                        TempData["Message"] = "Booking này đã tồn tại.";
+                        HttpContext.Session.Remove("PendingBooking");
+                        HttpContext.Session.Remove("OrderCode");
+                        return RedirectToAction(nameof(Index));
+                    }
 
                     // Thêm booking vào DB
                     _context.Bookings.Add(booking);
@@ -319,6 +332,9 @@ namespace LuxuryLife.Controllers
                         await _context.SaveChangesAsync();
                     }
 
+                    // Cập nhật doanh thu cho nhà cung cấp
+                    await _context.Database.ExecuteSqlRawAsync("EXEC UpdateProviderRevenue");
+
                     TempData["Message"] = "Thanh toán thành công! Tour của bạn đã được xác nhận.";
                     HttpContext.Session.Remove("PendingBooking");
                     HttpContext.Session.Remove("OrderCode");
@@ -330,7 +346,7 @@ namespace LuxuryLife.Controllers
 
         public IActionResult PaymentCancelled()
         {
-            var orderCode = long.Parse(Request.Query["orderCode"]);
+            var orderCode = long.Parse(Request.Query["orderCode"].ToString());
             var storedOrderCode = long.Parse(HttpContext.Session.GetString("OrderCode") ?? "0");
 
             if (orderCode == storedOrderCode)
@@ -347,12 +363,12 @@ namespace LuxuryLife.Controllers
                     var tour = _context.Tours.FirstOrDefault(t => t.TourId == booking.TourId);
                     ViewBag.TourName = tour?.Name;
                     ViewBag.CustomerName = _context.Customers.FirstOrDefault(c => c.CustomerId == booking.CustomerId)?.Name;
-                    ViewBag.PriceTour = tour.Price;
-                    ViewBag.PricePerson = tour.PricePerson;
-                    ViewBag.StartDate = tour.StartDate;
-                    ViewBag.EndDate = tour.EndDate;
-                    ViewBag.Day = tour.Day;
-                    ViewBag.Image = tour.Image;
+                    ViewBag.PriceTour = tour?.Price;
+                    ViewBag.PricePerson = tour?.PricePerson;
+                    ViewBag.StartDate = tour?.StartDate;
+                    ViewBag.EndDate = tour?.EndDate;
+                    ViewBag.Day = tour?.Day;
+                    ViewBag.Image = tour?.Image;
                     return View("Create", booking);
                 }
             }
