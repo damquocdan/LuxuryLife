@@ -56,6 +56,7 @@ public partial class Customer
     public DateTime? Createdate { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+    public virtual ICollection<ChatHistory> ChatHistories { get; set; } = new List<ChatHistory>();
     public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
     public virtual ICollection<CustomerInteraction> CustomerInteractions { get; set; } = new List<CustomerInteraction>();
     public virtual ICollection<Favourite> Favourites { get; set; } = new List<Favourite>();

@@ -19,6 +19,8 @@ public partial class TourBookingContext : DbContext
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
+    public virtual DbSet<ChatHistory> ChatHistories { get; set; }
+
     public virtual DbSet<Contact> Contacts { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
@@ -95,6 +97,22 @@ public partial class TourBookingContext : DbContext
             entity.HasOne(d => d.Tour).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.TourId)
                 .HasConstraintName("FK__Booking__TourId__59063A47");
+        });
+
+        modelBuilder.Entity<ChatHistory>(entity =>
+        {
+            entity.HasKey(e => e.ChatId).HasName("PK__ChatHist__A9FBE7C63C38F125");
+
+            entity.ToTable("ChatHistory");
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.ChatHistories)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ChatHisto__Custo__6442E2C9");
         });
 
         modelBuilder.Entity<Contact>(entity =>
@@ -273,6 +291,10 @@ public partial class TourBookingContext : DbContext
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Phone).HasMaxLength(15);
             entity.Property(e => e.Rating).HasColumnType("decimal(3, 2)");
+
+            entity.HasOne(d => d.ProviderBankInfo).WithMany(p => p.Providers)
+                .HasForeignKey(d => d.ProviderBankInfoId)
+                .HasConstraintName("FK_Provider_ProviderBankInfo");
         });
 
         modelBuilder.Entity<ProviderBankInfo>(entity =>
