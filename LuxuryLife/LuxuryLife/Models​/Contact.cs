@@ -31,23 +31,10 @@ public partial class Contact
     [MinLength(10, ErrorMessage = "Tin nhắn phải có ít nhất 10 ký tự.")]
     public string Message { get; set; } = null!;
 
-    [DataType(DataType.DateTime)]
-    [CustomValidation(typeof(Contact), nameof(ValidateCreatedDate))]
     public DateTime? CreatedDate { get; set; }
-
-    [Required(ErrorMessage = "Trạng thái không được để trống.")]
-    [RegularExpression(@"^(Pending|Resolved|Closed)$", ErrorMessage = "Trạng thái chỉ có thể là Pending, Resolved hoặc Closed.")]
     public string? Status { get; set; }
 
     public virtual Customer? Customer { get; set; }
 
     // Xử lý ngoại lệ cho CreatedDate
-    public static ValidationResult? ValidateCreatedDate(DateTime? createdDate, ValidationContext context)
-    {
-        if (createdDate.HasValue && createdDate.Value > DateTime.Now)
-        {
-            return new ValidationResult("Ngày tạo không thể là ngày trong tương lai.");
-        }
-        return ValidationResult.Success;
-    }
 }

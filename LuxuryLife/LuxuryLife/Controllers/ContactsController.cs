@@ -47,24 +47,47 @@ namespace LuxuryLife.Controllers
         // GET: Contacts/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email");
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", customerId);
+            // Nếu khách hàng đã đăng nhập, truyền CustomerId vào ViewBag để sử dụng trong view
+            ViewBag.LoggedInCustomerId = customerId;
             return View();
         }
 
         // POST: Contacts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContactId,CustomerId,Name,Email,Phone,Subject,Message,CreatedDate,Status")] Contact contact)
         {
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+
+            if (customerId.HasValue)
+            {
+                // Nếu khách hàng đã đăng nhập, gán CustomerId từ session
+                contact.CustomerId = customerId.Value;
+            }
+            else
+            {
+                // Nếu chưa đăng nhập, để CustomerId là null
+                contact.CustomerId = null;
+            }
+
+            // Gán CreatedDate nếu chưa có
+            if (contact.CreatedDate == default)
+            {
+                contact.CreatedDate = DateTime.UtcNow;
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["SuccessMessage"] = "Liên hệ của bạn đã được gửi thành công! Chúng tôi sẽ phản hồi sớm nhất có thể.";
+                return RedirectToAction(nameof(Create));
             }
+
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Email", contact.CustomerId);
+            ViewBag.LoggedInCustomerId = customerId;
             return View(contact);
         }
 

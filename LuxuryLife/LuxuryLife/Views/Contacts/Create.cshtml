@@ -4,20 +4,33 @@
     ViewData["Title"] = "Liên hệ với chúng tôi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- 
-<link rel="stylesheet" href="~/css/Contact.css">
 
+<link rel="stylesheet" href="~/css/Contact.css">
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <section class="welcome-hero">
     <div class="container">
         <h1 class="text-center contact-title">Liên hệ với chúng tôi</h1>
         <p class="text-center contact-subtitle">Hãy để chúng tôi giúp bạn lên kế hoạch cho chuyến du lịch hoàn hảo!</p>
         <hr class="divider" />
-
+        
         <div class="row">
             <!-- Form liên hệ -->
             <div class="col-md-6">
                 <form asp-action="Create" class="contact-form">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Ẩn CustomerId và tự động điền nếu đã đăng nhập -->
+                    <div class="form-group" hidden>
+                        <label asp-for="CustomerId" class="control-label">Customer ID</label>
+                        <input asp-for="CustomerId" class="form-control" value="@ViewBag.LoggedInCustomerId" />
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="Name" class="control-label">Họ và tên</label>
@@ -85,13 +98,13 @@
                 input.addEventListener('focus', function () {
                     const label = this.previousElementSibling;
                     if (label && label.classList.contains('control-label')) {
-                        label.style.fontSize = '3.3rem'; // 2x of 1.65rem
+                        label.style.fontSize = '3.3rem';
                     }
                 });
                 input.addEventListener('blur', function () {
                     const label = this.previousElementSibling;
                     if (label && label.classList.contains('control-label')) {
-                        label.style.fontSize = '1.65rem'; // Back to normal
+                        label.style.fontSize = '1.65rem';
                     }
                 });
             });
