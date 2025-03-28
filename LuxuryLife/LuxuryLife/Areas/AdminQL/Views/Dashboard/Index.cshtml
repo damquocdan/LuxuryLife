@@ -72,7 +72,31 @@
         <div class="dashboard-header">
             <h1 class="text-center">Dashboard Thống Kê</h1>
         </div>
+        <h2 class="text-center my-4">Doanh thu & Số liệu Nổi bật</h2>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 stats-card">
+                <i class="fas fa-money-bill-wave"></i>
+                <h4>Tổng Doanh thu</h4>
+                <p>@Model.TotalRevenue.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</p>
+            </div>
+            <div class="col-md-3 col-sm-6 stats-card">
+                <i class="fas fa-star"></i>
+                <h4>Tour có nhiều Đánh giá nhất</h4>
+                <p>@Model.TopReviewedTour.TourName (ID: @Model.TopReviewedTour.TourId) - @Model.TopReviewedTour.ReviewCount đánh giá</p>
+            </div>
 
+            <div class="col-md-3 col-sm-6 stats-card">
+                <i class="fas fa-building"></i>
+                <h4>Nhà cung cấp có nhiều Tour nhất</h4>
+                <p>@Model.TopProviderByTours.ProviderName (ID: @Model.TopProviderByTours.ProviderId) - @Model.TopProviderByTours.TourCount tour</p>
+            </div>
+
+            <div class="col-md-3 col-sm-6 stats-card">
+                <i class="fas fa-user-check"></i>
+                <h4>Khách hàng Booking nhiều nhất</h4>
+                <p>@Model.TopCustomerByBookings.CustomerName (ID: @Model.TopCustomerByBookings.CustomerId) - @Model.TopCustomerByBookings.BookingCount booking</p>
+            </div>
+        </div>
         <!-- Pie Charts -->
         <div class="row">
             <div class="col-md-4 col-sm-6">
@@ -158,33 +182,6 @@
             </div>
         </div>
 
-        <!-- Revenue & Highlights -->
-        <h2 class="text-center my-4">Doanh thu & Số liệu Nổi bật</h2>
-        <div class="row">
-            <div class="col-md-3 col-sm-6 stats-card">
-                <i class="fas fa-money-bill-wave"></i>
-                <h4>Tổng Doanh thu</h4>
-                <p>@Model.TotalRevenue.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</p>
-            </div>
-            <div class="col-md-3 col-sm-6 stats-card">
-                <i class="fas fa-star"></i>
-                <h4>Tour có nhiều Đánh giá nhất</h4>
-                <p>@Model.TopReviewedTour.TourName (ID: @Model.TopReviewedTour.TourId) - @Model.TopReviewedTour.ReviewCount đánh giá</p>
-            </div>
-
-            <div class="col-md-3 col-sm-6 stats-card">
-                <i class="fas fa-building"></i>
-                <h4>Nhà cung cấp có nhiều Tour nhất</h4>
-                <p>@Model.TopProviderByTours.ProviderName (ID: @Model.TopProviderByTours.ProviderId) - @Model.TopProviderByTours.TourCount tour</p>
-            </div>
-
-            <div class="col-md-3 col-sm-6 stats-card">
-                <i class="fas fa-user-check"></i>
-                <h4>Khách hàng Booking nhiều nhất</h4>
-                <p>@Model.TopCustomerByBookings.CustomerName (ID: @Model.TopCustomerByBookings.CustomerId) - @Model.TopCustomerByBookings.BookingCount booking</p>
-            </div>
-
-        </div>
     </div>
 
     <!-- Scripts -->

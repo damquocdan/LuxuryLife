@@ -9,7 +9,7 @@
         <p><strong>Doanh thu:</strong> @string.Format("{0:N0} VND", Model.RevenueAmount)</p>
         <p><strong>Tháng/Năm:</strong> @Model.RevenueMonth/@Model.RevenueYear</p>
         <p><strong>Trạng thái:</strong> @(Model.Status == "Confirmed" ? "Đã thanh toán" : "Chưa thanh toán")</p>
-        <!-- Hiển thị mã QR -->
+    <!-- Hiển thị mã QR -->
         <div class="text-center">
             <img src="@ViewBag.QRFilePath" alt="QR Code" class="img-fluid" style="max-width: 200px;" />
             <p>Quét mã QR bằng ứng dụng PayOS hoặc ví điện tử để thanh toán</p>
