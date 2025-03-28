@@ -39,5 +39,7 @@ public partial class Customer
 
     public virtual ICollection<MomoPayment> MomoPayments { get; set; } = new List<MomoPayment>();
 
+    public virtual ICollection<ReviewOn> ReviewOns { get; set; } = new List<ReviewOn>();
+
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

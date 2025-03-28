@@ -1,0 +1,53 @@
+﻿@model IEnumerable<API.Models.ReviewOn>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Createdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Review)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CustomerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Review.ReviewId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ReviewOnId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ReviewOnId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ReviewOnId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

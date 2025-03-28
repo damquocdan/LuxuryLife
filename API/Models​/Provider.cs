@@ -23,5 +23,13 @@ public partial class Provider
 
     public DateTime? Createdate { get; set; }
 
+    public int? ProviderBankInfoId { get; set; }
+
+    public virtual ProviderBankInfo? ProviderBankInfo { get; set; }
+
+    public virtual ICollection<ProviderBankInfo> ProviderBankInfos { get; set; } = new List<ProviderBankInfo>();
+
+    public virtual ICollection<ProviderRevenue> ProviderRevenues { get; set; } = new List<ProviderRevenue>();
+
     public virtual ICollection<Tour> Tours { get; set; } = new List<Tour>();
 }

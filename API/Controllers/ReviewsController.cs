@@ -24,31 +24,58 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
         {
-            return await _context.Reviews.ToListAsync();
+            var reviews = await _context.Reviews
+                .Include(r => r.Customer)
+                .Include(r => r.Tour)
+                .ToListAsync();
+
+            return Ok(reviews);
         }
 
         // GET: api/Reviews/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReview(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await _context.Reviews
+                .Include(r => r.Customer)
+                .Include(r => r.Tour)
+                .FirstOrDefaultAsync(m => m.ReviewId == id);
 
             if (review == null)
             {
                 return NotFound();
             }
 
-            return review;
+            return Ok(review);
+        }
+
+        // POST: api/Reviews
+        [HttpPost]
+        public async Task<ActionResult<Review>> PostReview(Review review)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetReview), new { id = review.ReviewId }, review);
         }
 
         // PUT: api/Reviews/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, Review review)
         {
             if (id != review.ReviewId)
             {
                 return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             _context.Entry(review).State = EntityState.Modified;
@@ -72,17 +99,6 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/Reviews
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
-        {
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetReview", new { id = review.ReviewId }, review);
-        }
-
         // DELETE: api/Reviews/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReview(int id)
@@ -99,9 +115,82 @@ namespace API.Controllers
             return NoContent();
         }
 
+        // POST: api/Reviews/CreateForTour
+        [HttpPost("CreateForTour")]
+        public async Task<IActionResult> CreateForTour([FromBody] CreateReviewForTourRequest request)
+        {
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (!customerId.HasValue)
+            {
+                return Unauthorized(new { message = "User not logged in" });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Comment) || request.Rating < 1 || request.Rating > 5)
+            {
+                return BadRequest(new { message = "Invalid comment or rating. Rating must be between 1 and 5." });
+            }
+
+            var review = new Review
+            {
+                TourId = request.TourId,
+                CustomerId = customerId.Value,
+                Comment = request.Comment,
+                Rating = request.Rating,
+                Createdate = DateTime.Now
+            };
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetReview), new { id = review.ReviewId }, review);
+        }
+
+        // POST: api/Reviews/AddReply
+        [HttpPost("AddReply")]
+        public async Task<IActionResult> AddReply([FromBody] AddReplyRequest request)
+        {
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (!customerId.HasValue)
+            {
+                return Unauthorized(new { message = "User not logged in" });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Comment))
+            {
+                return BadRequest(new { message = "Comment cannot be empty" });
+            }
+
+            var reviewOn = new ReviewOn
+            {
+                ReviewId = request.ReviewId,
+                CustomerId = customerId.Value,
+                Comment = request.Comment,
+                Createdate = DateTime.Now
+            };
+
+            _context.ReviewOns.Add(reviewOn);
+            await _context.SaveChangesAsync();
+
+            return Ok(reviewOn);
+        }
+
         private bool ReviewExists(int id)
         {
             return _context.Reviews.Any(e => e.ReviewId == id);
         }
+    }
+
+    // Request models for custom POST actions
+    public class CreateReviewForTourRequest
+    {
+        public int TourId { get; set; }
+        public string Comment { get; set; }
+        public int Rating { get; set; }
+    }
+
+    public class AddReplyRequest
+    {
+        public int ReviewId { get; set; }
+        public string Comment { get; set; }
     }
 }

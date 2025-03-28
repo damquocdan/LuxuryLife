@@ -37,7 +37,13 @@ public partial class TourBookingContext : DbContext
 
     public virtual DbSet<Provider> Providers { get; set; }
 
+    public virtual DbSet<ProviderBankInfo> ProviderBankInfos { get; set; }
+
+    public virtual DbSet<ProviderRevenue> ProviderRevenues { get; set; }
+
     public virtual DbSet<Review> Reviews { get; set; }
+
+    public virtual DbSet<ReviewOn> ReviewOns { get; set; }
 
     public virtual DbSet<Service> Services { get; set; }
 
@@ -78,6 +84,7 @@ public partial class TourBookingContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.CheckInDate).HasColumnType("datetime");
             entity.Property(e => e.CheckOutDate).HasColumnType("datetime");
+            entity.Property(e => e.Code).HasMaxLength(255);
             entity.Property(e => e.Status).HasMaxLength(50);
             entity.Property(e => e.TotalPrice).HasColumnType("decimal(18, 2)");
 
@@ -266,6 +273,48 @@ public partial class TourBookingContext : DbContext
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Phone).HasMaxLength(15);
             entity.Property(e => e.Rating).HasColumnType("decimal(3, 2)");
+
+            entity.HasOne(d => d.ProviderBankInfo).WithMany(p => p.Providers)
+                .HasForeignKey(d => d.ProviderBankInfoId)
+                .HasConstraintName("FK_Provider_ProviderBankInfo");
+        });
+
+        modelBuilder.Entity<ProviderBankInfo>(entity =>
+        {
+            entity.HasKey(e => e.ProviderBankInfoId).HasName("PK__Provider__6E556906E78AC512");
+
+            entity.ToTable("ProviderBankInfo");
+
+            entity.Property(e => e.BankAccountNumber).HasMaxLength(50);
+            entity.Property(e => e.BankName).HasMaxLength(100);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.FullName).HasMaxLength(100);
+            entity.Property(e => e.Qrcode).HasColumnName("QRCode");
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.ProviderBankInfos)
+                .HasForeignKey(d => d.ProviderId)
+                .HasConstraintName("FK_ProviderBank");
+        });
+
+        modelBuilder.Entity<ProviderRevenue>(entity =>
+        {
+            entity.HasKey(e => e.RevenueId).HasName("PK__Provider__275F16DDBB6CE1DE");
+
+            entity.ToTable("ProviderRevenue");
+
+            entity.HasIndex(e => new { e.ProviderId, e.RevenueMonth, e.RevenueYear }, "UQ_ProviderRevenue").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.RevenueAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Status).HasMaxLength(50);
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.ProviderRevenues)
+                .HasForeignKey(d => d.ProviderId)
+                .HasConstraintName("FK_ProviderRevenue");
         });
 
         modelBuilder.Entity<Review>(entity =>
@@ -290,6 +339,27 @@ public partial class TourBookingContext : DbContext
             entity.HasOne(d => d.Tour).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.TourId)
                 .HasConstraintName("FK__Review__TourId__5441852A");
+        });
+
+        modelBuilder.Entity<ReviewOn>(entity =>
+        {
+            entity.HasKey(e => e.ReviewOnId).HasName("PK__ReviewOn__2D882DB1A71368C3");
+
+            entity.ToTable("ReviewOn");
+
+            entity.Property(e => e.Createdate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.ReviewOns)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ReviewOn__Custom__51300E55");
+
+            entity.HasOne(d => d.Review).WithMany(p => p.ReviewOns)
+                .HasForeignKey(d => d.ReviewId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ReviewOn__Review__503BEA1C");
         });
 
         modelBuilder.Entity<Service>(entity =>

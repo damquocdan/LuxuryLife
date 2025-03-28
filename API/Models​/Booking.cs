@@ -23,6 +23,8 @@ public partial class Booking
 
     public int? NumberOfGuests { get; set; }
 
+    public string? Code { get; set; }
+
     public virtual Customer? Customer { get; set; }
 
     public virtual ICollection<MomoPayment> MomoPayments { get; set; } = new List<MomoPayment>();

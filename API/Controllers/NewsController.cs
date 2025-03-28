@@ -24,79 +24,43 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<News>>> GetNews()
         {
-            return await _context.News.ToListAsync();
+            // Lấy 9 tin tức mới nhất, sắp xếp theo Createdate giảm dần
+            var latestNews = await _context.News
+                .OrderByDescending(n => n.Createdate) // Sắp xếp theo ngày tạo giảm dần
+                .Take(9) // Giới hạn 9 bản ghi
+                .ToListAsync();
+
+            return Ok(latestNews);
         }
 
         // GET: api/News/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<News>> GetNews(int id)
+        public async Task<ActionResult<object>> GetNewsDetails(int id)
         {
-            var news = await _context.News.FindAsync(id);
+            // Fetch the news item asynchronously
+            var news = await _context.News
+                .FirstOrDefaultAsync(n => n.NewId == id);
 
             if (news == null)
             {
                 return NotFound();
             }
 
-            return news;
-        }
+            // Fetch related news (top 3 excluding the current one)
+            var relatedNews = await _context.News
+                .Where(n => n.NewId != id)
+                .OrderByDescending(n => n.Createdate)
+                .Take(3)
+                .ToListAsync();
 
-        // PUT: api/News/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNews(int id, News news)
-        {
-            if (id != news.NewId)
+            // Construct the response object
+            var response = new
             {
-                return BadRequest();
-            }
+                News = news,
+                RelatedNews = relatedNews
+            };
 
-            _context.Entry(news).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NewsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/News
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<News>> PostNews(News news)
-        {
-            _context.News.Add(news);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetNews", new { id = news.NewId }, news);
-        }
-
-        // DELETE: api/News/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNews(int id)
-        {
-            var news = await _context.News.FindAsync(id);
-            if (news == null)
-            {
-                return NotFound();
-            }
-
-            _context.News.Remove(news);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(response);
         }
 
         private bool NewsExists(int id)

@@ -20,29 +20,68 @@ namespace API.Controllers
             _context = context;
         }
 
-        // GET: api/Services
+        // GET: api/Services?category=Nhà hàng
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetServices()
+        public async Task<ActionResult<IEnumerable<Service>>> GetServices(string category = null)
         {
-            return await _context.Services.ToListAsync();
+            var servicesQuery = _context.Services
+                .Include(s => s.Tour)
+                .ThenInclude(t => t.Provider)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                category = category.ToLower(); // Normalize the input
+                servicesQuery = servicesQuery.Where(s =>
+                    s.ServiceName.ToLower().Contains(category) ||
+                    (s.Description != null && s.Description.ToLower().Contains(category)));
+            }
+
+            var services = await servicesQuery.ToListAsync();
+
+            return Ok(services);
         }
 
         // GET: api/Services/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Service>> GetService(int id)
         {
-            var service = await _context.Services.FindAsync(id);
+            var service = await _context.Services
+                .Include(s => s.Tour)
+                .ThenInclude(t => t.Provider)
+                .FirstOrDefaultAsync(s => s.ServiceId == id);
 
             if (service == null)
             {
                 return NotFound();
             }
 
-            return service;
+            // Fetch related services (e.g., top 3 other services excluding the current one)
+            var relatedServices = await _context.Services
+                .Include(s => s.Tour)
+                .Where(s => s.ServiceId != id)
+                .OrderByDescending(s => s.Price) // Or another sorting criterion
+                .Take(3)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                Service = service,
+                RelatedServices = relatedServices
+            });
+        }
+
+        // POST: api/Services
+        [HttpPost]
+        public async Task<ActionResult<Service>> PostService(Service service)
+        {
+            _context.Services.Add(service);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetService), new { id = service.ServiceId }, service);
         }
 
         // PUT: api/Services/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutService(int id, Service service)
         {
@@ -70,17 +109,6 @@ namespace API.Controllers
             }
 
             return NoContent();
-        }
-
-        // POST: api/Services
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Service>> PostService(Service service)
-        {
-            _context.Services.Add(service);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetService", new { id = service.ServiceId }, service);
         }
 
         // DELETE: api/Services/5

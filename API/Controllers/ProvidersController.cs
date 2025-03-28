@@ -24,79 +24,76 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Provider>>> GetProviders()
         {
-            return await _context.Providers.ToListAsync();
+            var providers = await _context.Providers.ToListAsync();
+            return Ok(providers);
         }
 
         // GET: api/Providers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Provider>> GetProvider(int id)
+        public async Task<ActionResult<object>> GetProvider(int id)
         {
-            var provider = await _context.Providers.FindAsync(id);
+            // Get CustomerId from session (nullable, no redirect if null)
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+
+            // Fetch the provider asynchronously
+            var provider = await _context.Providers
+                .FirstOrDefaultAsync(m => m.ProviderId == id);
 
             if (provider == null)
             {
                 return NotFound();
             }
 
-            return provider;
-        }
+            // Fetch related data
+            var homestays = await _context.Homestays
+                .Where(h => h.ProviderId == provider.ProviderId)
+                .ToListAsync();
 
-        // PUT: api/Providers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProvider(int id, Provider provider)
-        {
-            if (id != provider.ProviderId)
+            var tours = await _context.Tours
+                .Where(t => t.ProviderId == provider.ProviderId)
+                .ToListAsync();
+
+            var services = await _context.Services
+                .Where(s => _context.Tours.Any(t => t.TourId == s.TourId && t.ProviderId == provider.ProviderId))
+                .ToListAsync();
+
+            var tourImages = await _context.Listimagestours
+                .Where(li => _context.Tours.Any(t => t.TourId == li.TourId && t.ProviderId == provider.ProviderId))
+                .ToListAsync();
+
+            var reviews = await _context.Reviews
+                .Include(r => r.Customer) // Include customer data for reviews
+                .Where(r => _context.Tours.Any(t => t.TourId == r.TourId && t.ProviderId == provider.ProviderId))
+                .ToListAsync();
+
+            var reviewOns = await _context.ReviewOns
+                .Include(ro => ro.Customer) // Include customer data for replies
+                .Where(ro => _context.Reviews.Any(r => r.ReviewId == ro.ReviewId &&
+                    _context.Tours.Any(t => t.TourId == r.TourId && t.ProviderId == provider.ProviderId)))
+                .ToListAsync();
+
+            var customers = await _context.Customers.ToListAsync();
+
+            // Set current user data only if logged in
+            var currentUser = customerId.HasValue
+                ? await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == customerId.Value)
+                : null;
+
+            // Construct the response object
+            var response = new
             {
-                return BadRequest();
-            }
+                Provider = provider,
+                Homestays = homestays,
+                Tours = tours,
+                Services = services,
+                TourImages = tourImages,
+                Reviews = reviews,
+                ReviewOns = reviewOns,
+                Customers = customers,
+                CurrentUser = currentUser
+            };
 
-            _context.Entry(provider).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProviderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Providers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Provider>> PostProvider(Provider provider)
-        {
-            _context.Providers.Add(provider);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProvider", new { id = provider.ProviderId }, provider);
-        }
-
-        // DELETE: api/Providers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProvider(int id)
-        {
-            var provider = await _context.Providers.FindAsync(id);
-            if (provider == null)
-            {
-                return NotFound();
-            }
-
-            _context.Providers.Remove(provider);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(response);
         }
 
         private bool ProviderExists(int id)
