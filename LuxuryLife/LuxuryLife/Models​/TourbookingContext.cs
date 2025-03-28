@@ -277,7 +277,7 @@ public partial class TourBookingContext : DbContext
 
         modelBuilder.Entity<ProviderBankInfo>(entity =>
         {
-            entity.HasKey(e => e.BankInfoId).HasName("PK__Provider__6E556906E78AC512");
+            entity.HasKey(e => e.ProviderBankInfoId).HasName("PK__Provider__6E556906E78AC512");
 
             entity.ToTable("ProviderBankInfo");
 
@@ -306,6 +306,7 @@ public partial class TourBookingContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.RevenueAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Status).HasMaxLength(50);
 
             entity.HasOne(d => d.Provider).WithMany(p => p.ProviderRevenues)
                 .HasForeignKey(d => d.ProviderId)

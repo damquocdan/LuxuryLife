@@ -44,7 +44,7 @@ public partial class Provider
     [Display(Name = "Ngày tạo")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? Createdate { get; set; }
-
+    public int? ProviderBankInfoId { get; set; }
     public virtual ICollection<ProviderBankInfo> ProviderBankInfos { get; set; } = new List<ProviderBankInfo>();
 
     public virtual ICollection<ProviderRevenue> ProviderRevenues { get; set; } = new List<ProviderRevenue>();

@@ -1,0 +1,58 @@
+﻿@model LuxuryLife.Models.ProviderRevenue
+
+<div class="card">
+    <div class="card-header">
+        <h5>Thông tin thanh toán</h5>
+    </div>
+    <div class="card-body">
+        <p><strong>Nhà cung cấp:</strong> @Model.Provider.Name</p>
+        <p><strong>Doanh thu:</strong> @string.Format("{0:N0} VND", Model.RevenueAmount)</p>
+        <p><strong>Tháng/Năm:</strong> @Model.RevenueMonth/@Model.RevenueYear</p>
+        <p><strong>Trạng thái:</strong> @(Model.Status == "Confirmed" ? "Đã thanh toán" : "Chưa thanh toán")</p>
+        <!-- Hiển thị mã QR -->
+        <div class="text-center">
+            <img src="@ViewBag.QRFilePath" alt="QR Code" class="img-fluid" style="max-width: 200px;" />
+            <p>Quét mã QR bằng ứng dụng PayOS hoặc ví điện tử để thanh toán</p>
+        </div>
+
+        <!-- Nút xác nhận thanh toán (tùy chọn) -->
+        @if (Model.Status != "Confirmed")
+        {
+            <!-- Chỉ hiển thị nút nếu muốn xác nhận thủ công, có thể bỏ nếu dùng PayOS hoàn toàn -->
+            <button class="btn btn-success btn-sm confirm-payment"
+                    data-url="@Url.Action("ConfirmPayment", new { id = Model.RevenueId })">
+                Xác nhận thanh toán (thủ công)
+            </button>
+        }
+        <button class="btn btn-secondary btn-sm" onclick="closeDetailSection()">Đóng</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".confirm-payment").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.post(url, function (data) {
+                if (data.success) {
+                    alert("Thanh toán thành công!");
+                    // Tải lại nội dung chi tiết
+                    $(".actionCustomers").load("@Url.Action("GeneratePaymentQR", new { id = Model.RevenueId })");
+                    // Tải lại danh sách
+                    $("#list-section .card-body").load("@Url.Action("Index") #list-section .card-body");
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            });
+        });
+
+        // Kiểm tra trạng thái tự động sau khi thanh toán qua PayOS (tùy chọn)
+        // Nếu muốn tự động làm mới sau khi thanh toán qua PayOS, có thể thêm logic polling
+        setTimeout(function () {
+            $.get("@Url.Action("GeneratePaymentQR", new { id = Model.RevenueId })", function (data) {
+                $(".actionCustomers").html(data);
+            });
+        }, 30000); // Kiểm tra sau 30 giây, tùy chỉnh thời gian nếu cần
+    });
+</script>

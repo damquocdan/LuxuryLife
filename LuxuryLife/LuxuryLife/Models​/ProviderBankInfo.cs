@@ -5,7 +5,7 @@ namespace LuxuryLife.Models​;
 
 public partial class ProviderBankInfo
 {
-    public int BankInfoId { get; set; }
+    public int ProviderBankInfoId { get; set; }
 
     public int ProviderId { get; set; }
 

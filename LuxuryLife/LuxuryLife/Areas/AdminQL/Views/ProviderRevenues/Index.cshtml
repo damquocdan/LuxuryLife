@@ -1,66 +1,149 @@
 ﻿@model IEnumerable<LuxuryLife.Models.ProviderRevenue>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản Lý Doanh Thu Nhà Cung Cấp";
     Layout = "~/Areas/AdminQL/Views/Shared/Admin.cshtml";
 }
 
-<h1>Index</h1>
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">Quản Lý Doanh Thu Nhà Cung Cấp</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RevenueAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RevenueMonth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RevenueYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Provider)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RevenueAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RevenueMonth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RevenueYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provider.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RevenueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RevenueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RevenueId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Search and Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Tìm theo tên nhà cung cấp</label>
+                    <input type="text" name="searchProvider" class="form-control"
+                           value="@ViewData["CurrentProviderFilter"]" placeholder="Nhập tên nhà cung cấp">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Tháng</label>
+                    <select name="monthFilter" class="form-select">
+                        <option value="">Tất cả</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Năm</label>
+                    <input type="number" name="yearFilter" class="form-control"
+                           value="@ViewData["CurrentYearFilter"]" placeholder="Nhập năm">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Trạng thái</label>
+                    <select name="statusFilter" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="Confirmed">Đã thanh toán</option>
+                        <option value="Pending">Chưa thanh toán</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Tìm kiếm</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Xóa bộ lọc</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="list-section">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>
+                                    Nhà cung cấp
+                                </th>
+                                <th>
+                                    Tháng/Năm
+                                </th>
+                                <th>
+                                    <a href="@Url.Action("Index", new { sortOrder = ViewData["RevenueSortParm"] })"
+                                       class="text-decoration-none text-dark">
+                                        Doanh thu
+                                        @if (ViewData["CurrentSort"]?.ToString() == "revenue_desc")
+                                        {
+                                            <i class="bi bi-caret-down-fill"></i>
+                                        }
+                                        else if (ViewData["CurrentSort"]?.ToString() == "revenue")
+                                        {
+                                            <i class="bi bi-caret-up-fill"></i>
+                                        }
+                                    </a>
+                                </th>
+                                <th>
+                                    Trạng thái
+                                </th>
+                                <th class="text-end">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Provider.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RevenueMonth)/@Html.DisplayFor(modelItem => item.RevenueYear)
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:N0} VND", item.RevenueAmount)
+                                    </td>
+                                    <td>
+                                        @(item.Status == "Confirmed" ? "Đã thanh toán" : "Chưa thanh toán")
+                                    </td>
+                                    <td class="text-end">
+                                        <button class="btn btn-info btn-sm ajax-action"
+                                                data-url="@Url.Action("GeneratePaymentQR", new { id = item.RevenueId })">
+                                            <i class="fas fa-info-circle"></i> Thanh toán
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 d-none" id="detail-section">
+            <div class="actionCustomers"></div>
+        </div>
+    </div>
+    <!-- Table -->
+
+</div>
+
+<!-- Add Bootstrap Icons CDN in your layout if not already included -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".ajax-action").click(function (e) {
+            e.preventDefault();
+
+            var url = $(this).data("url");
+
+            // Kiểm tra nếu phần chi tiết đang ẩn, thì thay đổi layout
+            if ($("#detail-section").hasClass("d-none")) {
+                $("#list-section").removeClass("col-md-12").addClass("col-md-8");
+                $("#detail-section").removeClass("d-none").addClass("col-md-4");
+            }
+
+            // Load nội dung vào phần chi tiết
+            $(".actionCustomers").load(url, function (response, status, xhr) {
+                if (status === "error") {
+                    alert("Lỗi khi tải dữ liệu: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+        function closeDetailSection() {
+        $("#list-section").removeClass("col-md-8").addClass("col-md-12"); // Trở về full width
+        $("#detail-section").addClass("d-none"); // Ẩn phần chi tiết
+    }
+</script>
