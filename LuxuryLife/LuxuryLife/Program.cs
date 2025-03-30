@@ -22,6 +22,7 @@ var payOS = new PayOS(clientId, apiKey, checksumKey);
 builder.Services.AddSingleton(payOS);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ChatbotService>();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromSeconds(3600);
